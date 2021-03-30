@@ -1,5 +1,8 @@
 version: '3'
 
+volumes: 
+  db-data:
+
 services:
   web:
     build: .
@@ -7,5 +10,19 @@ services:
       - '3000:3000'
     volumes: 
       - '.:/product-register'
+    environment: 
+      - 'DATABASE_PASSWORD=postgres'
     tty: true
     stdin_open: true
+    depends_on: 
+      - db
+    links: 
+      - db
+
+  db:
+    image: postgres
+    volumes:
+      - 'db-data:/var/lib/postgresql/data'
+    environment: 
+      - 'POSTGRES_USER=postgres'
+      - 'POSTGRES_PASSWORD=postgres'
