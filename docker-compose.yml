@@ -1,28 +1,28 @@
 version: '3'
 
-volumes: 
+volumes:
   db-data:
 
 services:
   web:
     build: .
-    ports: 
+    ports:
       - '3000:3000'
-    volumes: 
-      - '.:/product-register'
-    environment: 
+    volumes:
+      - '.:/sentiment-dc'
+    environment:
       - 'DATABASE_PASSWORD=postgres'
     tty: true
     stdin_open: true
-    depends_on: 
+    depends_on:
       - db
-    links: 
+    links:
       - db
 
   db:
     image: postgres
     volumes:
       - 'db-data:/var/lib/postgresql/data'
-    environment: 
+    environment:
       - 'POSTGRES_USER=postgres'
       - 'POSTGRES_PASSWORD=postgres'

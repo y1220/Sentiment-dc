@@ -5,6 +5,6 @@ RUN apt-get update && apt-get install -y \
     nodejs \
     postgresql-client \
     yarn
-WORKDIR /product-register
-COPY Gemfile Gemfile.lock /product-register/
+WORKDIR /sentiment-dc
+COPY Gemfile Gemfile.lock /sentiment-dc/
 RUN bundle install

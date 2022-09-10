@@ -15,14 +15,14 @@
   661  cd docker/
   662  git add .
   663  git commit -m "mount_jupyter_hub"
-  664  git push 
+  664  git push
   665  docker images
   666  docker container
   667  docker container ls
   668  docker container ls -la
   669  docker-compose --version
   670  cd ..
-  671  mkdir product-register && cd product-register
+  671  mkdir sentiment-dc && cd sentiment-dc
   672  touch Dockerfile
   673  touch Gemfile Gemfile.lock
   674  docker build .
@@ -32,7 +32,7 @@
   678  docker build .
   679  git init
   680  git add .
-  681  git commit 
+  681  git commit
   682  git commmit -m "after first build of a docker"
   683  git commit -m "after first build of a docker"
   684  git push origin master
@@ -41,8 +41,8 @@
   687  git push -u origin master
   688  touch docker-compose.yml
   689  ls
-  690  docker-compose up -d 
-  691  docker-compose up -d 
+  690  docker-compose up -d
+  691  docker-compose up -d
   692  docker ps
   693  docker-compose ps
   694  docker-compose exec web bash
@@ -54,7 +54,7 @@
   700  git add .
   701  git commit "rails new . --force --database=postgresql --skip-bundle"
   702  git commit -m "rails new . --force --database=postgresql --skip-bundle"
-  703  git push 
+  703  git push
   704  docker compose down
   705  ls
   706  docker-compose down
@@ -70,14 +70,14 @@
   716  docker-compose up -d
   717  docker-compose ps
   718  docker volume ls
-  719  docker volume inspect product-register_db-data
+  719  docker volume inspect sentiment-dc_db-data
   720  docekr-compose exec web bash
   721  docker-compose exec web bash
   722  docekr-compose up -d
   723  docker-compose up -d
   724  docker-compose exec web bash
   725  docker-compose up --build:build -d
-  726  docker-compose up --build:build 
+  726  docker-compose up --build:build
   727  docker-compose up -d
   728  docker-compose exec web bash
   729  docker-compose up -d
@@ -93,8 +93,8 @@
   739  docker-compose exec web bash
   740  git add .
   741  git commit -m "rails s -b 0.0.0.0"
-  742  git push 
-  743  history 
+  742  git push
+  743  history
 
 docker-compose down
 docker-compose up --build
