@@ -1,0 +1,444 @@
+<div class="container" style="padding: 10px;">
+<div class="pagetitle">
+    <h1>Dashboard</h1>
+    <nav>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item active">Dashboard</li>
+    </ol>
+    </nav>
+</div><!-- End Page Title -->
+
+<section class="section dashboard">
+    <div class="row">
+            <!-- Achievement rate Card -->
+            <div class="col-12">
+                <div class="card info-card sales-card">
+
+                    <div class="card-body">
+                        <h5 class="card-title">Achievement rate <span>| Today</span></h5>
+
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-cart"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h5 style= "color: grey;">[ Task left ]</h5>
+                                <h6>A company integration planning</h6>
+                                <h6>B company API testing</h6>
+                                <span class="text-success small pt-1 fw-bold">42%</span> <span class="text-muted small pt-2 ps-1">completed</span>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div><!-- End Achievement rate Card -->
+
+            <!-- Posting count Card -->
+            <div class="col-12">
+                <div class="card info-card revenue-card">
+
+                    <div class="card-body">
+                        <h5 class="card-title">Posting count <span>| This Month</span></h5>
+
+                        <div class="d-flex align-items-center">
+                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                            <i class="bi bi-currency-dollar"></i>
+                        </div>
+                        <div class="ps-3">
+                            <h6>7 posts</h6>
+                            <span class="text-success small pt-1 fw-bold">8%</span> <span class="text-muted small pt-2 ps-1">increase</span>
+
+                        </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div><!-- End Posting count Card -->
+
+            <!-- Thanks stamp Card -->
+            <div class="col-12">
+
+                <div class="card info-card customers-card">
+
+                    <div class="card-body">
+                        <h5 class="card-title">Thanks stamp <span>| This Year</span></h5>
+
+                        <div class="d-flex align-items-center">
+                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-people"></i>
+                            </div>
+                            <div class="ps-3">
+                                <h6>74 thanks</h6>
+                                <span class="text-danger small pt-1 fw-bold">12%</span> <span class="text-muted small pt-2 ps-1">decrease</span>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div><!-- End Thanks stamp Card -->
+
+            <!-- Self scoring -->
+            <div class="col-12">
+                <div class="card">
+
+                    <div class="card-body">
+                        <h5 class="card-title">Self scoring <span>| This Week</span></h5>
+
+                        <!-- Line Chart -->
+                        <div id="reportsChart"></div>
+
+                        <script>
+                        document.addEventListener("DOMContentLoaded", () => {
+                            new ApexCharts(document.querySelector("#reportsChart"), {
+                            series: [{
+                                name: 'Task A',
+                                data: [31, 40, 28, 51, 42, 82, 56],
+                            }, {
+                                name: 'Task B',
+                                data: [11, 32, 45, 32, 34, 52, 41]
+                            }, {
+                                name: 'Task C',
+                                data: [15, 11, 32, 18, 9, 24, 11]
+                            }],
+                            chart: {
+                                height: 350,
+                                type: 'area',
+                                toolbar: {
+                                show: false
+                                },
+                            },
+                            markers: {
+                                size: 4
+                            },
+                            colors: ['#4154f1', '#2eca6a', '#ff771d'],
+                            fill: {
+                                type: "gradient",
+                                gradient: {
+                                shadeIntensity: 1,
+                                opacityFrom: 0.3,
+                                opacityTo: 0.4,
+                                stops: [0, 90, 100]
+                                }
+                            },
+                            dataLabels: {
+                                enabled: false
+                            },
+                            stroke: {
+                                curve: 'smooth',
+                                width: 2
+                            },
+                            xaxis: {
+                                type: 'datetime',
+                                categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
+                            },
+                            tooltip: {
+                                x: {
+                                format: 'dd/MM/yy HH:mm'
+                                },
+                            }
+                            }).render();
+                        });
+                        </script>
+                        <!-- End Line Chart -->
+
+                    </div>
+
+                </div>
+            </div><!-- End Self scoring -->
+
+            <!-- Task planning -->
+            <div class="col-12">
+                <div class="card recent-sales overflow-auto">
+
+                <div class="card-body">
+                    <h5 class="card-title">Task planning<span> | Weekly</span></h5>
+
+                    <table class="table table-borderless datatable">
+                    <thead>
+                        <tr>
+                        <th scope="col">#task.no</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Priority</th>
+                        <th scope="col">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                        <th scope="row"><a href="#">#2457</a></th>
+                        <td>Add filter on product list</td>
+                        <td><a href="#" class="text-primary">filter [product_name, sold bw 2020-2021]</a></td>
+                        <td>HIGH</td>
+                        <td><span class="badge bg-success">In progress</span></td>
+                        </tr>
+                        <tr>
+                        <th scope="row"><a href="#">#2147</a></th>
+                        <td>Implement a new API for company A</td>
+                        <td><a href="#" class="text-primary">look at these references</a></td>
+                        <td>LOW</td>
+                        <td><span class="badge bg-warning">Plannig</span></td>
+                        </tr>
+                        <tr>
+                        <th scope="row"><a href="#">#2049</a></th>
+                        <td>Security analysis about product B</td>
+                        <td><a href="#" class="text-primary">ideas from collegue A</a></td>
+                        <td>NORMAL</td>
+                        <td><span class="badge bg-success">In progress</span></td>
+                        </tr>
+                        <tr>
+                        <th scope="row"><a href="#">#2644</a></th>
+                        <td>Bug fix on service A</td>
+                        <td><a href="#" class="text-primar">debugger wiki</a></td>
+                        <td>HIGH</td>
+                        <td><span class="badge bg-danger">Test</span></td>
+                        </tr>
+                        <tr>
+                        <th scope="row"><a href="#">#2644</a></th>
+                        <td>Ticket solving for company C</td>
+                        <td><a href="#" class="text-primary">saving fails in form A</a></td>
+                        <td>LOW</td>
+                        <td><span class="badge bg-success">In progress</span></td>
+                        </tr>
+                    </tbody>
+                    </table>
+
+                </div>
+
+                </div>
+            </div><!-- End Task planning -->
+
+        </div><!-- End Left side columns -->
+
+            <!-- Wish list -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Wish list <span>| This week</span></h5>
+
+                    <div class="activity">
+
+                        <div class="activity-item d-flex">
+                            <div class="activite-label">Mon: </div>
+                            <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
+                            <div class="activity-content">
+                            &nbsp;Ask opinion collegue B about task A issue to help collegue c
+                            </div>
+                        </div><!-- End activity item-->
+
+                        <div class="activity-item d-flex">
+                            <div class="activite-label">Tue:</div>
+                            <i class='bi bi-circle-fill activity-badge text-danger align-self-start'></i>
+                            <div class="activity-content">
+                            &nbsp;Make documentation about task C
+                            </div>
+                        </div><!-- End activity item-->
+
+                        <div class="activity-item d-flex">
+                            <div class="activite-label">Tue:</div>
+                            <i class='bi bi-circle-fill activity-badge text-primary align-self-start'></i>
+                            <div class="activity-content">
+                            &nbsp;Code review with collegue A
+                            </div>
+                        </div><!-- End activity item-->
+
+                        <div class="activity-item d-flex">
+                            <div class="activite-label">Wed:</div>
+                            <i class='bi bi-circle-fill activity-badge text-info align-self-start'></i>
+                            <div class="activity-content">
+                            &nbsp;Learn design pattern of microservice
+                            </div>
+                        </div><!-- End activity item-->
+
+                    </div>
+
+                </div>
+            </div><!-- End Wish list -->
+
+            <!-- Time used Report -->
+            <div class="card">
+                <div class="card-body pb-0">
+                    <h5 class="card-title">Time used Report <span>| This Month</span></h5>
+
+                    <div id="budgetChart" style="min-height: 400px;" class="echart"></div>
+
+                    <script>
+                    document.addEventListener("DOMContentLoaded", () => {
+                        var budgetChart = echarts.init(document.querySelector("#budgetChart")).setOption({
+                        legend: {
+                            data: ['This Month', 'Last Month']
+                        },
+                        radar: {
+                            // shape: 'circle',
+                            indicator: [{
+                                name: 'Feature',
+                                max: 6500
+                            },
+                            {
+                                name: 'Documentation',
+                                max: 16000
+                            },
+                            {
+                                name: 'Bug fix',
+                                max: 30000
+                            },
+                            {
+                                name: 'Help',
+                                max: 38000
+                            },
+                            {
+                                name: 'Learning',
+                                max: 52000
+                            },
+                            {
+                                name: 'Analysis',
+                                max: 25000
+                            }
+                            ]
+                        },
+                        series: [{
+                            name: 'This month vs last month',
+                            type: 'radar',
+                            data: [{
+                                value: [4200, 3000, 20000, 35000, 50000, 18000],
+                                name: 'This month'
+                            },
+                            {
+                                value: [5000, 14000, 28000, 26000, 42000, 21000],
+                                name: 'Last month'
+                            }
+                            ]
+                        }]
+                        });
+                    });
+                    </script>
+
+                </div>
+            </div><!-- End Time used Report -->
+
+            <!-- Skill tracker -->
+            <div class="card">
+                <div class="card-body pb-0">
+                    <h5 class="card-title">Skill tracker <span>(contribution you have worked on)</span></h5>
+
+                    <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
+
+                    <script>
+                    document.addEventListener("DOMContentLoaded", () => {
+                        echarts.init(document.querySelector("#trafficChart")).setOption({
+                        tooltip: {
+                            trigger: 'item'
+                        },
+                        legend: {
+                            top: '5%',
+                            left: 'center'
+                        },
+                        series: [{
+                            name: 'Access From',
+                            type: 'pie',
+                            radius: ['40%', '70%'],
+                            avoidLabelOverlap: false,
+                            label: {
+                            show: false,
+                            position: 'center'
+                            },
+                            emphasis: {
+                            label: {
+                                show: true,
+                                fontSize: '18',
+                                fontWeight: 'bold'
+                            }
+                            },
+                            labelLine: {
+                            show: false
+                            },
+                            data: [{
+                                value: 1048,
+                                name: 'php'
+                            },
+                            {
+                                value: 735,
+                                name: 'javascript'
+                            },
+                            {
+                                value: 580,
+                                name: 'ruby'
+                            },
+                            {
+                                value: 484,
+                                name: 'bash'
+                            },
+                            {
+                                value: 300,
+                                name: 'sql'
+                            }
+                            ]
+                        }]
+                        });
+                    });
+                    </script>
+
+                </div>
+            </div><!-- End Skill tracker -->
+
+            <!-- Microlearning -->
+            <div class="card">
+                <div class="card-body pb-0">
+                    <h5 class="card-title">Microlearning <span>| Today</span></h5>
+
+                    <div class="news">
+                    <div class="post-item clearfix">
+                        <img src="assets/img/news-3.jpg" alt="" style="width: 260px; display: block; margin-left: auto; margin-right: auto;">
+                        <h4><a href="#">How you can be productive at office?</a></h4>
+                        <p>Productivity improvement is defined as the process of achieving more output from an hour of work.</p>
+                    </div>
+
+                    <div class="post-item clearfix">
+                        <img src="assets/img/news-4.jpg" alt="" style="width: 260px; display: block; margin-left: auto; margin-right: auto;">
+                        <h4><a href="#">Empathy in working place</a></h4>
+                        <p>It's important to remember the difference between sympathy and empathy, as the 2 are often confused.</p>
+                    </div>
+
+                    <div class="post-item clearfix">
+                        <img src="assets/img/news-5.jpg" alt="" style="width: 260px; display: block; margin-left: auto; margin-right: auto;">
+                        <h4><a href="#">microservice design patterns</a></h4>
+                        <p>There are many other patterns used with microservice architecture, like Sidecar, Chained Microservice, Branch Microservice, Event Sourcing...</p>
+                    </div>
+
+                </div><!-- End sidebar recent posts-->
+            </div><!-- End News & Updates -->
+
+
+    </div>
+</section>
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+<div class="copyright">
+    &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
+</div>
+<div class="credits">
+    <!-- All the links in the footer should remain intact. -->
+    <!-- You can delete the links only if you purchased the pro version. -->
+    <!-- Licensing information: https://bootstrapmade.com/license/ -->
+    <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+    Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+</div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+</div>
+<!-- Vendor JS Files -->
+<script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="assets/vendor/chart.js/chart.min.js"></script>
+<script src="assets/vendor/echarts/echarts.min.js"></script>
+<script src="assets/vendor/quill/quill.min.js"></script>
+<script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
+<script src="assets/vendor/tinymce/tinymce.min.js"></script>
+<script src="assets/vendor/php-email-form/validate.js"></script>
+
+<!-- Template Main JS File -->
+<script src="assets/js/main.js"></script>

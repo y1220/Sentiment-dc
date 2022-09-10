@@ -1,6 +1,12 @@
 Rails.application.routes.draw do
-  root 'products#index'
+  root 'home#index'
   resources :products
+
+  get 'home/index'
+  get 'reports/daily'
+  get 'recommenders/index'
+  get 'question/index'
+  get 'question/create'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

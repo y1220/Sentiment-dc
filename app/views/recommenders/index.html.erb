@@ -1,0 +1,351 @@
+<div class="container" style="padding: 10px;">
+    <div class="pagetitle">
+      <h1>Recommender</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item">Recommender</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Team member for Task A | <a href="#" style="color: #DC143C;">Task B</a>  | <a href="#" style="color: #DC143C;">Task C</a> </h5>
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+              <p>Visit <a href="#" style="color: #DC143C;">this page</a> for details of the task.</p>
+              <!-- Active Table -->
+              <table class="table table-borderless">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Position</th>
+                    <th scope="col">Availability</th>
+                    <th scope="col">Contact</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">1</th>
+                    <td>Brandon Jacob</td>
+                    <td>Designer</td>
+                    <td><button type="button" class="btn btn-outline-danger">busy</button></td>
+                    <td><i class="far fa-comment"></i></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">2</th>
+                    <td>Bridie Kessler</td>
+                    <td>Developer</td>
+                    <td><button type="button" class="btn btn-outline-success">available</button></td>
+                    <td><i class="far fa-comment"></i> <i class="fa fa-smile" aria-hidden="true"></i></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">3</th>
+                    <td>Ashleigh Langosh</td>
+                    <td>Finance</td>
+                    <td><button type="button" class="btn btn-outline-danger">busy</button></td>
+                    <td><i class="far fa-comment"></i></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">4</th>
+                    <td>Angus Grady</td>
+                    <td>HR</td>
+                    <td><button type="button" class="btn btn-outline-info">normal</button></td>
+                    <td><i class="far fa-comment"></i></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">5</th>
+                    <td>Raheem Lehner</td>
+                    <td>Dynamic Division Officer</td>
+                    <td><button type="button" class="btn btn-outline-success">available</button></td>
+                    <td><i class="far fa-comment"></i> <i class="fa fa-smile" aria-hidden="true"></i></td>
+                  </tr>
+                </tbody>
+              </table>
+              <!-- End Tables without borders -->
+
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Sort task</h5>
+              <p>Select <code>characteristics of task</code> to gain ideas of tasks you are looking for.</p>
+              <div class="row mb-5">
+                  <label class="col-sm-2 col-form-label">Required skills</label>
+                  <div class="col-sm-10">
+                    <div>
+                      <label for="customRange1" class="form-label">Front-end</label>
+                      <input type="range" class="form-range" min="0" max="5" step="0.5" id="customRange2">
+                    </div>
+                    <div>
+                      <label for="disabledRange" class="form-label">Back-end</label>
+                      <input type="range" class="form-range" min="0" max="5" step="0.5" id="customRange2">
+                    </div>
+                    <div>
+                      <label for="customRange2" class="form-label">Infrastructure</label>
+                      <input type="range" class="form-range" min="0" max="5" step="0.5" id="customRange2">
+                    </div>
+                    <div>
+                      <label for="customRange2" class="form-label">Sql</label>
+                      <input type="range" class="form-range" min="0" max="5" step="0.5" id="customRange2">
+                    </div>
+                  </div>
+                </div>
+              <!-- Table Variants -->
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Task</th>
+                    <th scope="col">Complexity</th>
+                    <th scope="col">Priority</th>
+                    <th scope="col">Duration</th>
+                    <th scope="col">Front-end</th>
+                    <th scope="col">Back-end</th>
+                    <th scope="col">Infrastructure</th>
+                    <th scope="col">Sql</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row"><a href="#">Integration for AAA</a></th>
+                    <td>60.2</td>
+                    <td>33.2</td>
+                    <td>43.6</td>
+                    <td>16.8</td>
+                    <td>25.5</td>
+                    <td>53.8</td>
+                    <td>81.2</td>
+                  </tr>
+
+                  <tr class="table-secondary">
+                    <th scope="row"><a href="#">BBB API</a></th>
+                    <td>32.6</td>
+                    <td>73.2</td>
+                    <td>92.4</td>
+                    <td>13.6</td>
+                    <td>18.2</td>
+                    <td>28.0</td>
+                    <td>22.6</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><a href="#">Bugfix of Product C</a></th>
+                    <td>82.3</td>
+                    <td>72.1</td>
+                    <td>11.3</td>
+                    <td>9.2</td>
+                    <td>18.5</td>
+                    <td>51.7</td>
+                    <td>28.3</td>
+                  </tr>
+                  <tr class="table-secondary">
+                    <th scope="row"><a href="#">Ticket D</a></th>
+                    <td>82.6</td>
+                    <td>11.5</td>
+                    <td>27.9</td>
+                    <td>45.7</td>
+                    <td>25.9</td>
+                    <td>33.3</td>
+                    <td>51.2</td>
+                  </tr>
+                  <tr>
+                    <th scope="row"><a href="#">Analysis for Company B</a></th>
+                    <td>82.3</td>
+                    <td>11.3</td>
+                    <td>29.3</td>
+                    <td>48.7</td>
+                    <td>24.8</td>
+                    <td>16.2</td>
+                    <td>18.7</td>
+                  </tr>
+                  <tr class="table-secondary">
+                    <th scope="row"><a href="#">Support for Task F</a></th>
+                    <td>16.3</td>
+                    <td>18.2</td>
+                    <td>26.3</td>
+                    <td>52.4</td>
+                    <td>42.7</td>
+                    <td>16.3</td>
+                    <td>36.9</td>
+                  </tr>
+                </tbody>
+              </table>
+              <!-- Pagination with icons -->
+              <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                  <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+                  <li class="page-item"><a class="page-link" href="#">1</a></li>
+                  <li class="page-item"><a class="page-link" href="#">2</a></li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                  <li class="page-item">
+                    <a class="page-link" href="#" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
+                </ul>
+              </nav><!-- End Pagination with icons -->
+              <!-- End Table Variants -->
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+    <div class="row">
+
+        <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+            <h5 class="card-title">Task similarity</h5>
+
+            <!-- Radar Chart -->
+            <canvas id="radarChart" style="max-height: 400px;"></canvas>
+            <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                new Chart(document.querySelector('#radarChart'), {
+                    type: 'radar',
+                    data: {
+                    labels: [
+                        'Complexity',
+                        'Priority',
+                        'Duration',
+                        'Front-end',
+                        'Back-end',
+                        'Infrastructure',
+                        'Sql'
+                    ],
+                    datasets: [{
+                        label: 'Your task',
+                        data: [65, 59, 90, 81, 56, 55, 78],
+                        fill: true,
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgb(255, 99, 132)',
+                        pointBackgroundColor: 'rgb(255, 99, 132)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(255, 99, 132)'
+                    }, {
+                        label: 'Integration for AAA',
+                        data: [60.2, 33.2, 43.6, 16.8, 25.5, 53.8, 81.2],
+                        fill: true,
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgb(54, 162, 235)',
+                        pointBackgroundColor: 'rgb(54, 162, 235)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(54, 162, 235)'
+                    }]
+                    },
+                    options: {
+                    elements: {
+                        line: {
+                        borderWidth: 3
+                        }
+                    }
+                    }
+                });
+                });
+            </script>
+            <!-- End Radar CHart -->
+
+            </div>
+        </div>
+        </div>
+
+        <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+            <h5 class="card-title">Help needed</h5>
+            <p>This ig generated by <code>analysis of skill, experience compatibility with task, status of task</code>, also <code>request</code> can be sent by each worker when they need.
+            If you have a matched skill, experience, availability to help out, number shows greater.</p>
+
+            <!-- Polar Area Chart -->
+            <canvas id="polarAreaChart" style="max-height: 400px;"></canvas>
+            <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                new Chart(document.querySelector('#polarAreaChart'), {
+                    type: 'polarArea',
+                    data: {
+                    labels: [
+                        'Brandon Jacob',
+                        'Bridie Kessler',
+                        'Ashleigh Langosh',
+                        'Angus Grady',
+                        'Raheem Lehner',
+                    ],
+                    datasets: [{
+                        label: 'My First Dataset',
+                        data: [11, 16, 7, 3, 14],
+                        backgroundColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(75, 192, 192)',
+                        'rgb(255, 205, 86)',
+                        'rgb(201, 203, 207)',
+                        'rgb(54, 162, 235)'
+                        ]
+                    }]
+                    }
+                });
+                });
+            </script>
+            <!-- End Polar Area Chart -->
+
+            </div>
+        </div>
+        </div>
+
+
+    </div>
+    </section>
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+    <div class="copyright">
+      &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
+    </div>
+    <div class="credits">
+      <p>Chart.JS Examples. You can check the <a href="https://www.chartjs.org/docs/latest/samples/" target="_blank">official website</a> for more examples.</p>
+      <!-- All the links in the footer should remain intact. -->
+      <!-- You can delete the links only if you purchased the pro version. -->
+      <!-- Licensing information: https://bootstrapmade.com/license/ -->
+      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+    </div>
+  </footer><!-- End Footer -->
+</div>
+
+  <!-- Vendor JS Files -->
+  <script src="/assets/vendor/apexcharts/apexcharts.min.js"></script>
+  <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/assets/vendor/chart.js/chart.min.js"></script>
+  <script src="/assets/vendor/echarts/echarts.min.js"></script>
+  <script src="/assets/vendor/quill/quill.min.js"></script>
+  <script src="/assets/vendor/simple-datatables/simple-datatables.js"></script>
+  <script src="/assets/vendor/tinymce/tinymce.min.js"></script>
+  <script src="/assets/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="/assets/js/main.js"></script>
+
+    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/chart.js/chart.min.js"></script>
+  <script src="assets/vendor/echarts/echarts.min.js"></script>
+  <script src="assets/vendor/quill/quill.min.js"></script>
+  <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
+  <script src="assets/vendor/tinymce/tinymce.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js"></script>
