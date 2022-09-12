@@ -84,6 +84,6 @@ test:
 #
 production:
   <<: *default
-  database: sentiment-dc_production
-  username: sentiment-dc
+  database: <%= ENV['SENTIMENT-DC_DATABASE'] %>
+  username: <%= ENV['SENTIMENT-DC_USERNAME'] %>
   password: <%= ENV['SENTIMENT-DC_DATABASE_PASSWORD'] %>
