@@ -191,6 +191,7 @@ DEPENDENCIES
   nokogiri (~> 1.11.0.rc1)
   pg (~> 0.15)
   rails (= 5.2)
+  rake
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   turbolinks
