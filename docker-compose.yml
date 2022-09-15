@@ -7,9 +7,10 @@ services:
   web:
     build: .
     ports:
-      - '3000:3000'
+      - '5000:5000'
     volumes:
       - '.:/sentiment-dc'
+      - ./webapp:/opt/webapp
     environment:
       - 'DATABASE_PASSWORD=postgres'
     tty: true
@@ -23,6 +24,8 @@ services:
     image: postgres
     volumes:
       - 'db-data:/var/lib/postgresql/data'
+    ports:
+      - "5432:5432"
     environment:
       - 'POSTGRES_USER=postgres'
       - 'POSTGRES_PASSWORD=postgres'
