@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  cid: MyString
+  name: MyString
+  resolved: 1
+  unresolved: 1
+  task: one
+
+two:
+  cid: MyString
+  name: MyString
+  resolved: 1
+  unresolved: 1
+  task: two

@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  cid: MyString
+  name: MyString
+  resolved: false
+  checklist: one
+  user: one
+
+two:
+  cid: MyString
+  name: MyString
+  resolved: false
+  checklist: two
+  user: two

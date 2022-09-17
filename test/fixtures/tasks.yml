@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  cid: MyString
+  name: MyString
+  description: MyText
+  parent: false
+  url: MyString
+  status: 1
+  archived: false
+  due_date: 
+  data_created: 
+  data_closed: 
+  list: one
+
+two:
+  cid: MyString
+  name: MyString
+  description: MyText
+  parent: false
+  url: MyString
+  status: 1
+  archived: false
+  due_date: 
+  data_created: 
+  data_closed: 
+  list: two

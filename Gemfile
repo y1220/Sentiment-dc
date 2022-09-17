@@ -27,6 +27,8 @@ gem "nokogiri", "~> 1.11.0.rc1"
 gem "bootstrap", "~> 4.3.1"
 gem "jquery-rails"
 
+gem "httparty"
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
@@ -48,4 +50,4 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   # gem "spring"
 end
-gem 'rake'
+gem "rake"
