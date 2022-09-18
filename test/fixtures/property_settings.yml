@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  company: MyString
+  key_name: MyString
+  value_text: MyString
+  enabled: false
+
+two:
+  company: MyString
+  key_name: MyString
+  value_text: MyString
+  enabled: false

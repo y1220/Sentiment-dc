@@ -1,0 +1,2 @@
+class PropertySetting < ApplicationRecord
+end

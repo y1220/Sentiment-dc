@@ -3,7 +3,9 @@ class TasksController < ApplicationController
   end
 
   def show
-    @task_info = Task.details(3)
+    response = Task.details
+    @task_info = response['tasks']
+    # byebug
     @task = Task.all
   end
 end
