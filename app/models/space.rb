@@ -1,2 +1,2 @@
-class Space < ApplicationRecord
+class Space < ActiveRecord::Base
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_18_053852) do
+ActiveRecord::Schema.define(version: 2022_09_18_083159) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,8 +80,8 @@ ActiveRecord::Schema.define(version: 2022_09_18_053852) do
     t.integer "status"
     t.boolean "archived"
     t.datetime "due_date"
-    t.datetime "data_created"
-    t.datetime "data_closed"
+    t.datetime "date_created"
+    t.datetime "date_closed"
     t.bigint "list_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

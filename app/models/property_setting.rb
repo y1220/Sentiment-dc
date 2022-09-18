@@ -1,2 +1,2 @@
-class PropertySetting < ApplicationRecord
+class PropertySetting < ActiveRecord::Base
 end

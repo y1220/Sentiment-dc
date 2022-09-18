@@ -1,3 +1,3 @@
-class List < ApplicationRecord
+class List < ActiveRecord::Base
   belongs_to :space
 end
