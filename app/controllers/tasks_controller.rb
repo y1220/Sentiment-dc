@@ -33,7 +33,7 @@ class TasksController < ApplicationController
         @task = Task.new(cid: task['id'], name: task['name'], description: task['description'],
         parent: task['parent'], url: task['url'], # parent: inserted id is cid of parent task
         status: task['status']['status'] == 'in progress' ? 'in_progress' : task['status']['status'], archived: task['archived'],
-        due_date: dd_due ? dd_due : nil, date_created: dd_created,
+        priority: task['priority'].nil? ? nil : task['priority']['priority'], due_date: dd_due ? dd_due : nil, date_created: dd_created,
         date_closed: dd_closed ? dd_closed : nil, list_id: List.where(cid: task['list']['id']).first.id)
         if !@task.save
           return false, "Error: Task creation failed"
@@ -43,6 +43,7 @@ class TasksController < ApplicationController
         @task.name = task['name']
         @task.description = task['description']
         @task.status = task['status']['status'] == 'in progress' ? 'in_progress' : task['status']['status']
+        @task.priority = task['priority'].nil? ? nil : task['priority']['priority']
         @task.archived = task['archived']
         @task.due_date = dd_due ? dd_due : nil
         @task.date_closed = dd_closed ? dd_closed : nil

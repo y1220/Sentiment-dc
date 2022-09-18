@@ -12,6 +12,7 @@
                 <th>parent</th>
                 <th>url</th>
                 <th>status</th>
+                <th>priority</th>
                 <th>due date</th>
                 <th>created</th>
                 <th>closed</th>
@@ -31,6 +32,7 @@
                     <td><%= task.parent %></td>
                     <td><%= task.url %></td>
                     <td><%= task.status %></td>
+                    <td><%= task.priority %></td>
                     <td><%= task.format_due_date %></td>
                     <td><%= task.format_date_created %></td>
                     <td><%= task.format_date_closed %></td>
@@ -45,6 +47,7 @@
                                         <th>task name</th>
                                         <th>description</th>
                                         <th>status</th>
+                                        <th>priority</th>
                                         <th>due date</th>
                                         <th>created</th>
                                         <th>closed</th>
@@ -56,6 +59,7 @@
                                             <td><%= child.name %></td>
                                             <td><%= child.description %></td>
                                             <td><%= child.status %></td>
+                                            <td><%= child.priority %></td>
                                             <td><%= child.format_due_date %></td>
                                             <td><%= child.format_date_created %></td>
                                             <td><%= child.format_date_closed %></td>

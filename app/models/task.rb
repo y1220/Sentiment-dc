@@ -5,6 +5,8 @@ class Task < ActiveRecord::Base
   base_uri "https://api.clickup.com/api/v2"
 
   enum status: { Open: 0, in_progress: 1, review: 2, Closed: 3 }
+  enum priority: { urgent: 1, high: 2, normal: 3, low: 4 }
+
 
   scope :children_list, -> {where("parent IS NOT null")}
   scope :parent_list, -> {where("parent IS null")}
