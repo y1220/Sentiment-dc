@@ -3,7 +3,7 @@ class TasksController < ApplicationController
   end
 
   def show
-    # @task_info = Task.details(params[:id])
+    @task_info = Task.details(3)
     @task = Task.all
   end
 end
