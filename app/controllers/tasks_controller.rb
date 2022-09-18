@@ -31,7 +31,7 @@ class TasksController < ApplicationController
       end
       if Task.where(cid: task['id']).empty?
         @task = Task.new(cid: task['id'], name: task['name'], description: task['description'],
-        parent: task['parent']? true : false, url: task['url'],
+        parent: task['parent'], url: task['url'], # parent: inserted id is cid of parent task
         status: task['status']['status'], archived: task['archived'],
         due_date: dd_due ? dd_due : nil, date_created: dd_created,
         date_closed: dd_closed ? dd_closed : nil, list_id: List.where(cid: task['list']['id']).first.id)
@@ -70,17 +70,31 @@ class TasksController < ApplicationController
         task['checklists'].each do |checklist|
           if Checklist.where(cid: checklist['id']).empty?
             @checklist = Checklist.new(cid: checklist['id'], name: checklist['name'], resolved: checklist['resolved'],
-                                      unresolved: checklist['unresolved'], task_id: task['id'])
-            if !@checklist.save
-              return false, "Error: Checklist creation failed"
-            end
+                                      unresolved: checklist['unresolved'], task_id: @task.id)
+          else
+            @checklist = Checklist.where(cid: checklist['id']).first
+            @checklist.name = checklist['name']
+            @checklist.resolved = checklist['resolved']
+            @checklist.unresolved = checklist['unresolved']
+            @checklist.task_id = @task.id
           end
-          checklist['items'].each do |item|
-            Item.where(cid: item['id']).empty?
-            @item= Item.new(cid: item['id'], name: item['name'], resolved: item['resolved'], checklist_id: checklist['id'],
-                            user_id: item['assignee'] ? User.where(cid: item['assignee']['id']).first : User.all.first)
-            if !@item.save
-              return false, "Error: Item creation failed"
+          if !@checklist.save
+            return false, "Error: Checklist saving failed"
+          end
+          if checklist['items'].count != 0
+            checklist['items'].each do |item|
+              if Item.where(cid: item['id']).empty?
+                @item= Item.new(cid: item['id'], name: item['name'], resolved: item['resolved'], checklist_id: @checklist.id,
+                                user_id: item['assignee'] ? User.where(cid: item['assignee']['id']).first.id : User.all.first.id) #need to be fixed to allow it as optional
+              else
+                @item= Item.where(cid: item['id']).first
+                @item.name = item['name']
+                @item.resolved = item['resolved']
+                @item.user_id = item['assignee'] ? User.where(cid: item['assignee']['id']).first.id : User.all.first.id #need to be fixed to allow it as optional
+              end
+              if !@item.save
+                return false, "Error: Item saving failed"
+              end
             end
           end
         end

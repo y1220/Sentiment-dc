@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_18_083159) do
+ActiveRecord::Schema.define(version: 2022_09_18_105812) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,7 +75,7 @@ ActiveRecord::Schema.define(version: 2022_09_18_083159) do
     t.string "cid"
     t.string "name"
     t.text "description"
-    t.boolean "parent"
+    t.string "parent"
     t.string "url"
     t.integer "status"
     t.boolean "archived"
