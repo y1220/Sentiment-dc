@@ -32,17 +32,17 @@ class TasksController < ApplicationController
       if Task.where(cid: task['id']).empty?
         @task = Task.new(cid: task['id'], name: task['name'], description: task['description'],
         parent: task['parent'], url: task['url'], # parent: inserted id is cid of parent task
-        status: task['status']['status'], archived: task['archived'],
+        status: task['status']['status'] == 'in progress' ? 'in_progress' : task['status']['status'], archived: task['archived'],
         due_date: dd_due ? dd_due : nil, date_created: dd_created,
         date_closed: dd_closed ? dd_closed : nil, list_id: List.where(cid: task['list']['id']).first.id)
         if !@task.save
           return false, "Error: Task creation failed"
         end
       else
-        @task =  Task.where(cid: task['id']).first
+        @task = Task.where(cid: task['id']).first
         @task.name = task['name']
         @task.description = task['description']
-        @task.status = task['status']['status']
+        @task.status = task['status']['status'] == 'in progress' ? 'in_progress' : task['status']['status']
         @task.archived = task['archived']
         @task.due_date = dd_due ? dd_due : nil
         @task.date_closed = dd_closed ? dd_closed : nil
@@ -100,6 +100,6 @@ class TasksController < ApplicationController
         end
       end
     end
-    @tasks = Task.all
+    @tasks = Task.parent_list
   end
 end
