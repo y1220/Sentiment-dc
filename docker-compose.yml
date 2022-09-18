@@ -29,3 +29,15 @@ services:
     environment:
       - 'POSTGRES_USER=postgres'
       - 'POSTGRES_PASSWORD=postgres'
+  pgadmin4:
+    image: dpage/pgadmin4:5.0
+    restart: always
+    ports:
+      - 8888:80
+    volumes:
+      - ./docker/pgadmin4:/var/lib/pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: root
+      PGADMIN_DEFAULT_PASSWORD: root
+    depends_on:
+      - db
