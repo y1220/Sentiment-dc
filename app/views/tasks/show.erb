@@ -19,9 +19,11 @@
             </tr>
         </thead>
         <tbody>
+            <% color_status = {'Open' => 'secondary', 'review' =>  'primary', 'Closed' => 'success', 'in_progress' =>  'info' } %>
+            <% color_priority = {'low' =>  'secondary', 'urgent' =>  'danger', 'high' =>  'warning', 'normal' =>  'info' } %>
             <% @tasks.each do |task| %>
                 <% task.find_children.count != 0 ? flag = 1 : flag = 0%>
-                <tr data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
+                <tr data-toggle="collapse" data-target="#demo<%= task.id.to_s %>" class="accordion-toggle">
                     <% if flag == 1 %>
                         <td><button class="btn btn-default btn-xs"><span class="fa fa-eye"></span></button></td>
                     <% else %>
@@ -31,8 +33,16 @@
                     <td><%= task.description %></td>
                     <td><%= task.parent %></td>
                     <td><%= task.url %></td>
-                    <td><%= task.status %></td>
-                    <td><%= task.priority %></td>
+                    <% if task.status.present? %>
+                        <td><span class="badge bg-<%= color_status[task.status] %>"><%= task.status %></span></td>
+                    <% else %>
+                        <td></td>
+                    <% end %>
+                    <% if %>
+                    <td><span class="badge bg-<%= color_priority[task.priority] %>"><%= task.priority %></span></td>
+                    <% else %>
+                        <td></td>
+                    <% end %>
                     <td><%= task.format_due_date %></td>
                     <td><%= task.format_date_created %></td>
                     <td><%= task.format_date_closed %></td>
@@ -40,7 +50,7 @@
                 <% if task.find_children.count != 0 %>
                     <tr>
                     <td colspan="12" class="hiddenRow">
-                        <div class="accordian-body collapse" id="demo1">
+                        <div class="accordian-body collapse" id="demo<%= task.id.to_s %>">
                             <table class="table table-striped">
                                 <thead>
                                     <tr class="info">
@@ -58,8 +68,16 @@
                                         <tr>
                                             <td><%= child.name %></td>
                                             <td><%= child.description %></td>
-                                            <td><%= child.status %></td>
-                                            <td><%= child.priority %></td>
+                                            <% if task.status.present? %>
+                                                <td><span class="badge bg-<%= color_status[task.status] %>"><%= task.status %></span></td>
+                                            <% else %>
+                                                <td></td>
+                                            <% end %>
+                                            <% if %>
+                                            <td><span class="badge bg-<%= color_priority[task.priority] %>"><%= task.priority %></span></td>
+                                            <% else %>
+                                                <td></td>
+                                            <% end %>
                                             <td><%= child.format_due_date %></td>
                                             <td><%= child.format_date_created %></td>
                                             <td><%= child.format_date_closed %></td>
