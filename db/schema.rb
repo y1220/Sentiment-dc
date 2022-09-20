@@ -10,10 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_18_200243) do
+ActiveRecord::Schema.define(version: 2022_09_20_213327) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "availabilities", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "availabilities_users", id: false, force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "availability_id", null: false
+    t.index ["availability_id", "user_id"], name: "index_availabilities_users_on_availability_id_and_user_id"
+    t.index ["user_id", "availability_id"], name: "index_availabilities_users_on_user_id_and_availability_id"
+  end
 
   create_table "checklists", force: :cascade do |t|
     t.string "cid"
@@ -103,6 +116,7 @@ ActiveRecord::Schema.define(version: 2022_09_18_200243) do
     t.integer "role"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "last_status"
   end
 
   add_foreign_key "checklists", "tasks"
