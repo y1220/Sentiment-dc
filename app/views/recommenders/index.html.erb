@@ -27,41 +27,16 @@
                   </tr>
                 </thead>
                 <tbody>
+                <% color_status = {'available' => 'success', 'normal' =>  'info', 'busy' => 'danger' } %>
+                <% @users.each_with_index do |user, i|%>
                   <tr>
-                    <th scope="row">1</th>
-                    <td>Brandon Jacob</td>
-                    <td>Designer</td>
-                    <td><button type="button" class="btn btn-outline-danger">busy</button></td>
-                    <td><i class="far fa-comment"></i></td>
+                    <th scope="row"><%= i+1%></th>
+                    <td><%= user.username%></td>
+                    <td><%= user.role%></td>
+                    <td><button type="button" class="btn btn-outline-<%=color_status[user.last_status]%>"><%= user.last_status%></button></td>
+                    <td><i class="far fa-comment"></i> <% if user.last_status == 'available' %><i class="fa fa-smile" aria-hidden="true"></i><% end %></td>
                   </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>Bridie Kessler</td>
-                    <td>Developer</td>
-                    <td><button type="button" class="btn btn-outline-success">available</button></td>
-                    <td><i class="far fa-comment"></i> <i class="fa fa-smile" aria-hidden="true"></i></td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td>Ashleigh Langosh</td>
-                    <td>Finance</td>
-                    <td><button type="button" class="btn btn-outline-danger">busy</button></td>
-                    <td><i class="far fa-comment"></i></td>
-                  </tr>
-                  <tr>
-                    <th scope="row">4</th>
-                    <td>Angus Grady</td>
-                    <td>HR</td>
-                    <td><button type="button" class="btn btn-outline-info">normal</button></td>
-                    <td><i class="far fa-comment"></i></td>
-                  </tr>
-                  <tr>
-                    <th scope="row">5</th>
-                    <td>Raheem Lehner</td>
-                    <td>Dynamic Division Officer</td>
-                    <td><button type="button" class="btn btn-outline-success">available</button></td>
-                    <td><i class="far fa-comment"></i> <i class="fa fa-smile" aria-hidden="true"></i></td>
-                  </tr>
+                  <% end %>
                 </tbody>
               </table>
               <!-- End Tables without borders -->
