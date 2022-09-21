@@ -11,7 +11,12 @@
 
     <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Team member for Task A | <a href="#" style="color: #DC143C;">Task B</a>  | <a href="#" style="color: #DC143C;">Task C</a> </h5>
+              <h5 class="card-title">Team member for <a href="<%= @tasks.first.url%>" style="color: #DC143C;"><%= @tasks.first.name%></a>
+              <% @tasks -= [@tasks.first]%>
+              <% @tasks.each do |task|%>
+               | <a href="<%= task.url%>" style="color: #DC143C;"><%= task.name%></a>
+              <% end %>
+              </h5>
     <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
               <p>Visit <a href="#" style="color: #DC143C;">this page</a> for details of the task.</p>
