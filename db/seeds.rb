@@ -19,9 +19,19 @@
 
 # 3. associate user and status
 # 5.times do
-#   (1..7).to_a.each do |x|
+#   (1..User.all.count).to_a.each do |x|
 #      @user = User.find(x)
 #      @user.availabilities << Availability.find(rand(1..3))
+#      @user.save
+#   end
+# end
+
+# 4. associate user and task
+# 5.times do
+#   (1..User.all.count).to_a.each do |x|
+#      @user = User.find(x)
+#      @task_ids = Task.all.map(&:id)
+#      @user.tasks << Task.find(@task_ids[rand(0..@task_ids.count-1)])
 #      @user.save
 #   end
 # end
