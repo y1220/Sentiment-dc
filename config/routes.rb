@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   get 'question/index'
   get 'question/create'
   get 'tasks/show'
+  get 'tasks/update_clickup'
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

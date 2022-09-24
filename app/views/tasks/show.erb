@@ -1,8 +1,7 @@
 <div class="container" style="padding: 10px;">
     <h1>Task info taken via API call</h1>
-    <%= icon('fa-brands', 'font-awesome')%>
-    <%= icon('fa-solid', 'user-secret')%>
-    <%= icon('fa-regular', 'bell')%>
+    <button type="button" class="btn btn-primary btn-sm" style= "display: block; margin-left: auto; margin-right: 0;">
+    <%= link_to("Update data from ClickUp","/tasks/update_clickup", class: "nav-link active", style: "text-decoration: none; color: black;")%></button>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -10,7 +9,7 @@
                 <th>task name</th>
                 <th>description</th>
                 <th>parent</th>
-                <th>url</th>
+                <th>task id</th>
                 <th>status</th>
                 <th>priority</th>
                 <th>due date</th>
@@ -29,10 +28,10 @@
                     <% else %>
                         <td></td>
                     <% end %>
-                    <td><%= task.name %></td>
+                    <td> <a href="<%= task.url%>"><%= task.name %></a></td>
                     <td><%= task.description %></td>
                     <td><%= task.parent %></td>
-                    <td><%= task.url %></td>
+                    <td><%= task.cid %></td>
                     <% if task.status.present? %>
                         <td><span class="badge bg-<%= color_status[task.status] %>"><%= task.status %></span></td>
                     <% else %>
@@ -54,7 +53,7 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr class="info">
-                                        <th>task name</th>
+                                        <th>subtask name</th>
                                         <th>description</th>
                                         <th>status</th>
                                         <th>priority</th>
