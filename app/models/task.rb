@@ -12,17 +12,12 @@ class Task < ActiveRecord::Base
   scope :parent_list, -> {where("parent IS null")}
 
 
-  def self.authenticate
-    query = {}
-    headers = {"Content-Type"=> PropertySetting.where(company: "ClickUp", key_name: "Content-Type").first.value_text,
-               "Authorization"=> PropertySetting.where(company: "ClickUp", key_name: "Authorization").first.value_text}
-    return {query: query, headers: headers}
-  end
-
   def self.details
-    hash= self.authenticate
-    space_id= '54325327'
-    response = get("/team/#{PropertySetting.where(company: "ClickUp", key_name: "team_id").first.value_text}/task?subtasks=true&include_closed=true&space_ids%5B%5D=#{space_id}", query: hash[:query], headers: hash[:headers])
+    hash= ApplicationRecord.authenticate
+    team_id= PropertySetting.where(company: "ClickUp", key_name: "team_id").first.value_text
+    space_id= PropertySetting.where(company: "ClickUp", key_name: "tasks_space_id").first.value_text
+
+    response = get("/team/#{team_id}/task?subtasks=true&include_closed=true&space_ids%5B%5D=#{space_id}", query: hash[:query], headers: hash[:headers])
     JSON.parse(response.body)
   end
 

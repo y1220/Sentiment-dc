@@ -11,15 +11,17 @@
 
     <div class="card">
             <div class="card-body">
+              <button type="button" class="btn btn-primary btn-sm" style= "display: block; margin-left: auto; margin-right: 0;">
+              <%= link_to("Update user data from ClickUp","/recommenders/update_clickup", class: "nav-link active", style: "text-decoration: none; color: black;")%></button>
               <h5 class="card-title">Team member for <a href="<%= @tasks.first.url%>" style="color: #DC143C;"><%= @tasks.first.name%></a>
               <% @tasks -= [@tasks.first]%>
               <% @tasks.each do |task|%>
                | <a href="<%= task.url%>" style="color: #DC143C;"><%= task.name%></a>
               <% end %>
               </h5>
-    <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
               <p>Visit <a href="#" style="color: #DC143C;">this page</a> for details of the task.</p>
+
               <!-- Active Table -->
               <table class="table table-borderless">
                 <thead>
@@ -38,7 +40,11 @@
                     <th scope="row"><%= i+1%></th>
                     <td><%= user.username%></td>
                     <td><%= user.role%></td>
-                    <td><button type="button" class="btn btn-outline-<%=color_status[user.last_status]%>"><%= user.last_status%></button></td>
+                    <td><button type="button" class="btn btn-outline-<%=color_status[user.last_status]%>">
+                    <div class="popup-<%= user.id.to_s%>" onclick="fs[<%= user.id.to_s%>]()"><%= user.last_status%>
+                      <span class="popuptext-<%= user.id.to_s%>" id="myPopup-<%= user.id.to_s%>"><%= user.comment%></span>
+                    </div></button></td>
+
                     <td><i class="far fa-comment"></i> <% if user.last_status == 'available' %><i class="fa fa-smile" aria-hidden="true"></i><% end %></td>
                   </tr>
                   <% end %>
@@ -329,3 +335,16 @@
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+<script>
+                      // When the user clicks on div, open the popup
+                      var fs = [];
+                      var show = ["show-1", "show-2", "show-3", "show-4", "show-5", "show-6", "show-7"];
+                      var myPopup = ["myPopup-1", "myPopup-2", "myPopup-3", "myPopup-4", "myPopup-5", "myPopup-6", "myPopup-7"];
+                      for (let x = 0; x < 7; x++){
+                          fs.push( function() {
+                            console.log(myPopup[x-1]);
+                            var popup = document.getElementById(myPopup[x-1]);
+                            popup.classList.toggle(show[x-1]);
+                          });
+                      }
+                    </script>
