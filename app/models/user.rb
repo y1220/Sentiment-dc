@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+    has_many :commits
     has_and_belongs_to_many :tasks
     has_and_belongs_to_many :availabilities, after_add: :update_last_status
 

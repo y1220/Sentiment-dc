@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get 'tasks/index'
+
   root 'home#index'
   resources :products
 
@@ -11,7 +11,8 @@ Rails.application.routes.draw do
   get 'tasks/show'
   get 'tasks/update_clickup'
   get 'recommenders/update_clickup'
-
+  get 'commits/index'
+  get 'tasks/index'
 
 
   # The priority is based upon order of creation: first created -> highest priority.

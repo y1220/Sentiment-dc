@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_24_164810) do
+ActiveRecord::Schema.define(version: 2022_09_25_072520) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,6 +37,17 @@ ActiveRecord::Schema.define(version: 2022_09_24_164810) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["task_id"], name: "index_checklists_on_task_id"
+  end
+
+  create_table "commits", force: :cascade do |t|
+    t.text "message"
+    t.string "url"
+    t.bigint "user_id"
+    t.bigint "task_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["task_id"], name: "index_commits_on_task_id"
+    t.index ["user_id"], name: "index_commits_on_user_id"
   end
 
   create_table "items", force: :cascade do |t|
@@ -121,6 +132,8 @@ ActiveRecord::Schema.define(version: 2022_09_24_164810) do
   end
 
   add_foreign_key "checklists", "tasks"
+  add_foreign_key "commits", "tasks"
+  add_foreign_key "commits", "users"
   add_foreign_key "items", "checklists"
   add_foreign_key "items", "users"
   add_foreign_key "lists", "spaces"

@@ -1,6 +1,7 @@
 class Task < ActiveRecord::Base
   include HTTParty
   belongs_to :list
+  has_many :commits
   has_and_belongs_to_many :users
   base_uri "https://api.clickup.com/api/v2"
 
