@@ -1,0 +1,189 @@
+<div class="container" style="padding: 10px;">
+    <h1>Commit info taken via API call</h1>
+    <button type="button" class="btn btn-primary btn-sm" style= "display: block; margin-left: auto; margin-right: 0;">
+    <%= link_to("Update commit data from GitHub","/tasks/update_clickup", class: "nav-link active", style: "text-decoration: none; color: black;")%></button>
+    <div class="panel-heading">
+		Commit list
+	</div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th></th>
+                <th>task name</th>
+                <th>description</th>
+                <th>parent</th>
+                <th>task id</th>
+                <th>status</th>
+                <th>priority</th>
+                <th>due date</th>
+                <th>created</th>
+                <th>closed</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% color_status = {'Open' => 'secondary', 'review' =>  'primary', 'Closed' => 'success', 'in_progress' =>  'info' } %>
+            <% color_priority = {'low' =>  'secondary', 'urgent' =>  'danger', 'high' =>  'warning', 'normal' =>  'info' } %>
+            <% @tasks.each do |task| %>
+                <% task.find_children.count != 0 ? flag = 1 : flag = 0%>
+                <tr data-toggle="collapse" data-target="#demo<%= task.id.to_s %>" class="accordion-toggle">
+                    <% if flag == 1 %>
+                        <td><button class="btn btn-default btn-xs"><span class="fa fa-eye"></span></button></td>
+                    <% else %>
+                        <td></td>
+                    <% end %>
+                    <td> <a href="<%= task.url%>"><%= task.name %></a></td>
+                    <td><%= task.description %></td>
+                    <td><%= task.parent %></td>
+                    <td><%= task.cid %></td>
+                    <% if task.status.present? %>
+                        <td><span class="badge bg-<%= color_status[task.status] %>"><%= task.status %></span></td>
+                    <% else %>
+                        <td></td>
+                    <% end %>
+                    <% if %>
+                    <td><span class="badge bg-<%= color_priority[task.priority] %>"><%= task.priority %></span></td>
+                    <% else %>
+                        <td></td>
+                    <% end %>
+                    <td><%= task.format_due_date %></td>
+                    <td><%= task.format_date_created %></td>
+                    <td><%= task.format_date_closed %></td>
+                </tr>
+                <% if task.find_children.count != 0 %>
+                    <tr>
+                    <td colspan="12" class="hiddenRow">
+                        <div class="accordian-body collapse" id="demo<%= task.id.to_s %>">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr class="info">
+                                        <th>commit message</th>
+                                        <th>committer</th>
+                                        <th>created</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% task.find_children.each do |child| %>
+                                        <tr>
+                                            <td><a href="<%= child.url %>"><%= child.name %></a></td>
+                                            <td><%= child.name %></td>
+                                            <td><%= child.format_date_created %></td>
+                                        </tr>
+                                    <% end %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </tr>
+                <% end %>
+            <% end %>
+        </tbody>
+    </table>
+
+    <div class="col-md-12">
+    	<div class="panel panel-default">
+				<div class="panel-heading">
+					Employee
+				</div>
+        <div class="panel-body">
+					<table class="table table-condensed table-striped">
+                    <thead>
+                        <tr>
+                        <th></th>
+                        <th>Fist Name</th>
+                        <th>Last Name</th>
+                        <th>City</th>
+                        <th>State</th>
+                        <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
+                            <td><button class="btn btn-default btn-xs"><span class="fa fa-eye"></span></button></td>
+                            <td>Carlos</td>
+                            <td>Mathias</td>
+                            <td>Leme</td>
+                            <td>SP</td>
+                            <td>new</td>
+                        </tr>
+                        <tr>
+                            <td colspan="12" class="hiddenRow">
+                                <div class="accordian-body collapse" id="demo1">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr class="info">
+                                                <th>Job</th>
+                                                <th>Company</th>
+                                                <th>Salary</th>
+                                                <th>Date On</th>
+                                                <th>Date off</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr data-toggle="collapse"  class="accordion-toggle" data-target="#demo10">
+                                                <td> <a href="#">Enginner Software</a></td>
+                                                <td>Google</td>
+                                                <td>U$8.00000 </td>
+                                                <td> 2016/09/27</td>
+                                                <td> 2017/09/27</td>
+                                                <td>
+                                                    <a href="#" class="btn btn-default btn-sm">
+                                                        <i class="fa fa-eye"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Scrum Master</td>
+                                                <td>Google</td>
+                                                <td>U$8.00000 </td>
+                                                <td> 2016/09/27</td>
+                                                <td> 2017/09/27</td>
+                                                <td> <a href="#" class="btn btn-default btn-sm">
+                                                        <i class="fa fa-eye"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Back-end</td>
+                                                <td>Google</td>
+                                                <td>U$8.00000 </td>
+                                                <td> 2016/09/27</td>
+                                                <td> 2017/09/27</td>
+                                                <td> <a href="#" class="btn btn-default btn-sm">
+                                                        <i class="fa fa-eye"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Front-end</td>
+                                                <td>Google</td>
+                                                <td>U$8.00000 </td>
+                                                <td> 2016/09/27</td>
+                                                <td> 2017/09/27</td>
+                                                <td> <a href="#" class="btn btn-default btn-sm">
+                                                        <i class="fa fa-eye"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr data-toggle="collapse" data-target="#demo2" class="accordion-toggle">
+                            <td><button class="btn btn-default btn-xs"><span class="fa fa-eye"></span></button></td>
+                            <td>Silvio</td>
+                            <td>Santos</td>
+                            <td>São Paulo</td>
+                            <td>SP</td>
+                        <td> new</td>
+                        </tr>
+                        <tr>
+                            <td colspan="6" class="hiddenRow"><div id="demo2" class="accordian-body collapse">Demo2</div></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+          </div>
+      </div>
+    <p><%= @task_info%></p>
+</div>
