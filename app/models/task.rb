@@ -1,8 +1,11 @@
 class Task < ActiveRecord::Base
-  include HTTParty
+
   belongs_to :list
+  belongs_to :branch
   has_many :commits
   has_and_belongs_to_many :users
+
+  include HTTParty
   base_uri "https://api.clickup.com/api/v2"
 
   enum status: { Open: 0, in_progress: 1, review: 2, Closed: 3 }
@@ -26,6 +29,7 @@ class Task < ActiveRecord::Base
     response = Task.details
     @task_info = response['tasks']
     @task_info.each do |task|
+      flag = 0
       t_created= Time.at(task['date_created'][0..9].to_i)
       dd_created = DateTime.parse(t_created.to_s)
       if !task['due_date'].nil?
@@ -49,6 +53,26 @@ class Task < ActiveRecord::Base
           return false, "Error: List creation failed"
         end
       end
+      if task['custom_fields'].count != 0 && !task['custom_fields'][0]['type_config']['options'][0]['name'].nil? && !task['custom_fields'][0]['value'].nil?
+        if !Branch.where(value: task['custom_fields'][0]['value']).present?
+          @branch= Branch.new(name: task['custom_fields'][0]['type_config']['options'].select {|x|
+            x['orderindex'] == task['custom_fields'][0]['value']}[0]['name'],
+                              value: task['custom_fields'][0]['value'])
+          if !@branch.save
+            return false, "Error: Branch creation failed"
+          else
+            flag = 1
+          end
+        else
+          @branch = Branch.where(value: task['custom_fields'][0]['value']).first
+          @branch.name = task['custom_fields'][0]['type_config']['options'].select {|x| x['orderindex'] == task['custom_fields'][0]['value']}[0]['name']
+        end
+        if !@branch.save
+          return false, "Error: Branch update failed"
+        else
+          flag = 1
+        end
+      end
       if Task.where(cid: task['id']).empty?
         @task = Task.new(cid: task['id'], name: task['name'], description: task['description'],
         parent: task['parent'], url: task['url'], # parent: inserted id is cid of parent task
@@ -67,6 +91,9 @@ class Task < ActiveRecord::Base
         @task.archived = task['archived']
         @task.due_date = dd_due ? dd_due : nil
         @task.date_closed = dd_closed ? dd_closed : nil
+        if flag == 1
+          @task.branch_id = @branch.id
+        end
         if !@task.save
           return false, "Error: Task update failed"
         end

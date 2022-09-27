@@ -11,7 +11,7 @@
                 <th></th>
                 <th>task name</th>
                 <th>description</th>
-                <th>parent</th>
+                <th>git branch</th>
                 <th>task id</th>
                 <th>status</th>
                 <th>priority</th>
@@ -33,7 +33,9 @@
                     <% end %>
                     <td> <a href="<%= task.url%>"><%= task.name %></a></td>
                     <td><%= task.description %></td>
-                    <td><%= task.parent %></td>
+                    <% b_name = task.branch_id ? Branch.find(task.branch_id).name : nil %>
+                    <% b_url = task.branch_id ? Branch.find(task.branch_id).url : nil%>
+                    <td><a href="<%= b_url %>"><%= b_name %></a></td>
                     <td><%= task.cid %></td>
                     <% if task.status.present? %>
                         <td><span class="badge bg-<%= color_status[task.status] %>"><%= task.status %></span></td>
