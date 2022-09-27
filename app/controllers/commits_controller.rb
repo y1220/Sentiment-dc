@@ -10,4 +10,8 @@ class CommitsController < ApplicationController
     @tasks = Task.parent_list
     redirect_to action: "show"
   end
+
+  def update_link
+    @branches = Branch.all
+  end
 end

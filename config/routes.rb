@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   get 'tasks/update_clickup'
   get 'recommenders/update_clickup'
   get 'commits/index'
+  get 'commits/update_link'
   get 'tasks/index'
 
 

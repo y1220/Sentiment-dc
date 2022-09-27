@@ -1,0 +1,44 @@
+<div class="container" style="padding: 10px;">
+    <h1>Configure the link of git</h1>
+    <div class="panel-heading">
+		Git Branches
+	</div>
+    <div class="col-md-12">
+    	<div class="panel panel-default">
+				<div class="panel-heading">
+					All branch
+				</div>
+        <div class="panel-body">
+					<table class="table table-condensed table-striped">
+                    <thead>
+                        <tr>
+                        <th></th>
+                        <th>branch name</th>
+                        <th>link</th>
+                        <th>Number of commit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @branches.each do |branch| %>
+                        <tr data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
+                            <td><button class="btn btn-default btn-xs"><span class="fa fa-eye"></span></button></td>
+                            <td><%= branch.name %></td>
+                            <td><%= branch.url %></td>
+                            <td><%= nil %></td>
+                        </tr>
+                        <% end %>
+                        <tr data-toggle="collapse" data-target="#demo2" class="accordion-toggle">
+                            <td><button class="btn btn-default btn-xs"><span class="fa fa-eye"></span></button></td>
+                            <td>Silvio</td>
+                            <td>Santos</td>
+                            <td> new</td>
+                        </tr>
+                        <tr>
+                            <td colspan="6" class="hiddenRow"><div id="demo2" class="accordian-body collapse">Demo2</div></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+          </div>
+    </div>
+</div>
