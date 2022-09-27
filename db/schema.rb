@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_25_072520) do
+ActiveRecord::Schema.define(version: 2022_09_27_210818) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,14 @@ ActiveRecord::Schema.define(version: 2022_09_25_072520) do
     t.bigint "availability_id", null: false
     t.index ["availability_id", "user_id"], name: "index_availabilities_users_on_availability_id_and_user_id"
     t.index ["user_id", "availability_id"], name: "index_availabilities_users_on_user_id_and_availability_id"
+  end
+
+  create_table "branches", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "value"
+    t.string "url"
   end
 
   create_table "checklists", force: :cascade do |t|
@@ -46,6 +54,8 @@ ActiveRecord::Schema.define(version: 2022_09_25_072520) do
     t.bigint "task_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "branch_id"
+    t.index ["branch_id"], name: "index_commits_on_branch_id"
     t.index ["task_id"], name: "index_commits_on_task_id"
     t.index ["user_id"], name: "index_commits_on_user_id"
   end
@@ -110,6 +120,8 @@ ActiveRecord::Schema.define(version: 2022_09_25_072520) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "priority"
+    t.bigint "branch_id"
+    t.index ["branch_id"], name: "index_tasks_on_branch_id"
     t.index ["list_id"], name: "index_tasks_on_list_id"
   end
 
@@ -132,10 +144,12 @@ ActiveRecord::Schema.define(version: 2022_09_25_072520) do
   end
 
   add_foreign_key "checklists", "tasks"
+  add_foreign_key "commits", "branches"
   add_foreign_key "commits", "tasks"
   add_foreign_key "commits", "users"
   add_foreign_key "items", "checklists"
   add_foreign_key "items", "users"
   add_foreign_key "lists", "spaces"
+  add_foreign_key "tasks", "branches"
   add_foreign_key "tasks", "lists"
 end
