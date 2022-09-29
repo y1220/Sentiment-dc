@@ -11,7 +11,7 @@
 
     <div class="card">
             <div class="card-body">
-              <button type="button" class="btn btn-primary btn-sm" style= "display: block; margin-left: auto; margin-right: 0;">
+              <button type="button" class="btn btn-custom-danger btn-sm" style= "display: block; margin-left: auto; margin-right: 0;">
               <%= link_to("Update user data from ClickUp","/recommenders/update_clickup", class: "nav-link active", style: "text-decoration: none; color: black;")%></button>
               <h5 class="card-title">Team member for <a href="<%= @tasks.first.url%>" style="color: #DC143C;"><%= @tasks.first.name%></a>
               <% @tasks -= [@tasks.first]%>

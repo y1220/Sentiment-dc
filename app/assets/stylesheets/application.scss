@@ -1,6 +1,19 @@
 @import "bootstrap";
 @import "font-awesome";
 
+
+.navbar-custom {
+  background-color: #EAE6BF;
+}
+.btn-custom-success{
+  background-color: #C4D3A5;
+}
+.btn-custom-danger{
+  background-color: #E4C5CD;
+}
+.btn-custom-warning{
+  background-color: #F4D1B5;
+}
 /* Popup container */
 @for $i from 1 through 7 {
   .popup-#{$i} {

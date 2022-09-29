@@ -1,5 +1,7 @@
 <div class="container" style="padding: 10px;">
     <h1>Configure the link of git</h1>
+    <button type="button" class="btn btn-custom-success btn-sm" style= "display: block; margin-left: auto; margin-right: 0;">
+    <%= link_to("Save","/tasks/update_clickup", class: "nav-link active", style: "text-decoration: none; color: black;")%></button>
     <div class="panel-heading">
 		Git Branches
 	</div>
@@ -10,29 +12,26 @@
 				</div>
         <div class="panel-body">
 					<table class="table table-condensed table-striped">
-                    <thead>
+                    <thead >
                         <tr>
                         <th></th>
                         <th>branch name</th>
-                        <th>link</th>
+                        <th style= "text-align: center;">link</th>
                         <th>Number of commit</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <% @branches.each do |branch| %>
-                        <tr data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
-                            <td><button class="btn btn-default btn-xs"><span class="fa fa-eye"></span></button></td>
-                            <td><%= branch.name %></td>
-                            <td><%= branch.url %></td>
-                            <td><%= nil %></td>
-                        </tr>
+                        <%= form_with url: "/update_git_url", method: :post do |form| %>
+                            <% @branches.each do |branch| %>
+                            <tr data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
+                                <td><button class="btn btn-default btn-xs"><span class="fa fa-eye"></span></button></td>
+                                <td><%= branch.name %></td>
+                                <td style= "text-align: center;"><% if branch.url.present?  %><%= branch.url  %><% else%>
+                                <i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;<%= form.url_field :homepage, size: "50x5"%><% end %></td>
+                                <td><%= nil %></td>
+                            </tr>
+                            <% end %>
                         <% end %>
-                        <tr data-toggle="collapse" data-target="#demo2" class="accordion-toggle">
-                            <td><button class="btn btn-default btn-xs"><span class="fa fa-eye"></span></button></td>
-                            <td>Silvio</td>
-                            <td>Santos</td>
-                            <td> new</td>
-                        </tr>
                         <tr>
                             <td colspan="6" class="hiddenRow"><div id="demo2" class="accordian-body collapse">Demo2</div></td>
                         </tr>
