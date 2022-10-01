@@ -1,7 +1,34 @@
 @import "bootstrap";
 @import "font-awesome";
 
+.flash {
+  padding: 5px 0;
+  color: white;
+  background: #f08080;
+  text-align: center;
+  position: absolute;
+  top: 40px;
+  z-index: 10;
+  width: 100%;
+  border-radius: 0 0 2px 2px;
+  font-size: 14px;
+}
 
+input[type=url] {
+  padding:5px;
+  border:2px solid #ccc;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+
+input[type=submit] {
+  padding:5px 15px;
+  background:#C4D3A5;
+  border:0 none;
+  cursor:pointer;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
 .navbar-custom {
   background-color: #EAE6BF;
 }
