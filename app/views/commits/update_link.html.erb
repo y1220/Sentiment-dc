@@ -1,17 +1,14 @@
 <div class="container" style="padding: 10px;">
     <h1>Configure the link of git</h1>
-    <button type="button" class="btn btn-custom-success btn-sm" style= "display: block; margin-left: auto; margin-right: 0;">
-    <%= link_to("Save","/tasks/update_clickup", class: "nav-link active", style: "text-decoration: none; color: black;")%></button>
-    <div class="panel-heading">
-		Git Branches
-	</div>
+    <hr/>
+    <%= form_with url: "/commits/update_git_url", method: :post do |form| %>
     <div class="col-md-12">
     	<div class="panel panel-default">
-				<div class="panel-heading">
-					All branch
-				</div>
-        <div class="panel-body">
-					<table class="table table-condensed table-striped">
+            <div class="panel-heading">
+                All branch
+            </div>
+            <div class="panel-body">
+                <table class="table table-condensed table-striped">
                     <thead >
                         <tr>
                         <th></th>
@@ -21,16 +18,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <%= form_with url: "/update_git_url", method: :post do |form| %>
-                            <% @branches.each do |branch| %>
+                        <% @branches.each do |branch| %>
                             <tr data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
                                 <td><button class="btn btn-default btn-xs"><span class="fa fa-eye"></span></button></td>
                                 <td><%= branch.name %></td>
                                 <td style= "text-align: center;"><% if branch.url.present?  %><%= branch.url  %><% else%>
-                                <i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;<%= form.url_field :homepage, size: "50x5"%><% end %></td>
+                                <i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;<%= form.url_field :"url#{branch.name}-#{branch.id}", size: "50x5"%><% end %></td>
                                 <td><%= nil %></td>
                             </tr>
-                            <% end %>
                         <% end %>
                         <tr>
                             <td colspan="6" class="hiddenRow"><div id="demo2" class="accordian-body collapse">Demo2</div></td>
@@ -39,5 +34,9 @@
                 </table>
             </div>
           </div>
-    </div>
+        </div>
+        <button type="button" class="btn btn-custom-success btn-sm" style= "display: block; margin-left: auto; margin-right: 0;">
+            <%= form.submit %>
+        </button>
+    <% end %>
 </div>

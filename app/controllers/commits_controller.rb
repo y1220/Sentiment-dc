@@ -14,4 +14,45 @@ class CommitsController < ApplicationController
   def update_link
     @branches = Branch.all
   end
+
+  def update_git_url
+    @branches = Branch.all
+    @branches.each do |branch|
+      if params[:"url#{branch.name}-#{branch.id}"]
+        branch.url = params[:"url#{branch.name}-#{branch.id}"]
+        if branch.save
+          flash[:notice]= "Saving git link has been success!"
+          redirect_to("/commits/update_link")
+        else
+          show_error("Something went wrong..try again!","commits/update_link")
+        end
+      end
+    end
+  end
+
+  def order_detail
+    @order = Order.new
+      @order.assign_attributes(username: params[:customer_name], email: params[:email], password: params[:customer_password])
+       if /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.match(params[:email])
+         if /^[a-zA-Z0-9_.+-]{4,8}$/.match(params[:customer_password])
+           if @customer.save
+             session[:customer_id]=@customer.id
+             flash[:notice]= "Thank you for the registration!"
+             redirect_to("/customers/personal/#{@customer.id}")
+           else
+             show_error("Something went wrong..try again!","customers/new")
+           end
+         else
+           show_error("Inserted password is not valid..try again!","customers/new")
+         end
+       else
+         show_error("Inserted email is not valid..try again!","customers/new")
+       end
+  end
+
+  private
+  def show_error (error_message, return_to_address)
+    flash[:notice]= error_message
+    render(return_to_address)
+  end
 end
