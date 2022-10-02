@@ -5,10 +5,10 @@ class CommitsController < ApplicationController
     Task.update if @tasks.empty?
   end
 
-  def update_clickup
-    Task.update
+  def update_github
+    Commit.update
     @tasks = Task.parent_list
-    redirect_to action: "show"
+    redirect_to action: "index"
   end
 
   def update_link
