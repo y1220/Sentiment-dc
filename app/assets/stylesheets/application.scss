@@ -1,6 +1,12 @@
 @import "bootstrap";
 @import "font-awesome";
 
+
+.container {
+  max-width: 2000px !important;
+  padding: 20px !important;
+}
+
 .flash {
   padding: 5px 0;
   color: white;
