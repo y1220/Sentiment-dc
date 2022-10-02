@@ -17,7 +17,7 @@ class Task < ActiveRecord::Base
 
 
   def self.details
-    hash= ApplicationRecord.authenticate
+    hash= ApplicationRecord.authenticate_clickUp
     team_id= PropertySetting.where(company: "ClickUp", key_name: "team_id").first.value_text
     space_id= PropertySetting.where(company: "ClickUp", key_name: "tasks_space_id").first.value_text
 

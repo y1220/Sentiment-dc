@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
     end
 
     def self.details
-        hash= ApplicationRecord.authenticate
+        hash= ApplicationRecord.authenticate_clickUp
         team_id= PropertySetting.where(company: "ClickUp", key_name: "team_id").first.value_text
         list_id= PropertySetting.where(company: "ClickUp", key_name: "availabilities_list_id").first.value_text
 
