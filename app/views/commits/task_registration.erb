@@ -1,0 +1,126 @@
+<div class="container" style="padding: 10px;">
+    <h1>Commit registeration</h1>
+    <hr/>
+    <%= form_tag({controller: "commits", action: "register_task_commit"}, method: "post") do %>
+    <div class="col-md-12">
+    	<div class="panel panel-default">
+            <div class="panel-heading">
+                Task name: [<%= @task.name%>]
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>task name</th>
+                        <th>description</th>
+                        <th>git branch</th>
+                        <th>task id</th>
+                        <th>status</th>
+                        <th>priority</th>
+                        <th>due date</th>
+                        <th>created</th>
+                        <th>closed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% color_status = {'Open' => 'secondary', 'review' =>  'primary', 'Closed' => 'success', 'in_progress' =>  'info' } %>
+                    <% color_priority = {'low' =>  'secondary', 'urgent' =>  'danger', 'high' =>  'warning', 'normal' =>  'info' } %>
+                        <% @task.find_children.count != 0 ? flag = 1 : flag = 0%>
+                        <tr data-toggle="collapse" data-target="#demo<%= @task.id.to_s %>" class="accordion-toggle">
+                            <% if flag == 1 %>
+                                <td><button class="btn btn-default btn-xs"><span class="fa fa-eye"></span></button></td>
+                            <% else %>
+                                <td></td>
+                            <% end %>
+                            <td> <a href="<%= @task.url%>"><%= @task.name %></a></td>
+                            <td><%= @task.description %></td>
+                            <% b_name = @task.branch_id ? Branch.find(@task.branch_id).name : nil %>
+                            <% b_url = @task.branch_id ? Branch.find(@task.branch_id).url : nil%>
+                            <td><a href="<%= b_url %>"><%= b_name %></a></td>
+                            <td><%= @task.cid %></td>
+                            <% if @task.status.present? %>
+                                <td><span class="badge bg-<%= color_status[@task.status] %>"><%= @task.status %></span></td>
+                            <% else %>
+                                <td></td>
+                            <% end %>
+                            <% if %>
+                            <td><span class="badge bg-<%= color_priority[@task.priority] %>"><%= @task.priority %></span></td>
+                            <% else %>
+                                <td></td>
+                            <% end %>
+                            <td><%= @task.format_due_date %></td>
+                            <td><%= @task.format_date_created %></td>
+                            <td><%= @task.format_date_closed %></td>
+                        </tr>
+                        <% if @task.find_children.count != 0 %>
+                            <tr>
+                            <td colspan="12" class="hiddenRow">
+                                <div class="accordian-body collapse" id="demo<%= @task.id.to_s %>">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr class="info">
+                                                <th>subtask name</th>
+                                                <th>description</th>
+                                                <th>status</th>
+                                                <th>priority</th>
+                                                <th>due date</th>
+                                                <th>created</th>
+                                                <th>closed</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% @task.find_children.each do |child| %>
+                                                <tr>
+                                                    <td><%= child.name %></td>
+                                                    <td><%= child.description %></td>
+                                                    <% if @task.status.present? %>
+                                                        <td><span class="badge bg-<%= color_status[@task.status] %>"><%= @task.status %></span></td>
+                                                    <% else %>
+                                                        <td></td>
+                                                    <% end %>
+                                                    <% if %>
+                                                    <td><span class="badge bg-<%= color_priority[@task.priority] %>"><%= @task.priority %></span></td>
+                                                    <% else %>
+                                                        <td></td>
+                                                    <% end %>
+                                                    <td><%= child.format_due_date %></td>
+                                                    <td><%= child.format_date_created %></td>
+                                                    <td><%= child.format_date_closed %></td>
+                                                </tr>
+                                            <% end %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </tr>
+                        <% end %>
+                </tbody>
+            </table>
+            <div class="panel-body">
+                <table class="table table-condensed table-striped">
+                    <thead>
+                        <tr class="info">
+                            <th>commit message</th>
+                            <th>committer</th>
+                            <th>created</th>
+                            <th>check</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% Commit.where(branch_id: @task.branch.id).each do |child| %>
+                            <tr>
+                                <td><a href="<%= child.url %>"><%= child.message %></a></td>
+                                <td><%= User.find(child.user_id).username %></td>
+                                <td><%= child.commit_date %></td>
+                                <td style= "text-align: center;"><%= check_box_tag(("cmt"+"-"+child.id.to_s+"-"+@task.id.to_s).to_sym) %></td>
+                            </tr>
+                        <% end %>
+                    </tbody>
+                </table>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-custom-success btn-sm" style= "display: block; margin-left: auto; margin-right: 0;">
+            <%= submit_tag 'Submit' %>
+        </button>
+    <% end %>
+</div>

@@ -15,24 +15,34 @@ class CommitsController < ApplicationController
     @branches = Branch.all
   end
 
-  def order_detail
-    @order = Order.new
-      @order.assign_attributes(username: params[:customer_name], email: params[:email], password: params[:customer_password])
-       if /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.match(params[:email])
-         if /^[a-zA-Z0-9_.+-]{4,8}$/.match(params[:customer_password])
-           if @customer.save
-             session[:customer_id]=@customer.id
-             flash[:notice]= "Thank you for the registration!"
-             redirect_to("/customers/personal/#{@customer.id}")
-           else
-             show_error("Something went wrong..try again!","customers/new")
-           end
-         else
-           show_error("Inserted password is not valid..try again!","customers/new")
-         end
-       else
-         show_error("Inserted email is not valid..try again!","customers/new")
-       end
+  def show_task_commit
+    # GET
+    @branches = Branch.all
+  end
+
+  def task_registration
+    # GET
+    @task = Task.where(cid: params[:cid]).first
+    byebug
+    @branches = Branch.all
+  end
+
+  def register_task_commit
+    # POST
+    byebug
+    params.keys.select{|x| x.start_with?("cmt")}.each do |commit|
+      c_sep = commit.split(/-/)
+      cid = c_sep[1]
+      tid = c_sep[2]
+      c = Commit.find(cid.to_i)
+      c.task_id = tid
+      if !c.save
+        show_error("Something went wrong..try again!","commits/index")
+      end
+    end
+
+    @tasks = Task.parent_list
+    redirect_to action: "index"
   end
 
   private

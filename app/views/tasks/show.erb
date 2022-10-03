@@ -18,6 +18,7 @@
                 <th>due date</th>
                 <th>created</th>
                 <th>closed</th>
+                <th>commit registeration</th>
             </tr>
         </thead>
         <tbody>
@@ -50,6 +51,23 @@
                     <td><%= task.format_due_date %></td>
                     <td><%= task.format_date_created %></td>
                     <td><%= task.format_date_closed %></td>
+                    <% if task.date_closed.present? %>
+                        <% if task.branch.present? %>
+                            <% if task.commits.present? %>
+                                <td><a href="<%= task.url %>" class="btn btn-default btn-sm">
+                                    <i class="fa fa-book" aria-hidden="true"></i></a>
+                                </td>
+                            <% else %>
+                                <td style="background-color: #E4C5CD !important;"><a href="/commits/task_registration/<%=task.cid %>" class="btn btn-default btn-sm">
+                                    <i class="fa-solid fa-pen-to-square"></i></a>
+                                </td>
+                            <% end %>
+                        <% else %>
+                            <td><%= 'No branch' %></td>
+                        <% end %>
+                    <% else %>
+                        <td></td>
+                    <% end %>
                 </tr>
                 <% if task.find_children.count != 0 %>
                     <tr>
