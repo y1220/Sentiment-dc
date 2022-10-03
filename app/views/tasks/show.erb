@@ -54,7 +54,7 @@
                     <% if task.date_closed.present? %>
                         <% if task.branch.present? %>
                             <% if task.commits.present? %>
-                                <td><a href="<%= task.url %>" class="btn btn-default btn-sm">
+                                <td><a href="/commits/show_task_commit/<%=task.cid %>" class="btn btn-default btn-sm">
                                     <i class="fa fa-book" aria-hidden="true"></i></a>
                                 </td>
                             <% else %>

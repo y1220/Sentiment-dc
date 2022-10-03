@@ -15,8 +15,9 @@ Rails.application.routes.draw do
   get 'commits/update_link'
   get 'commits/update_github'
   post 'branches/update_git_url'
-  get 'commits/show_task_commit'
   get 'commits/task_registration/:cid', to: 'commits#task_registration'
+  get 'commits/show_task_commit/:cid', to: 'commits#show_task_commit'
+
   post 'commits/register_task_commit'
   get 'tasks/index'
 

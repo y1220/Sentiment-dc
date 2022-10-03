@@ -17,19 +17,18 @@ class CommitsController < ApplicationController
 
   def show_task_commit
     # GET
+    @task = Task.where(cid: params[:cid]).first
     @branches = Branch.all
   end
 
   def task_registration
     # GET
     @task = Task.where(cid: params[:cid]).first
-    byebug
     @branches = Branch.all
   end
 
   def register_task_commit
     # POST
-    byebug
     params.keys.select{|x| x.start_with?("cmt")}.each do |commit|
       c_sep = commit.split(/-/)
       cid = c_sep[1]
