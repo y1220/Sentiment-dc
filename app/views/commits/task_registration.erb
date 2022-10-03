@@ -106,12 +106,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <% Commit.where(branch_id: @task.branch.id).each do |child| %>
+                        <% Commit.where(branch_id: @task.branch.id).sort_by(&:commit_date).reverse.each do |child| %>
                             <tr>
                                 <td><a href="<%= child.url %>"><%= child.message %></a></td>
                                 <td><%= User.find(child.user_id).username %></td>
                                 <td><%= child.commit_date %></td>
-                                <td style= "text-align: center;"><%= check_box_tag(("cmt"+"-"+child.id.to_s+"-"+@task.id.to_s).to_sym) %></td>
+                                <td style= "text-align: center;"><%= check_box_tag(("cmt"+"-"+child.id.to_s+"-"+@task.id.to_s).to_sym, 1, child.task_id == @task.id ? true : false) %></td>
                             </tr>
                         <% end %>
                     </tbody>
