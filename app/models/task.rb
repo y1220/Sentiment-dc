@@ -57,7 +57,10 @@ class Task < ActiveRecord::Base
         if !Branch.where(value: task['custom_fields'][0]['value']).present?
           @branch= Branch.new(name: task['custom_fields'][0]['type_config']['options'].select {|x|
             x['orderindex'] == task['custom_fields'][0]['value']}[0]['name'],
-                              value: task['custom_fields'][0]['value'])
+                              value: task['custom_fields'][0]['value'],
+                              bid: task['custom_fields'][0]['type_config']['options'].select {|x|
+                                x['orderindex'] == task['custom_fields'][0]['value']}[0]['id'],
+                              field_id: task['custom_fields'][0]['id'] )
           if !@branch.save
             return false, "Error: Branch creation failed"
           else
@@ -66,6 +69,8 @@ class Task < ActiveRecord::Base
         else
           @branch = Branch.where(value: task['custom_fields'][0]['value']).first
           @branch.name = task['custom_fields'][0]['type_config']['options'].select {|x| x['orderindex'] == task['custom_fields'][0]['value']}[0]['name']
+          @branch.bid = task['custom_fields'][0]['type_config']['options'].select {|x| x['orderindex'] == task['custom_fields'][0]['value']}[0]['id']
+          @branch.field_id = task['custom_fields'][0]['id']
         end
         if !@branch.save
           return false, "Error: Branch update failed"
