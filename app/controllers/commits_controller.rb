@@ -44,6 +44,11 @@ class CommitsController < ApplicationController
     redirect_to action: "index"
   end
 
+  def assign_git
+    @branches = Branch.all
+    @task = Task.where(cid: params['cid'])[0]
+  end
+
   private
   def show_error (error_message, return_to_address)
     flash[:notice]= error_message

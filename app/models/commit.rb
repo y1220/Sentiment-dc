@@ -3,6 +3,8 @@ class Commit < ApplicationRecord
   belongs_to :task
   belongs_to :branch
 
+  scope :for_task, ->(tid) {where('task_id = ?',  tid)}
+
   include HTTParty
   base_uri "https://api.github.com/repos"
 
