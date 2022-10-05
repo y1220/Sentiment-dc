@@ -1,5 +1,5 @@
 <div class="container" style="padding: 10px;">
-     <div class="pagetitle">
+    <div class="pagetitle">
       <h1>Daily report</h1>
       <nav>
         <ol class="breadcrumb">
@@ -11,52 +11,67 @@
 
      <div class="card">
         <div class="card-body">
-            <h5 class="card-title">Self scoring</h5>
+            <%= form_with url: "/branches/update_git_url", method: :post do |form| %>
+            <h5 class="card-title">Self scoring&nbsp;<i class="fa-solid fa-hand-holding-heart"></i></h5>
             <p>Purpose of this survey is to track the status of each activity and distribute tasks according to the needs of the team. No need to hesitate to ask help if you need, also help out collegues if you have spare time, let's manage our team well altogether!</p>
+            <br/>
             <div class="row mb-5">
-                <label class="col-sm-2 col-form-label">Statuses</label>
+                <label class="col-sm-2 col-form-label">Date:</label>
+                <%= form.date_select :Date_of_Birth, start_year: 2010, end_year: Time.now.year %>
                 <div class="col-sm-10">
-                <div>
-                    <label for="customRange1" class="form-label">TaskA</label>
-                    <input type="range" class="form-range" min="0" max="5" step="0.5" id="customRange1">
-                </div>
-                <div>
-                    <label for="customRange2" class="form-label">Need help for TaskA</label>
-                    <input type="range" class="form-range" min="0" max="5" step="0.5" id="customRange2">
-                </div>
-                </br>
-                <div>
-                    <label for="customRange3" class="form-label">TaskB</label>
-                    <input type="range" class="form-range" min="0" max="5" step="0.5" id="customRange3">
-                </div>
-                <div>
-                    <label for="customRange4" class="form-label">Need help for TaskB</label>
-                    <input type="range" class="form-range" min="0" max="5" step="0.5" id="customRange4">
-                </div>
-                </br>
-                <div>
-                    <label for="customRange5" class="form-label">TaskC</label>
-                    <input type="range" class="form-range" min="0" max="5" step="0.5" id="customRange5">
-                </div>
-                <div>
-                    <label for="customRange6" class="form-label">Need help for TaskC</label>
-                    <input type="range" class="form-range" min="0" max="5" step="0.5" id="customRange6">
-                </div>
-                </br>
-                <div>
-                    <label for="customRange7" class="form-label">Willing to help others</label>
-                    <div class="form-check form-switch">
-                      <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                      <label class="form-check-label" for="flexSwitchCheckDefault">Default switch checkbox input</label>
+                <br/>
+                     <h5 for="customRange0" class="form-label" style="background-color: #F0F0F0;"><i class="fa-solid fa-chalkboard-user"></i>
+                            &nbsp;Task progresses</h5>
+                    <br/>
+                    <div>
+                        <label for="customRange1" class="form-label">TaskA</label>
+                        <%= form.range_field :t1, min: 0, max: 5, class: "form-range", id: "customRange1", style: "position: absolute; right: 150px; width: 515px;"%>
                     </div>
-                    <input type="range" class="form-range" min="0" max="5" step="0.5" id="customRange7">
-                </div>
+                    <div>
+                        <label for="customRange2" class="form-label">Need help for TaskA</label>
+                        <%= form.range_field :nh1, min: 0, max: 5, class: "form-range", id: "customRange1", style: "position: absolute; right: 150px; width: 515px;"%>
+                    </div>
+                    </br>
+                    <div>
+                        <label for="customRange3" class="form-label">TaskB</label>
+                        <%= form.range_field :t2, min: 0, max: 5, class: "form-range", id: "customRange1", style: "position: absolute; right: 150px; width: 515px;"%>
+                    </div>
+                    <div>
+                        <label for="customRange4" class="form-label">Need help for TaskB</label>
+                        <%= form.range_field :nh2, min: 0, max: 5, class: "form-range", id: "customRange1", style: "position: absolute; right: 150px; width: 515px;"%>
+                    </div>
+                    </br>
+                    <div>
+                        <label for="customRange5" class="form-label">TaskC</label>
+                        <%= form.range_field :t3, min: 0, max: 5, class: "form-range", id: "customRange1", style: "position: absolute; right: 150px; width: 515px;"%>
+                    </div>
+                    <div>
+                        <label for="customRange6" class="form-label">Need help for TaskC</label>
+                        <%= form.range_field :nh3, min: 0, max: 5, class: "form-range", id: "customRange1", style: "position: absolute; right: 150px; width: 515px;"%>
+                    </div>
+                    </br>
+                    <div>
+                        <h5 for="customRange7" class="form-label" style="background-color: #F0F0F0;"><i class="fa-regular fa-handshake"></i>
+                            &nbsp;Willing to help others</h5>
+                        <br/>
+                        <div class="custom-control custom-switch">
+                            <div data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
+                                <%= form.check_box :active, class: "custom-control-input", id: "customSwitch1" %>
+                                <label class="custom-control-label" for="customSwitch1">(enable it if you can!)</label>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="accordian-body collapse" id="demo1">
+                            <label for="customRange8" class="form-label">Availability</label>
+                            <%= form.range_field :av, min: 0, max: 5, class: "form-range", id: "customRange1", style: "position: absolute; right: 150px; width: 515px;"%>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-custom-success btn-sm" style= "display: block; margin-left: auto; margin-right: 25px;">
+                        <%= form.submit %>
+                    </button>
                 </div>
             </div>
-            <div class="col-sm-10">
-                <button type="submit" class="btn btn-custom-success">Submit Form</button>
-            </div>
+            <% end %>
         </div>
     </div>
-
 </div>
