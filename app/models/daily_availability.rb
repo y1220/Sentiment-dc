@@ -1,0 +1,2 @@
+class DailyAvailability < ApplicationRecord
+end

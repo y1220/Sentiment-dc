@@ -25,6 +25,8 @@ Rails.application.routes.draw do
 
   post 'branches/update_git_url'
 
+  post 'reports/daily_insert'
+
 
 
   # The priority is based upon order of creation: first created -> highest priority.
