@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_04_192118) do
+ActiveRecord::Schema.define(version: 2022_10_06_202823) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,6 +62,24 @@ ActiveRecord::Schema.define(version: 2022_10_04_192118) do
     t.index ["branch_id"], name: "index_commits_on_branch_id"
     t.index ["task_id"], name: "index_commits_on_task_id"
     t.index ["user_id"], name: "index_commits_on_user_id"
+  end
+
+  create_table "daily_availabilities", force: :cascade do |t|
+    t.boolean "enable"
+    t.integer "availability_score"
+    t.integer "user_id"
+    t.date "register_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "daily_reports", force: :cascade do |t|
+    t.integer "task_score"
+    t.integer "need_help"
+    t.integer "user_id"
+    t.date "register_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "items", force: :cascade do |t|
