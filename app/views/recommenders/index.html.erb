@@ -261,15 +261,22 @@
                     type: 'polarArea',
                     data: {
                     labels: [
-                        'Brandon Jacob',
-                        'Bridie Kessler',
-                        'Ashleigh Langosh',
-                        'Angus Grady',
-                        'Raheem Lehner',
+                      <% @names.each_with_index do |name, i|%>
+                         '<%= name%>'
+                          <% if @names.count-1 != i%>
+                          ,
+                          <% end %>
+                      <% end %>
                     ],
                     datasets: [{
                         label: 'My First Dataset',
-                        data: [11, 16, 7, 3, 14],
+                        data: [
+                        <% @analysis.each_with_index do |num, i|%>
+                         <%= num%>
+                          <% if @analysis.count-1 != i%>
+                          ,
+                          <% end %>
+                         <% end %>],
                         backgroundColor: [
                         'rgb(255, 99, 132)',
                         'rgb(75, 192, 192)',
