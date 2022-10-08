@@ -9,6 +9,11 @@
       </nav>
     </div><!-- End Page Title -->
 
+    <%= week_calendar do |date| %>
+        <% (@register_dates.include? date) ? @color = 'cadetblue' : @color = 'lightpink' %>
+        <h5 style= "text-align: center; color:<%=@color%>;"><%=date.month.to_s + ' / ' + date.day.to_s %></h5>
+    <% end %>
+
      <div class="card">
         <div class="card-body">
             <%= form_with url: "/reports/daily_insert", method: :post do |form| %>
