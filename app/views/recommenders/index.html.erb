@@ -64,19 +64,19 @@
                   <div class="col-sm-10">
                     <div>
                       <label for="customRange1" class="form-label">Front-end</label>
-                      <input type="range" class="form-range" min="0" max="5" step="0.5" id="customRange2">
+                      <input type="range" class="form-range" style="position: absolute; right: 230px; width: 50%;" min="0" max="5" step="0.5" id="customRange2">
                     </div>
                     <div>
                       <label for="disabledRange" class="form-label">Back-end</label>
-                      <input type="range" class="form-range" min="0" max="5" step="0.5" id="customRange2">
+                      <input type="range" class="form-range" style="position: absolute; right: 230px; width: 50%;" min="0" max="5" step="0.5" id="customRange2">
                     </div>
                     <div>
                       <label for="customRange2" class="form-label">Infrastructure</label>
-                      <input type="range" class="form-range" min="0" max="5" step="0.5" id="customRange2">
+                      <input type="range" class="form-range" style="position: absolute; right: 230px; width: 50%;" min="0" max="5" step="0.5" id="customRange2">
                     </div>
                     <div>
-                      <label for="customRange2" class="form-label">Sql</label>
-                      <input type="range" class="form-range" min="0" max="5" step="0.5" id="customRange2">
+                      <label for="customRange2" class="form-label">Data-manipulation</label>
+                      <input type="range" class="form-range" style="position: absolute; right: 230px; width: 50%;" min="0" max="5" step="0.5" id="customRange2">
                     </div>
                   </div>
                 </div>
@@ -91,71 +91,19 @@
                     <th scope="col">Front-end</th>
                     <th scope="col">Back-end</th>
                     <th scope="col">Infrastructure</th>
-                    <th scope="col">Sql</th>
+                    <th scope="col">Data-manipulation</th>
                   </tr>
                 </thead>
                 <tbody>
+                  <% @task_name_list.each_with_index do |task, i|%>
                   <tr>
-                    <th scope="row"><a href="#">Integration for AAA</a></th>
-                    <td>60.2</td>
-                    <td>33.2</td>
-                    <td>43.6</td>
-                    <td>16.8</td>
-                    <td>25.5</td>
-                    <td>53.8</td>
-                    <td>81.2</td>
-                  </tr>
 
-                  <tr class="table-secondary">
-                    <th scope="row"><a href="#">BBB API</a></th>
-                    <td>32.6</td>
-                    <td>73.2</td>
-                    <td>92.4</td>
-                    <td>13.6</td>
-                    <td>18.2</td>
-                    <td>28.0</td>
-                    <td>22.6</td>
+                    <th scope="row"><a href="<%= task.url%>"><%=task.name%></a></th>
+                    <% (0..6).to_a.each do |j|%>
+                      <td><%=@scores[i][j]%></td>
+                    <% end %>
                   </tr>
-                  <tr>
-                    <th scope="row"><a href="#">Bugfix of Product C</a></th>
-                    <td>82.3</td>
-                    <td>72.1</td>
-                    <td>11.3</td>
-                    <td>9.2</td>
-                    <td>18.5</td>
-                    <td>51.7</td>
-                    <td>28.3</td>
-                  </tr>
-                  <tr class="table-secondary">
-                    <th scope="row"><a href="#">Ticket D</a></th>
-                    <td>82.6</td>
-                    <td>11.5</td>
-                    <td>27.9</td>
-                    <td>45.7</td>
-                    <td>25.9</td>
-                    <td>33.3</td>
-                    <td>51.2</td>
-                  </tr>
-                  <tr>
-                    <th scope="row"><a href="#">Analysis for Company B</a></th>
-                    <td>82.3</td>
-                    <td>11.3</td>
-                    <td>29.3</td>
-                    <td>48.7</td>
-                    <td>24.8</td>
-                    <td>16.2</td>
-                    <td>18.7</td>
-                  </tr>
-                  <tr class="table-secondary">
-                    <th scope="row"><a href="#">Support for Task F</a></th>
-                    <td>16.3</td>
-                    <td>18.2</td>
-                    <td>26.3</td>
-                    <td>52.4</td>
-                    <td>42.7</td>
-                    <td>16.3</td>
-                    <td>36.9</td>
-                  </tr>
+                  <% end %>
                 </tbody>
               </table>
               <!-- Pagination with icons -->
@@ -186,17 +134,24 @@
 
 
     <div class="row">
-
         <div class="col-lg-6">
         <div class="card">
             <div class="card-body">
             <h5 class="card-title">Task similarity</h5>
+            <label for="task-selection">Select a task</label>
+            <select id="task-selection" style="position: absolute; right: 25px;">
+              <% @radar_scores.each do |task| %>
+                <option value="<%= task[:name]%>-<%= task[:scores].to_s[1..-2]%>"><%= task[:name]%></option>
+              <% end %>
+            </select>
+            <button id="btn" class="btn btn-custom-danger btn-sm" style="position: absolute; right: 25px; top: 86px;">Analyze</button>
 
             <!-- Radar Chart -->
             <canvas id="radarChart" style="max-height: 400px;"></canvas>
             <script>
+                var radarChart;
                 document.addEventListener("DOMContentLoaded", () => {
-                new Chart(document.querySelector('#radarChart'), {
+                  radarChart = new Chart(document.querySelector('#radarChart'), {
                     type: 'radar',
                     data: {
                     labels: [
@@ -206,7 +161,7 @@
                         'Front-end',
                         'Back-end',
                         'Infrastructure',
-                        'Sql'
+                        'Data-manipulation'
                     ],
                     datasets: [{
                         label: 'Your task',
@@ -237,8 +192,37 @@
                         }
                     }
                     }
+                  });
                 });
-                });
+                const btn = document.querySelector('#btn');
+                const sb = document.querySelector('#task-selection');
+                var selectedValues;
+
+                btn.onclick = (e) => {
+                    e.preventDefault();
+                    selectedValues = [].filter
+                        .call(sb.options, option => option.selected)
+                        .map(option => option.value);
+                    console.log('selected:',selectedValues);
+                    updateChart();
+                };
+
+                function updateChart(){
+                  var array = selectedValues[0].split(/[-,]/);
+                  console.log('array:', array);
+                  var name = array[0];
+                  var score = [array[1], array[2], array[3], array[4], array[5], array[6], array[7]];
+                  radarChart.data.datasets[0].label =  name;
+                  radarChart.data.datasets[0].data = score;
+                  var num = (Math.floor(Math.random() * 10) + 1)%3;
+                  var name_list = ['<%=@analyzed_names[0]%>', '<%=@analyzed_names[1]%>', '<%=@analyzed_names[2]%>']; //need to show the tasks which has highly similar to the task of each of them
+                  var score_list = [<%=@scores[0]%>,
+                                    <%=@scores[1]%>,
+                                    <%=@scores[2]%>];
+                  radarChart.data.datasets[1].label =  name_list[num];
+                  radarChart.data.datasets[1].data = score_list[num];
+                  radarChart.update();
+                }
             </script>
             <!-- End Radar CHart -->
 
@@ -343,15 +327,15 @@
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
 <script>
-                      // When the user clicks on div, open the popup
-                      var fs = [];
-                      var show = ["show-1", "show-2", "show-3", "show-4", "show-5", "show-6", "show-7"];
-                      var myPopup = ["myPopup-1", "myPopup-2", "myPopup-3", "myPopup-4", "myPopup-5", "myPopup-6", "myPopup-7"];
-                      for (let x = 0; x < 7; x++){
-                          fs.push( function() {
-                            console.log(myPopup[x-1]);
-                            var popup = document.getElementById(myPopup[x-1]);
-                            popup.classList.toggle(show[x-1]);
-                          });
-                      }
-                    </script>
+  // When the user clicks on div, open the popup
+  var fs = [];
+  var show = ["show-1", "show-2", "show-3", "show-4", "show-5", "show-6", "show-7"];
+  var myPopup = ["myPopup-1", "myPopup-2", "myPopup-3", "myPopup-4", "myPopup-5", "myPopup-6", "myPopup-7"];
+  for (let x = 0; x < 7; x++){
+      fs.push( function() {
+        console.log(myPopup[x-1]);
+        var popup = document.getElementById(myPopup[x-1]);
+        popup.classList.toggle(show[x-1]);
+      });
+  }
+</script>
