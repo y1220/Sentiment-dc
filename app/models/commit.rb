@@ -3,6 +3,8 @@ class Commit < ApplicationRecord
   belongs_to :task
   belongs_to :branch
 
+  scope :for_task, ->(tid) {where('task_id = ?',  tid)}
+
   include HTTParty
   base_uri "https://api.github.com/repos"
 
@@ -24,7 +26,7 @@ class Commit < ApplicationRecord
         Branch.find(branch.id)
         if Commit.where(cid: commit['sha']).count == 0
           @commit = Commit.new(cid: commit['sha'], message: commit['commit']['message'], url: commit['html_url'],
-          user_id: User.where(gid: commit['author']['id']).first, branch_id: branch.id, commit_date: c_created)
+          user_id: User.where(gid: commit['author']['id'].to_s).first, branch_id: branch.id, commit_date: c_created)
           if !@commit.save
             return false, "Error: Commit creation failed"
           end

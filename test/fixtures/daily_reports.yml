@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  task_score: 1
+  need_help: 1
+  user_id: 1
+  register_date: 2022-10-06
+
+two:
+  task_score: 1
+  need_help: 1
+  user_id: 1
+  register_date: 2022-10-06

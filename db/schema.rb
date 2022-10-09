@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_02_195153) do
+ActiveRecord::Schema.define(version: 2022_10_08_100005) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,8 @@ ActiveRecord::Schema.define(version: 2022_10_02_195153) do
     t.datetime "updated_at", null: false
     t.integer "value"
     t.string "url"
+    t.string "bid"
+    t.string "field_id"
   end
 
   create_table "checklists", force: :cascade do |t|
@@ -60,6 +62,29 @@ ActiveRecord::Schema.define(version: 2022_10_02_195153) do
     t.index ["branch_id"], name: "index_commits_on_branch_id"
     t.index ["task_id"], name: "index_commits_on_task_id"
     t.index ["user_id"], name: "index_commits_on_user_id"
+  end
+
+  create_table "daily_availabilities", id: false, force: :cascade do |t|
+    t.bigserial "id", null: false
+    t.boolean "enable"
+    t.integer "availability_score"
+    t.integer "user_id"
+    t.date "register_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "register_date"], name: "availability_index", unique: true
+  end
+
+  create_table "daily_reports", id: false, force: :cascade do |t|
+    t.bigserial "id", null: false
+    t.integer "task_score"
+    t.integer "need_help"
+    t.integer "user_id"
+    t.date "register_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "task_id"
+    t.index ["user_id", "register_date", "task_id"], name: "task_report_index", unique: true
   end
 
   create_table "items", force: :cascade do |t|
