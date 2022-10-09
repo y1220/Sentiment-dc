@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  enable: false
+  availability_score: 1
+  user_id: 1
+  register_date: 2022-10-06
+
+two:
+  enable: false
+  availability_score: 1
+  user_id: 1
+  register_date: 2022-10-06

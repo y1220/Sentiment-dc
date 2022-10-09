@@ -54,16 +54,16 @@
                     <% if task.date_closed.present? %>
                         <% if task.branch.present? %>
                             <% if task.commits.present? %>
-                                <td><a href="<%= task.url %>" class="btn btn-default btn-sm">
+                                <td style="text-align: center;"><a href="/commits/show_task_commit/<%=task.cid %>" class="btn btn-default btn-sm">
                                     <i class="fa fa-book" aria-hidden="true"></i></a>
                                 </td>
                             <% else %>
-                                <td style="background-color: #E4C5CD !important;"><a href="/commits/task_registration/<%=task.cid %>" class="btn btn-default btn-sm">
+                                <td style="background-color: #E4C5CD !important; text-align: center;"><a href="/commits/task_registration/<%=task.cid %>" class="btn btn-default btn-sm">
                                     <i class="fa-solid fa-pen-to-square"></i></a>
                                 </td>
                             <% end %>
                         <% else %>
-                            <td><%= 'No branch' %></td>
+                            <td style= "text-align: center;"><%= 'No branch' %></td>
                         <% end %>
                     <% else %>
                         <td></td>
@@ -108,6 +108,7 @@
                                 </tbody>
                             </table>
                         </div>
+                    </td>
                     </tr>
                 <% end %>
             <% end %>

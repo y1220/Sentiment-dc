@@ -94,16 +94,18 @@
                         <script>
                         document.addEventListener("DOMContentLoaded", () => {
                             new ApexCharts(document.querySelector("#reportsChart"), {
-                            series: [{
-                                name: 'Task A',
-                                data: [31, 40, 28, 51, 42, 82, 56],
-                            }, {
-                                name: 'Task B',
-                                data: [11, 32, 45, 32, 34, 52, 41]
-                            }, {
-                                name: 'Task C',
-                                data: [15, 11, 32, 18, 9, 24, 11]
-                            }],
+                            series: [
+                                    {name: 'Help availability',
+                                    data: ['<%=@availabiity[0]%>', '<%=@availabiity[1]%>', '<%=@availabiity[2]%>', '<%=@availabiity[3]%>', '<%=@availabiity[4]%>']}
+                                    ,
+                                <% @tasks.each_with_index do |task, i|%>
+                                    {name: '<%= task[:name]%>',
+                                    data: ['<%=task[:scores][0]%>', '<%=task[:scores][1]%>', '<%=task[:scores][2]%>', '<%=task[:scores][3]%>', '<%=task[:scores][4]%>']}
+                                    <% if @tasks.count-1 != i%>
+                                    ,
+                                    <% end %>
+                                <% end %>
+                            ],
                             chart: {
                                 height: 350,
                                 type: 'area',
@@ -114,7 +116,7 @@
                             markers: {
                                 size: 4
                             },
-                            colors: ['#4154f1', '#2eca6a', '#ff771d'],
+                            colors: ['#FFB6C1', '#4154f1', '#2eca6a', '#ff771d', '#5F9EA0'],
                             fill: {
                                 type: "gradient",
                                 gradient: {
@@ -133,7 +135,7 @@
                             },
                             xaxis: {
                                 type: 'datetime',
-                                categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z", "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z", "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z", "2018-09-19T06:30:00.000Z"]
+                                categories: ['<%= @dates[0]%>', '<%= @dates[1]%>', '<%= @dates[2]%>', '<%= @dates[3]%>', '<%= @dates[4]%>']
                             },
                             tooltip: {
                                 x: {
@@ -143,6 +145,7 @@
                             }).render();
                         });
                         </script>
+
                         <!-- End Line Chart -->
 
                     </div>

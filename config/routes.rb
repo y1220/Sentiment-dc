@@ -6,19 +6,27 @@ Rails.application.routes.draw do
   get 'home/index'
   get 'reports/daily'
   get 'recommenders/index'
+  get 'recommenders/update_clickup'
+
   get 'question/index'
   get 'question/create'
+
+  get 'tasks/index'
   get 'tasks/show'
   get 'tasks/update_clickup'
-  get 'recommenders/update_clickup'
+
   get 'commits/index'
   get 'commits/update_link'
   get 'commits/update_github'
-  post 'branches/update_git_url'
-  get 'commits/show_task_commit'
+  get 'commits/assign_git/:cid', to: 'commits#assign_git'
   get 'commits/task_registration/:cid', to: 'commits#task_registration'
+  get 'commits/show_task_commit/:cid', to: 'commits#show_task_commit'
   post 'commits/register_task_commit'
-  get 'tasks/index'
+
+  post 'branches/update_git_url'
+
+  post 'reports/daily_insert'
+
 
 
   # The priority is based upon order of creation: first created -> highest priority.

@@ -1,0 +1,170 @@
+<div class="container" style="padding: 10px;">
+    <h1>Assign git branch</h1>
+    <hr/>
+    <%= form_with url: "/branches/update_git_url", method: :post do |form| %>
+        <div class="col-md-12">
+    	    <div class="panel panel-default">
+                <div class="panel-heading">
+                    All branch
+                </div>
+                <div class="panel-body">
+                    <table class="table table-condensed table-striped">
+                        <thead >
+                            <tr>
+                            <th></th>
+                            <th>branch name</th>
+                            <th style= "text-align: center;">link</th>
+                            <th>last commit at</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% @branches.each do |branch| %>
+                                <tr data-toggle="collapse" data-target="#demo<%= branch.id.to_s %>" class="accordion-toggle">
+                                    <td><button class="btn btn-default btn-xs"><span class="fa fa-eye"></span></button></td>
+                                    <td><%= branch.name %></td>
+                                    <td style= "text-align: center;"><% if branch.url.present?  %><%= branch.url  %><% else%>
+                                    <i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;<%= form.url_field :"url#{branch.name}-#{branch.id}", size: "50x5"%><% end %></td>
+                                    <td><%#= Commit.last_commit_in_branch(branch.id) %></td>
+                                </tr>
+                                <% if branch.commits.present? %>
+                                    <tr>
+                                        <td colspan="12" class="hiddenRow">
+                                            <div class="accordian-body collapse" id="demo<%= branch.id.to_s %>">
+                                                <table class="table table-striped">
+                                                    <thead>
+                                                        <tr class="info">
+                                                            <th>commit message</th>
+                                                            <th>committer</th>
+                                                            <th>created</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <% flag = 1%>
+                                                        <% if flag == 1%>
+                                                            <% Commit.where(branch_id: branch.id).first(7).each do |child| %>
+                                                                <tr>
+                                                                    <td><a href="<%= child.url %>"><%= child.message %></a></td>
+                                                                    <td><%= User.find(child.user_id).username %></td>
+                                                                    <td><%= child.commit_date %></td>
+                                                                </tr>
+                                                            <% end %>
+                                                        <% else%>
+                                                            <% Commit.for_task(task.id).each do |child| %>
+                                                                <tr>
+                                                                    <td><a href="<%= child.url %>"><%= child.message %></a></td>
+                                                                    <td><%= User.find(child.user_id).username %></td>
+                                                                    <td><%= child.commit_date %></td>
+                                                                </tr>
+                                                            <% end %>
+                                                        <% end %>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <% end %>
+                            <% end %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+    	    <div class="panel panel-default">
+                <div class="panel-heading">
+                    Task detail
+                </div>
+                <div class="panel-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>task name</th>
+                                <th>description</th>
+                                <th>task id</th>
+                                <th>status</th>
+                                <th>priority</th>
+                                <th>due date</th>
+                                <th>created</th>
+                                <th>closed</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% color_status = {'Open' => 'secondary', 'review' =>  'primary', 'Closed' => 'success', 'in_progress' =>  'info' } %>
+                            <% color_priority = {'low' =>  'secondary', 'urgent' =>  'danger', 'high' =>  'warning', 'normal' =>  'info' } %>
+                                <% @task.find_children.count != 0 ? flag = 1 : flag = 0%>
+                                <tr data-toggle="collapse" data-target="#demo<%= @task.id.to_s %>" class="accordion-toggle">
+                                    <% if flag == 1 %>
+                                        <td><button class="btn btn-default btn-xs"><span class="fa fa-eye"></span></button></td>
+                                    <% else %>
+                                        <td></td>
+                                    <% end %>
+                                    <td> <a href="<%= @task.url%>"><%= @task.name %></a></td>
+                                    <td><%= @task.description %></td>
+                                    <td><%= @task.cid %></td>
+                                    <% if @task.status.present? %>
+                                        <td><span class="badge bg-<%= color_status[@task.status] %>"><%= @task.status %></span></td>
+                                    <% else %>
+                                        <td></td>
+                                    <% end %>
+                                    <% if %>
+                                    <td><span class="badge bg-<%= color_priority[@task.priority] %>"><%= @task.priority %></span></td>
+                                    <% else %>
+                                        <td></td>
+                                    <% end %>
+                                    <td><%= @task.format_due_date %></td>
+                                    <td><%= @task.format_date_created %></td>
+                                    <td><%= @task.format_date_closed %></td>
+                                </tr>
+                                <% if @task.find_children.count != 0 %>
+                                    <tr>
+                                        <td colspan="12" class="hiddenRow">
+                                            <div class="accordian-body collapse" id="demo<%= @task.id.to_s %>">
+                                                <table class="table table-striped">
+                                                    <thead>
+                                                        <tr class="info">
+                                                            <th>subtask name</th>
+                                                            <th>description</th>
+                                                            <th>status</th>
+                                                            <th>priority</th>
+                                                            <th>due date</th>
+                                                            <th>created</th>
+                                                            <th>closed</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <% @task.find_children.each do |child| %>
+                                                            <tr>
+                                                                <td><%= child.name %></td>
+                                                                <td><%= child.description %></td>
+                                                                <% if @task.status.present? %>
+                                                                    <td><span class="badge bg-<%= color_status[@task.status] %>"><%= @task.status %></span></td>
+                                                                <% else %>
+                                                                    <td></td>
+                                                                <% end %>
+                                                                <% if %>
+                                                                <td><span class="badge bg-<%= color_priority[@task.priority] %>"><%= @task.priority %></span></td>
+                                                                <% else %>
+                                                                    <td></td>
+                                                                <% end %>
+                                                                <td><%= child.format_due_date %></td>
+                                                                <td><%= child.format_date_created %></td>
+                                                                <td><%= child.format_date_closed %></td>
+                                                            </tr>
+                                                        <% end %>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <% end %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="btn btn-custom-success btn-sm" style= "display: block; margin-left: auto; margin-right: 0;">
+            <%= form.submit %>
+        </button>
+    <% end %>
+</div>
