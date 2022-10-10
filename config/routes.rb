@@ -28,6 +28,9 @@ Rails.application.routes.draw do
 
   post 'reports/daily_insert'
 
+  get 'property_settings/index'
+
+
 
 
   # The priority is based upon order of creation: first created -> highest priority.

@@ -1,0 +1,43 @@
+<div class="container" style="padding: 10px;">
+    <h1>Configure property keys and values</h1>
+    <hr/>
+    <%= form_with url: "/branches/update_git_url", method: :post do |form| %>
+    <div class="col-md-12">
+    	<div class="panel panel-default">
+            <div class="panel-heading">
+                All pair of key and value
+            </div>
+            <div class="panel-body">
+                <table class="table table-condensed table-striped">
+                    <thead >
+                        <tr>
+                        <th></th>
+                        <th>company name</th>
+                        <th style= "text-align: center;">key</th>
+                        <th style= "text-align: center;">value</th>
+                        <th>enable</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% @properties.each do |property| %>
+                            <tr data-toggle="collapse" data-target="#demo<%= property.id.to_s %>" class="accordion-toggle">
+                                <td><button class="btn btn-default btn-xs"><span class="fa fa-eye"></span></button></td>
+                                <td><%= property.company %></td>
+                                <td style= "text-align: center;"><% if property.key_name.present?  %><%= property.key_name  %><% else%>
+                                <i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;<%= form.text_field :"key#{property.company}-#{property.id}", size: "50x5"%><% end %></td>
+                                <td style= "text-align: center;"><% if property.value_text.present?  %><%= property.value_text  %><% else%>
+                                <i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;<%= form.text_field :"value#{property.company}-#{property.id}", size: "50x5"%><% end %></td>
+                                <td><%= property.enabled %></td>
+                            </tr>
+                        <% end %>
+                    </tbody>
+                </table>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-custom-success btn-sm" style= "display: block; margin-left: auto; margin-right: 0;">
+            <%= form.submit %>
+        </button>
+    </div>
+    <% end %>
+</div>

@@ -1,0 +1,2 @@
+module PropertySettingsHelper
+end
