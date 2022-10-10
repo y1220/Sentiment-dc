@@ -19,17 +19,51 @@
                     </thead>
                     <tbody>
                         <% @branches.each do |branch| %>
-                            <tr data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
+                            <tr data-toggle="collapse" data-target="#demo<%= branch.id.to_s %>" class="accordion-toggle">
                                 <td><button class="btn btn-default btn-xs"><span class="fa fa-eye"></span></button></td>
                                 <td><%= branch.name %></td>
                                 <td style= "text-align: center;"><% if branch.url.present?  %><%= branch.url  %><% else%>
                                 <i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;<%= form.url_field :"url#{branch.name}-#{branch.id}", size: "50x5"%><% end %></td>
-                                <td><%#= Commit.last_commit_in_branch(branch.id) %></td>
+                                <td><%= Commit.last_commit_in_branch(branch.id) %></td>
                             </tr>
+                            <% if branch.commits.present? %>
+                                    <tr>
+                                        <td colspan="12" class="hiddenRow">
+                                            <div class="accordian-body collapse" id="demo<%= branch.id.to_s %>">
+                                                <table class="table table-striped">
+                                                    <thead>
+                                                        <tr class="info">
+                                                            <th>commit message</th>
+                                                            <th>committer</th>
+                                                            <th>created</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <% flag = 1%>
+                                                        <% if flag == 1%>
+                                                            <% Commit.where(branch_id: branch.id).first(7).each do |child| %>
+                                                                <tr>
+                                                                    <td><a href="<%= child.url %>"><%= child.message %></a></td>
+                                                                    <td><%= User.find(child.user_id).username %></td>
+                                                                    <td><%= child.commit_date %></td>
+                                                                </tr>
+                                                            <% end %>
+                                                        <% else%>
+                                                            <% Commit.for_task(task.id).each do |child| %>
+                                                                <tr>
+                                                                    <td><a href="<%= child.url %>"><%= child.message %></a></td>
+                                                                    <td><%= User.find(child.user_id).username %></td>
+                                                                    <td><%= child.commit_date %></td>
+                                                                </tr>
+                                                            <% end %>
+                                                        <% end %>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <% end %>
                         <% end %>
-                        <tr>
-                            <td colspan="6" class="hiddenRow"><div id="demo2" class="accordian-body collapse">Demo2</div></td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -38,5 +72,6 @@
         <button type="button" class="btn btn-custom-success btn-sm" style= "display: block; margin-left: auto; margin-right: 0;">
             <%= form.submit %>
         </button>
+    </div>
     <% end %>
 </div>
