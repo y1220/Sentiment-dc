@@ -17,11 +17,11 @@ class BranchesController < ApplicationController
 
     def register_git_branch
       # POST
-      byebug
       branch_id = params[:branch_task].split(/-/)[0]
       task_id = params[:branch_task].split(/-/)[1]
       t = Task.find(task_id.to_i)
-      t.branch_id = branch_id
+      t.branch_id = branch_id.to_i
+      response= Branch.update(t.cid, Branch.find(branch_id.to_i).value)
       if t.save
         flash[:notice]= "Saving git branch to the task: #{t.cid} has been success!"
         redirect_to("/commits/index")
