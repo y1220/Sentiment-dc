@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   post 'commits/register_task_commit'
 
   post 'branches/update_git_url'
+  post 'branches/register_git_branch'
 
   post 'reports/daily_insert'
 

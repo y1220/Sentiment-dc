@@ -49,6 +49,8 @@ class CommitsController < ApplicationController
     @task = Task.where(cid: params['cid'])[0]
   end
 
+
+
   private
   def show_error (error_message, return_to_address)
     flash[:notice]= error_message
