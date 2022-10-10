@@ -41,12 +41,12 @@ class Commit < ApplicationRecord
     end
   end
 
-  def format_date_created
-    self.date_created.present? ? self.date_created.strftime('%m-%d-%Y %l:%M %p') : nil
+  def self.last_commit_in_branch(bid)
+    Commit.where(branch_id: bid).sort_by(&:commit_date).last.format_commit_date
   end
 
-  def self.last_commit_in_branch(bid)
-    Commit.where(branch_id: bid).last.format_date_created
+  def format_commit_date
+    self.commit_date.present? ? self.commit_date.strftime('%m-%d-%Y %l:%M %p') : nil
   end
 
 end

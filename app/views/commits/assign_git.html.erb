@@ -1,7 +1,7 @@
 <div class="container" style="padding: 10px;">
     <h1>Assign git branch</h1>
     <hr/>
-    <%= form_with url: "/branches/update_git_url", method: :post do |form| %>
+    <%= form_with url: "/branches/register_git_branch", method: :post do |form| %>
         <div class="col-md-12">
     	    <div class="panel panel-default">
                 <div class="panel-heading">
@@ -15,6 +15,7 @@
                             <th>branch name</th>
                             <th style= "text-align: center;">link</th>
                             <th>last commit at</th>
+                            <th>check</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -24,7 +25,8 @@
                                     <td><%= branch.name %></td>
                                     <td style= "text-align: center;"><% if branch.url.present?  %><%= branch.url  %><% else%>
                                     <i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;<%= form.url_field :"url#{branch.name}-#{branch.id}", size: "50x5"%><% end %></td>
-                                    <td><%#= Commit.last_commit_in_branch(branch.id) %></td>
+                                    <td><%= Commit.last_commit_in_branch(branch.id) %></td>
+                                    <td><%= form.radio_button :branch_task, "#{branch.id}-#{@task.id}" %></td>
                                 </tr>
                                 <% if branch.commits.present? %>
                                     <tr>
