@@ -1,7 +1,7 @@
 <div class="container" style="padding: 10px;">
     <h1>Configure property keys and values</h1>
     <hr/>
-    <%= form_with url: "/branches/update_git_url", method: :post do |form| %>
+    <%= form_with url: "/property_settings/update_key_value", method: :post do |form| %>
     <div class="col-md-12">
     	<div class="panel panel-default">
             <% @company_list.each do |company_name| %>
@@ -10,7 +10,6 @@
                 </div>
                 <div class="panel-body">
                     <table class="table table-condensed table-striped">
-
                             <thead >
                                 <tr>
                                 <th style= "text-align: center;">key</th>
@@ -23,9 +22,9 @@
                                     <tr>
                                         <% (property.enabled==true || property.enabled==nil) ? line_css = '' : line_css = 'text-decoration: line-through;'  %>
                                         <td style= "text-align: center;<%=line_css%>"><% if property.key_name.present?  %><%= property.key_name  %><% else%>
-                                        <i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;<%= form.text_field :"key#{property.company}-#{property.id}", size: "50x5"%><% end %></td>
+                                        <i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;<%= form.text_field :"key-#{property.company}-#{property.id}", size: "50x5"%><% end %></td>
                                         <td style= "text-align: center;<%=line_css%>"><% if property.value_text.present?  %><%= property.value_text  %><% else%>
-                                        <i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;<%= form.text_field :"value#{property.company}-#{property.id}", size: "50x5"%><% end %></td>
+                                        <i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;<%= form.text_field :"value-#{property.company}-#{property.id}", size: "50x5"%><% end %></td>
                                         <td style= "text-align: center;"><% if (property.enabled == nil || property.enabled == true )  %>
                                                                             <a href="#disablePopUp-<%=property.id.to_s%>" data-toggle="modal"><i class="fa-solid fa-trash-can" style= "color: #B22222;"></i></a>
                                                                          <% else  %><i class="fa fa-check" style= "color: #8FBC8F;"><%= link_to("","/property_settings/enable_record/#{property.id.to_s}", class: "nav-link active", :method=> :put)%></i><% end %></td>

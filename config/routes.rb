@@ -29,6 +29,7 @@ Rails.application.routes.draw do
   post 'reports/daily_insert'
 
   get 'property_settings/index'
+  post 'property_settings/update_key_value'
   put 'property_settings/disable_record/:id', to: 'property_settings#disable_record'
   put 'property_settings/enable_record/:id', to: 'property_settings#enable_record'
 
