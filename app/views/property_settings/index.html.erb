@@ -6,28 +6,29 @@
     	<div class="panel panel-default">
             <% @company_list.each do |company_name| %>
                 <div class="panel-heading">
-                    <%= company_name%>
+                    <h3 style= "color: #A9A9A9"><%= company_name%></h3>
                 </div>
                 <div class="panel-body">
                     <table class="table table-condensed table-striped">
 
                             <thead >
                                 <tr>
-                                <th></th>
                                 <th style= "text-align: center;">key</th>
                                 <th style= "text-align: center;">value</th>
-                                <th>enable</th>
+                                <th style= "text-align: center;">enable</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <% @properties.select{|p|p.company==company_name}.each do |property| %>
-                                    <tr data-toggle="collapse" data-target="#demo<%= property.id.to_s %>" class="accordion-toggle">
-                                        <td><button class="btn btn-default btn-xs"><span class="fa fa-eye"></span></button></td>
-                                        <td style= "text-align: center;"><% if property.key_name.present?  %><%= property.key_name  %><% else%>
+                                    <tr>
+                                        <% (property.enabled==true || property.enabled==nil) ? line_css = '' : line_css = 'text-decoration: line-through;'  %>
+                                        <td style= "text-align: center;<%=line_css%>"><% if property.key_name.present?  %><%= property.key_name  %><% else%>
                                         <i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;<%= form.text_field :"key#{property.company}-#{property.id}", size: "50x5"%><% end %></td>
-                                        <td style= "text-align: center;"><% if property.value_text.present?  %><%= property.value_text  %><% else%>
+                                        <td style= "text-align: center;<%=line_css%>"><% if property.value_text.present?  %><%= property.value_text  %><% else%>
                                         <i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;<%= form.text_field :"value#{property.company}-#{property.id}", size: "50x5"%><% end %></td>
-                                        <td><%= property.enabled %></td>
+                                        <td style= "text-align: center;"><% if (property.enabled == nil || property.enabled == true )  %>
+                                                                            <a href="#disablePopUp-<%=property.id.to_s%>" data-toggle="modal"><i class="fa-solid fa-trash-can" style= "color: #B22222;"></i></a>
+                                                                         <% else  %><i class="fa fa-check" style= "color: #8FBC8F;"><%= link_to("","/property_settings/enable_record/#{property.id.to_s}", class: "nav-link active", :method=> :put)%></i><% end %></td>
                                     </tr>
                                 <% end %>
                             </tbody>
@@ -42,3 +43,27 @@
     </div>
     <% end %>
 </div>
+
+<!-- Modal HTML -->
+<% @id_list.each do |id|%>
+<div id="disablePopUp-<%=id.to_s%>" class="modal fade">
+    <div class="modal-dialog modal-confirm">
+        <div class="modal-content">
+            <div class="modal-header flex-column">
+                <div class="icon-box">
+                    <i class="fa-solid fa-x"></i>
+                </div>
+                <h4 class="modal-title w-100">Are you sure?</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Do you really want to disable these records?</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger"><%= link_to("Disable","/property_settings/disable_record/#{id.to_s}", class: "nav-link active", style: "text-decoration: none; color: white;", :method=> :put)%></button>
+            </div>
+        </div>
+    </div>
+</div>
+<% end %>

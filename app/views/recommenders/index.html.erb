@@ -44,7 +44,6 @@
                     <div class="popup-<%= user.id.to_s%>" onclick="fs[<%= user.id.to_s%>]()"><%= user.last_status%>
                       <span class="popuptext-<%= user.id.to_s%>" id="myPopup-<%= user.id.to_s%>"><%= user.comment%></span>
                     </div></button></td>
-
                     <td><i class="far fa-comment"></i> <% if user.last_status == 'available' %><i class="fa fa-smile" aria-hidden="true"></i><% end %></td>
                   </tr>
                   <% end %>
