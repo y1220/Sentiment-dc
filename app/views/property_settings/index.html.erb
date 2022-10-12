@@ -1,5 +1,7 @@
 <div class="container" style="padding: 10px;">
     <h1>Configure property keys and values</h1>
+   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalForm">Modal Trial</button>
+   <h1 id="results"></h1>
     <hr/>
     <%= form_with url: "/property_settings/update_key_value", method: :post do |form| %>
     <div class="col-md-12">
@@ -67,3 +69,52 @@
     </div>
 </div>
 <% end %>
+
+<div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content shadow">
+            <div class="modal-body bg-image" style="background-image: url()">
+                <form id="inputs" class="needs-validation" novalidate="">
+                    <div class="form-group mx-2 mb-3">
+                        <label for="key">Key</label>
+                        <input type="text" class="form-control" id="key" placeholder="@key" required="">
+                    </div>
+                    <div class="form-group mx-2">
+                        <label for="value">Value</label>
+                        <input type="text" class="form-control" id="value" placeholder="@value" required="">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer justify text-14">
+                <button id="submit" type="submit" class="btn btn-primary" data-toggle="modal" data-target="#modalForm">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#modalForm').on('show.bs.modal', function () {
+
+        $("#submit, #close").click(function() {
+        // Validation
+        var form = $("#inputs")
+
+            if (form[0].checkValidity() === false) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+            form.addClass('was-validated')
+
+            //Declare and initialize variable for display inputs in div
+            var code = "";
+            $("#inputs").each(function() {
+                var text1 = $(this).find("#key").val();
+                var text2 = $(this).find("#value").val();
+                code += text1 + " " + text2;
+            });
+
+            $("#results").html(code);
+
+        });
+    });
+</script>
