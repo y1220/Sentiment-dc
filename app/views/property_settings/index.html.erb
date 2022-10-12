@@ -12,9 +12,9 @@
                     <table class="table table-condensed table-striped">
                             <thead >
                                 <tr>
-                                <th style= "text-align: center;">key</th>
-                                <th style= "text-align: center;">value</th>
-                                <th style= "text-align: center;">enable</th>
+                                <th scope="col" class="col-5" style= "text-align: center;">key</th>
+                                <th scope="col" class="col-6" style= "text-align: center;">value</th>
+                                <th style= "col-1"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -25,9 +25,10 @@
                                         <i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;<%= form.text_field :"key-#{property.company}-#{property.id}", size: "50x5"%><% end %></td>
                                         <td style= "text-align: center;<%=line_css%>"><% if property.value_text.present?  %><%= property.value_text  %><% else%>
                                         <i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;<%= form.text_field :"value-#{property.company}-#{property.id}", size: "50x5"%><% end %></td>
-                                        <td style= "text-align: center;"><% if (property.enabled == nil || property.enabled == true )  %>
-                                                                            <a href="#disablePopUp-<%=property.id.to_s%>" data-toggle="modal"><i class="fa-solid fa-trash-can" style= "color: #B22222;"></i></a>
-                                                                         <% else  %><i class="fa fa-check" style= "color: #8FBC8F;"><%= link_to("","/property_settings/enable_record/#{property.id.to_s}", class: "nav-link active", :method=> :put)%></i><% end %></td>
+                                        <td style= "text-align: center; "><% if property.value_text.present?  %><i class="fa-solid fa-pen-to-square" style="color: #4169E1;"></i><% end%>
+                                        <% if (property.enabled == nil || property.enabled == true )  %>
+                                                                            <a href="#disablePopUp-<%=property.id.to_s%>" data-toggle="modal"><i class="fa-solid fa-trash-can" style= "color: #B22222; padding-left: 5px;"></i></a>
+                                                                         <% else  %><i class="fa fa-check" style= "color: #8FBC8F; padding-left: 5px;"><%= link_to("","/property_settings/enable_record/#{property.id.to_s}", class: "nav-link active", :method=> :put)%></i><% end %></td>
                                     </tr>
                                 <% end %>
                             </tbody>
