@@ -30,6 +30,7 @@ Rails.application.routes.draw do
 
   get 'property_settings/index'
   post 'property_settings/update_key_value'
+  put 'property_settings/edit/:id', to: 'property_settings#edit'
   put 'property_settings/disable_record/:id', to: 'property_settings#disable_record'
   put 'property_settings/enable_record/:id', to: 'property_settings#enable_record'
 

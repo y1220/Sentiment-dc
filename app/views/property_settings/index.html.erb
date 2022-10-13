@@ -1,7 +1,6 @@
 <div class="container" style="padding: 10px;">
     <h1>Configure property keys and values</h1>
-   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalForm">Modal Trial</button>
-   <h1 id="results"></h1>
+    <h1 id="results"></h1>
     <hr/>
     <%= form_with url: "/property_settings/update_key_value", method: :post do |form| %>
     <div class="col-md-12">
@@ -27,11 +26,13 @@
                                         <i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;<%= form.text_field :"key-#{property.company}-#{property.id}", size: "50x5"%><% end %></td>
                                         <td style= "text-align: center;<%=line_css%>"><% if property.value_text.present?  %><%= property.value_text  %><% else%>
                                         <i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;<%= form.text_field :"value-#{property.company}-#{property.id}", size: "50x5"%><% end %></td>
-                                        <td style= "text-align: center; "><% if property.value_text.present?  %><i class="fa-solid fa-pen-to-square" style="color: #4169E1;"></i><% end%>
+                                        <td style= "text-align: center; "><% if property.value_text.present?  %>
+                                            <a style= "cursor: pointer;" type="button"  data-toggle="modal" data-target="#modalForm-<%=property.id.to_s%>"><i class="fa-solid fa-pen-to-square" style="color: #4169E1;"></i></a><% end%>
                                         <% if (property.enabled == nil || property.enabled == true )  %>
                                                                             <a href="#disablePopUp-<%=property.id.to_s%>" data-toggle="modal"><i class="fa-solid fa-trash-can" style= "color: #B22222; padding-left: 5px;"></i></a>
                                                                          <% else  %><i class="fa fa-check" style= "color: #8FBC8F; padding-left: 5px;"><%= link_to("","/property_settings/enable_record/#{property.id.to_s}", class: "nav-link active", :method=> :put)%></i><% end %></td>
                                     </tr>
+
                                 <% end %>
                             </tbody>
                     </table>
@@ -70,31 +71,17 @@
 </div>
 <% end %>
 
-<div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content shadow">
-            <div class="modal-body bg-image" style="background-image: url()">
-                <form id="inputs" class="needs-validation" novalidate="">
-                    <div class="form-group mx-2 mb-3">
-                        <label for="key">Key</label>
-                        <input type="text" class="form-control" id="key" placeholder="@key" required="">
-                    </div>
-                    <div class="form-group mx-2">
-                        <label for="value">Value</label>
-                        <input type="text" class="form-control" id="value" placeholder="@value" required="">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer justify text-14">
-                <button id="submit" type="submit" class="btn btn-primary" data-toggle="modal" data-target="#modalForm">Submit</button>
-            </div>
-        </div>
+<% @properties.each do |property|%>
+<div class="modal fade" id="modalForm-<%=property.id.to_s%>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div style="width: 50%;">
+    <%= render partial:  "edit_property",  locals: {property: property} %>
     </div>
 </div>
+<% end %>
+
 
 <script>
     $('#modalForm').on('show.bs.modal', function () {
-
         $("#submit, #close").click(function() {
         // Validation
         var form = $("#inputs")
@@ -112,9 +99,11 @@
                 var text2 = $(this).find("#value").val();
                 code += text1 + " " + text2;
             });
+            console.log(code);
+            console.log('hello');
+
 
             $("#results").html(code);
-
         });
     });
 </script>
