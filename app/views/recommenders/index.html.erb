@@ -110,13 +110,18 @@
             <p>Select <code>characteristics of task</code> to gain ideas of tasks you are looking for.</p>
             <div class="row mb-5">
                 <label class="col-sm-2 col-form-label">Required skills</label>
-                <div class="col-sm-10" style= "text-align: right; margin: 10px;">
-                    <% ['Front-end', 'Back-end', 'Infrastructure', 'Data-manipulation'].each do |skill|%>
-                      <div class="range">
-                        <label for="customRange1" class="form-label"><%= skill%>:&nbsp;</label>
+                <div class="col-sm-11" style= "text-align: right; margin: 10px;">
+                    <% ['Complexity', 'Priority', 'Duration', 'Front-end', 'Back-end', 'Infrastructure', 'Data-manipulation'].each_with_index do |skill, i|%>
+                      <label for="customRange1" class="form-label"><%= skill%>:&nbsp;</label>
+                      <label data-toggle="collapse" data-target="#toggle<%=i.to_s%>" class="switch" style= "">
+                          <input type="checkbox">
+                          <span class="slider round"></span>
+                      </label>
+                      <div class="range" id="toggle<%=i.to_s%>">
                         <input type="range" class="form-range" style="position: absolute; right: 300px; width: 50%;" min="0" max="100" step="0.2" id="customRange1">
-                        <span>50</span>
+                        <span style= "padding: 70px;">50&nbsp;&nbsp;</span>
                       </div>
+                      <hr/>
                     <% end %>
                 </div>
             </div>
