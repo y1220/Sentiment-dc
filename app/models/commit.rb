@@ -41,8 +41,18 @@ class Commit < ApplicationRecord
     end
   end
 
-  def self.last_commit_in_branch(bid)
+  def self.last_commit_at_in_branch(bid)
     Commit.where(branch_id: bid).sort_by(&:commit_date).last.format_commit_date
+  end
+
+  def self.last_commit_by_in_branch(bid)
+    Commit.where(branch_id: bid).sort_by(&:commit_date).last.user.username
+  end
+
+  def self.commit_count_in_30d(bid)
+    now = Time.zone.now
+    thirty_days_ago = (now - 30.days)
+    Commit.where(branch_id: bid, commit_date: thirty_days_ago..now).count
   end
 
   def format_commit_date
