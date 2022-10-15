@@ -50,8 +50,8 @@
                     <td><%= user.username%></td>
                     <td><%= user.role%></td>
                     <td><button type="button" class="btn btn-outline-<%=color_status[user.last_status]%>">
-                    <div class="popup-<%= user.id.to_s%>" onclick="fs[<%= user.id.to_s%>]()"><%= user.last_status%>
-                      <span class="popuptext-<%= user.id.to_s%>" id="myPopup-<%= user.id.to_s%>"><%= user.comment%></span>
+                    <div class="popup-<%=i.to_s%>-<%= user.id.to_s%>" onclick="fs_<%=i.to_s%>[<%= user.id.to_s%>]()"><%= user.last_status%>
+                      <span class="popuptext-<%=i.to_s%>-<%= user.id.to_s%>" id="myPopup-<%=i.to_s%>-<%= user.id.to_s%>"><%= user.comment%></span>
                     </div></button></td>
                     <td><i class="far fa-comment"></i> <% if user.last_status == 'available' %><i class="fa fa-smile" aria-hidden="true"></i><% end %></td>
                   </tr>
@@ -65,12 +65,19 @@
         const task = document.querySelector('#task-top');
 
         var selectedValue;
+        var fs_0 = [];
+        var fs_1 = [];
+        var fs_2 = [];
+        var fs_3 = [];
+        var fs_4 = [];
+
         function selectTask() {
           button.onclick = (e) => {
             e.preventDefault();
             selectedValue = [].filter
                 .call(task.options, option => option.selected)
                 .map(option => option.value)[0];
+
             // console.log('selectedValue:',selectedValue);
 
             for (var i=0, n=task.options.length;i<n;i++) {
@@ -78,6 +85,16 @@
               i == selectedValue ? x.style.display = "" : x.style.display = "none"
             }
           };
+          // When the user clicks on div, open the popup :NEED TO FIX, message shown without clicking it
+          var show = ["show-"+selectedValue+"-1", "show-"+selectedValue+"-2", "show-"+selectedValue+"-3", "show-"+selectedValue+"-4", "show-"+selectedValue+"-5", "show-"+selectedValue+"-6", "show-"+selectedValue+"-7"];
+          var myPopup = ["myPopup-"+selectedValue+"-1", "myPopup-"+selectedValue+"-2", "myPopup-"+selectedValue+"-3", "myPopup-"+selectedValue+"-4", "myPopup-"+selectedValue+"-5", "myPopup-"+selectedValue+"-6", "myPopup-"+selectedValue+"-7"];
+          for (let x = 0; x < 7; x++){
+              window["fs_"+selectedValue].push( function() {
+                // console.log(myPopup[x-1]);
+                var popup = document.getElementById(myPopup[x-1]);
+                popup.classList.toggle(show[x-1]);
+              });
+          }
         }
             // document.getElementById("task-top-0").style.display = "none";  //hide
             // document.getElementById("task-top-1").style.display = "none";  //hide
@@ -364,15 +381,5 @@
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
 <script>
-  // When the user clicks on div, open the popup
-  var fs = [];
-  var show = ["show-1", "show-2", "show-3", "show-4", "show-5", "show-6", "show-7"];
-  var myPopup = ["myPopup-1", "myPopup-2", "myPopup-3", "myPopup-4", "myPopup-5", "myPopup-6", "myPopup-7"];
-  for (let x = 0; x < 7; x++){
-      fs.push( function() {
-        // console.log(myPopup[x-1]);
-        var popup = document.getElementById(myPopup[x-1]);
-        popup.classList.toggle(show[x-1]);
-      });
-  }
+
 </script>
