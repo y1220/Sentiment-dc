@@ -106,12 +106,13 @@ class Task < ActiveRecord::Base
       if task['assignees'].count != 0
         task['assignees'].each do |assignee|
           if User.where(cid: assignee['id']).empty?
-            @user= User.new(cid: assignee['id'], username: assignee['username'])
-            if !@user.save
+            user= User.new(cid: assignee['id'], username: assignee['username'])
+            if !user.save
               return false, "Error: User creation failed"
             end
           end
-          if @task.users.include?(@user)
+          @user= User.where(cid: assignee['id'])[0]
+          if !@task.users.include?(@user)
             @task.users << @user
             if !@task.save
               return false, "Error: Task User creation failed"
