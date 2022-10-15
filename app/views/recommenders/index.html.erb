@@ -60,25 +60,31 @@
               <p>Select <code>characteristics of task</code> to gain ideas of tasks you are looking for.</p>
               <div class="row mb-5">
                   <label class="col-sm-2 col-form-label">Required skills</label>
-                  <div class="col-sm-10">
-                    <div>
-                      <label for="customRange1" class="form-label">Front-end</label>
-                      <input type="range" class="form-range" style="position: absolute; right: 230px; width: 50%;" min="0" max="5" step="0.5" id="customRange2">
-                    </div>
-                    <div>
-                      <label for="disabledRange" class="form-label">Back-end</label>
-                      <input type="range" class="form-range" style="position: absolute; right: 230px; width: 50%;" min="0" max="5" step="0.5" id="customRange2">
-                    </div>
-                    <div>
-                      <label for="customRange2" class="form-label">Infrastructure</label>
-                      <input type="range" class="form-range" style="position: absolute; right: 230px; width: 50%;" min="0" max="5" step="0.5" id="customRange2">
-                    </div>
-                    <div>
-                      <label for="customRange2" class="form-label">Data-manipulation</label>
-                      <input type="range" class="form-range" style="position: absolute; right: 230px; width: 50%;" min="0" max="5" step="0.5" id="customRange2">
-                    </div>
+                  <div class="col-sm-10" style= "text-align: right; margin: 10px;">
+                      <% ['Front-end', 'Back-end', 'Infrastructure', 'Data-manipulation'].each do |skill|%>
+                        <div class="range">
+                          <label for="customRange1" class="form-label"><%= skill%>:&nbsp;</label>
+                          <input type="range" class="form-range" style="position: absolute; right: 300px; width: 50%;" min="0" max="100" step="0.2" id="customRange1">
+                          <span>50</span>
+                        </div>
+                      <% end %>
                   </div>
-                </div>
+              </div>
+              <script>
+                var elem = document.getElementsByClassName('range');
+                console.log('elem: ',elem,' elem.length:', elem.length);
+              　 var rangeValue = function (elem, target) {
+              　 　　return function(evt){
+              　　　 　　target.innerHTML = elem.value;
+              　　　}
+              　 }
+              　 for(var i = 0, max = elem.length; i < max; i++){
+              　　　bar = elem[i].getElementsByTagName('input')[0];
+              　　　target = elem[i].getElementsByTagName('span')[0];
+                   console.log('i: ',i,' bar:', bar, ' target: ', target);
+              　　  bar.addEventListener('input', rangeValue(bar, target));
+              　 }
+              </script>
               <!-- Table Variants -->
               <table class="table">
                 <thead>
