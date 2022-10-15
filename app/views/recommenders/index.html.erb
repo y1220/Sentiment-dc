@@ -8,36 +8,45 @@
         </ol>
       </nav>
     </div><!-- End Page Title -->
-
     <div class="card">
-            <div class="card-body">
-              <button type="button" class="btn btn-custom-danger btn-sm" style= "display: block; margin-left: auto; margin-right: 0;">
-              <%= link_to("Update user data from ClickUp","/recommenders/update_clickup", class: "nav-link active", style: "text-decoration: none; color: black;")%></button>
-              <h5 class="card-title">Team member for <a href="<%= @tasks.first.url%>" style="color: #DC143C;"><%= @tasks.first.name%></a>
-              <% @tasks -= [@tasks.first]%>
-              <% @tasks.each do |task|%>
-               | <a href="<%= task.url%>" style="color: #DC143C;"><%= task.name%></a>
-              <% end %>
-              </h5>
+      <div class="card-body">
+        <button type="button" class="btn btn-custom-danger btn-sm" style= "display: block; margin-left: auto; margin-right: 0;">
+        <%= link_to("Update user data from ClickUp","/recommenders/update_clickup", class: "nav-link active", style: "text-decoration: none; color: black;")%></button>
+        <h5 class="card-title">
+        <br/>
+        <!-- Select task -->
+        <select id="task-top">
+          <% @tasks.each_with_index do |task, i| %>
+            <option value="<%= i.to_s%>"><%= task[:name]%></option>
+          <% end %>
+        </select>
+        &nbsp;<button id="button" onclick="selectTask()" class="btn btn-custom-success btn-sm" ><i class="fa-solid fa-play" style="color: white;"></i></button>
+        <!-- End Select task -->
 
-              <p>Visit <a href="#" style="color: #DC143C;">this page</a> for details of the task.</p>
-
-              <!-- Active Table -->
-              <table class="table table-borderless">
-                <thead>
+        <!-- Active Table -->
+        <table class="table table-borderless">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th scope="col">Position</th>
+              <th scope="col">Availability</th>
+              <th scope="col">Contact</th>
+            </tr>
+          </thead>
+          <% color_status = {'available' => 'success', 'normal' =>  'info', 'busy' => 'danger' } %>
+          <% User.find(1).tasks.last(3).each_with_index do |task, i|%>
+            <tbody id= "task-top-<%=i.to_s%>" style="display: none;">
+              <tr style="background-color: lightblue; padding: 3px;">
+                <td></td>
+                <td><%= task.name%></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <% task.users.each_with_index do |user, j|%>
                   <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Position</th>
-                    <th scope="col">Availability</th>
-                    <th scope="col">Contact</th>
-                  </tr>
-                </thead>
-                <tbody>
-                <% color_status = {'available' => 'success', 'normal' =>  'info', 'busy' => 'danger' } %>
-                <% @users.each_with_index do |user, i|%>
-                  <tr>
-                    <th scope="row"><%= i+1%></th>
+                    <th scope="row"><%= j+1%></th>
                     <td><%= user.username%></td>
                     <td><%= user.role%></td>
                     <td><button type="button" class="btn btn-outline-<%=color_status[user.last_status]%>">
@@ -46,96 +55,119 @@
                     </div></button></td>
                     <td><i class="far fa-comment"></i> <% if user.last_status == 'available' %><i class="fa fa-smile" aria-hidden="true"></i><% end %></td>
                   </tr>
-                  <% end %>
-                </tbody>
-              </table>
-              <!-- End Tables without borders -->
+              <% end %>
+            </tbody>
+          <% end %>
+        </table>
+        <!-- End Tables without borders -->
+        <script>
+        const button = document.querySelector('#button');
+        const task = document.querySelector('#task-top');
 
-            </div>
-          </div>
+        var selectedValue;
+        function selectTask() {
+          button.onclick = (e) => {
+            e.preventDefault();
+            selectedValue = [].filter
+                .call(task.options, option => option.selected)
+                .map(option => option.value)[0];
+            // console.log('selectedValue:',selectedValue);
 
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Sort task</h5>
-              <p>Select <code>characteristics of task</code> to gain ideas of tasks you are looking for.</p>
-              <div class="row mb-5">
-                  <label class="col-sm-2 col-form-label">Required skills</label>
-                  <div class="col-sm-10" style= "text-align: right; margin: 10px;">
-                      <% ['Front-end', 'Back-end', 'Infrastructure', 'Data-manipulation'].each do |skill|%>
-                        <div class="range">
-                          <label for="customRange1" class="form-label"><%= skill%>:&nbsp;</label>
-                          <input type="range" class="form-range" style="position: absolute; right: 300px; width: 50%;" min="0" max="100" step="0.2" id="customRange1">
-                          <span>50</span>
-                        </div>
-                      <% end %>
-                  </div>
-              </div>
-              <script>
-                var elem = document.getElementsByClassName('range');
-                console.log('elem: ',elem,' elem.length:', elem.length);
-              　 var rangeValue = function (elem, target) {
-              　 　　return function(evt){
-              　　　 　　target.innerHTML = elem.value;
-              　　　}
-              　 }
-              　 for(var i = 0, max = elem.length; i < max; i++){
-              　　　bar = elem[i].getElementsByTagName('input')[0];
-              　　　target = elem[i].getElementsByTagName('span')[0];
-                   console.log('i: ',i,' bar:', bar, ' target: ', target);
-              　　  bar.addEventListener('input', rangeValue(bar, target));
-              　 }
-              </script>
-              <!-- Table Variants -->
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th scope="col">Task</th>
-                    <th scope="col">Complexity</th>
-                    <th scope="col">Priority</th>
-                    <th scope="col">Duration</th>
-                    <th scope="col">Front-end</th>
-                    <th scope="col">Back-end</th>
-                    <th scope="col">Infrastructure</th>
-                    <th scope="col">Data-manipulation</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <% @task_name_list.each_with_index do |task, i|%>
-                  <tr>
+            for (var i=0, n=task.options.length;i<n;i++) {
+              var x = document.getElementById("task-top-"+i);
+              i == selectedValue ? x.style.display = "" : x.style.display = "none"
+            }
+          };
+        }
+            // document.getElementById("task-top-0").style.display = "none";  //hide
+            // document.getElementById("task-top-1").style.display = "none";  //hide
+            // document.getElementById("task-top-2").style.display = "block"; //show
 
-                    <th scope="row"><a href="<%= task.url%>"><%=task.name%></a></th>
-                    <% (0..6).to_a.each do |j|%>
-                      <td><%=@scores[i][j]%></td>
+
+        </script>
+
+        <!-- Sort task -->
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Sort task</h5>
+            <p>Select <code>characteristics of task</code> to gain ideas of tasks you are looking for.</p>
+            <div class="row mb-5">
+                <label class="col-sm-2 col-form-label">Required skills</label>
+                <div class="col-sm-10" style= "text-align: right; margin: 10px;">
+                    <% ['Front-end', 'Back-end', 'Infrastructure', 'Data-manipulation'].each do |skill|%>
+                      <div class="range">
+                        <label for="customRange1" class="form-label"><%= skill%>:&nbsp;</label>
+                        <input type="range" class="form-range" style="position: absolute; right: 300px; width: 50%;" min="0" max="100" step="0.2" id="customRange1">
+                        <span>50</span>
+                      </div>
                     <% end %>
-                  </tr>
-                  <% end %>
-                </tbody>
-              </table>
-              <!-- Pagination with icons -->
-              <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                  <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous">
-                      <span aria-hidden="true">&laquo;</span>
-                    </a>
-                  </li>
-                  <li class="page-item"><a class="page-link" href="#">1</a></li>
-                  <li class="page-item"><a class="page-link" href="#">2</a></li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
-                      <span aria-hidden="true">&raquo;</span>
-                    </a>
-                  </li>
-                </ul>
-              </nav><!-- End Pagination with icons -->
-              <!-- End Table Variants -->
-
+                </div>
             </div>
-          </div>
+            <script>
+              var elem = document.getElementsByClassName('range');
+              // console.log('elem: ',elem,' elem.length:', elem.length);
+            　 var rangeValue = function (elem, target) {
+            　 　　return function(evt){
+            　　　 　　target.innerHTML = elem.value;
+            　　　}
+            　 }
+            　 for(var i = 0, max = elem.length; i < max; i++){
+            　　　bar = elem[i].getElementsByTagName('input')[0];
+            　　　target = elem[i].getElementsByTagName('span')[0];
+                  // console.log('i: ',i,' bar:', bar, ' target: ', target);
+            　　  bar.addEventListener('input', rangeValue(bar, target));
+            　 }
+            </script>
+            <!-- Table Variants -->
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Task</th>
+                  <th scope="col">Complexity</th>
+                  <th scope="col">Priority</th>
+                  <th scope="col">Duration</th>
+                  <th scope="col">Front-end</th>
+                  <th scope="col">Back-end</th>
+                  <th scope="col">Infrastructure</th>
+                  <th scope="col">Data-manipulation</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @task_name_list.each_with_index do |task, i|%>
+                <tr>
+                  <th scope="row"><a href="<%= task.url%>"><%=task.name%></a></th>
+                  <% (0..6).to_a.each do |j|%>
+                    <td><%=@scores[i][j]%></td>
+                  <% end %>
+                </tr>
+                <% end %>
+              </tbody>
+            </table>
+            <!-- Pagination with icons -->
+            <nav aria-label="Page navigation example">
+              <ul class="pagination">
+                <li class="page-item">
+                  <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                  <a class="page-link" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+              </ul>
+            </nav><!-- End Pagination with icons -->
+            <!-- End Table Variants -->
 
+          </div>
         </div>
+        <!-- End Sort task -->
       </div>
+    </div>
 
 
     <div class="row">
@@ -143,7 +175,7 @@
         <div class="card">
             <div class="card-body">
             <h5 class="card-title">Task similarity</h5>
-            <label for="task-selection">Select a task</label>
+            <label for="task-selection">&nbsp;</label>
             <select id="task-selection" style="position: absolute; right: 25px;">
               <% @radar_scores.each do |task| %>
                 <option value="<%= task[:name]%>-<%= task[:scores].to_s[1..-2]%>"><%= task[:name]%></option>
@@ -208,13 +240,13 @@
                     selectedValues = [].filter
                         .call(sb.options, option => option.selected)
                         .map(option => option.value);
-                    console.log('selected:',selectedValues);
+                    // console.log('selected:',selectedValues);
                     updateChart();
                 };
 
                 function updateChart(){
                   var array = selectedValues[0].split(/[-,]/);
-                  console.log('array:', array);
+                  // console.log('array:', array);
                   var name = array[0];
                   var score = [array[1], array[2], array[3], array[4], array[5], array[6], array[7]];
                   radarChart.data.datasets[0].label =  name;
@@ -338,7 +370,7 @@
   var myPopup = ["myPopup-1", "myPopup-2", "myPopup-3", "myPopup-4", "myPopup-5", "myPopup-6", "myPopup-7"];
   for (let x = 0; x < 7; x++){
       fs.push( function() {
-        console.log(myPopup[x-1]);
+        // console.log(myPopup[x-1]);
         var popup = document.getElementById(myPopup[x-1]);
         popup.classList.toggle(show[x-1]);
       });
