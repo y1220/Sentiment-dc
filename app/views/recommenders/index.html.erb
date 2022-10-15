@@ -99,8 +99,6 @@
             // document.getElementById("task-top-0").style.display = "none";  //hide
             // document.getElementById("task-top-1").style.display = "none";  //hide
             // document.getElementById("task-top-2").style.display = "block"; //show
-
-
         </script>
 
         <!-- Sort task -->
@@ -113,7 +111,7 @@
                 <div class="col-sm-11" style= "text-align: right; margin: 10px;">
                     <% ['Complexity', 'Priority', 'Duration', 'Front-end', 'Back-end', 'Infrastructure', 'Data-manipulation'].each_with_index do |skill, i|%>
                       <label for="customRange1" class="form-label"><%= skill%>:&nbsp;</label>
-                      <label data-toggle="collapse" data-target="#toggle<%=i.to_s%>" class="switch" style= "">
+                      <label data-toggle="collapse" data-target="#toggle<%=i.to_s%>" class="switch">
                           <input type="checkbox">
                           <span class="slider round"></span>
                       </label>
@@ -123,22 +121,56 @@
                       </div>
                       <hr/>
                     <% end %>
+                    <label class="sort-analyze">
+                      <button id="sort-btn" class="btn btn-custom-danger btn-sm" >Analyze</button>
+                    </label>
                 </div>
             </div>
             <script>
               var elem = document.getElementsByClassName('range');
+              var swit = document.getElementsByClassName('switch');
+
               // console.log('elem: ',elem,' elem.length:', elem.length);
             　 var rangeValue = function (elem, target) {
             　 　　return function(evt){
             　　　 　　target.innerHTML = elem.value;
             　　　}
             　 }
+              var scoreList=[];
+              var toggleList=[];
             　 for(var i = 0, max = elem.length; i < max; i++){
             　　　bar = elem[i].getElementsByTagName('input')[0];
             　　　target = elem[i].getElementsByTagName('span')[0];
-                  // console.log('i: ',i,' bar:', bar, ' target: ', target);
+            　　　tog = swit[i].getElementsByTagName('input')[0];
+
+                 scoreList.push(bar);
+                 toggleList.push(tog);
+                 // console.log('i: ',i,' bar:', bar, ' target: ', target);
             　　  bar.addEventListener('input', rangeValue(bar, target));
             　 }
+              const sort_btn = document.querySelector('#sort-btn');
+              const sb = document.querySelector('#task-selection');
+              console.log("selectedValue at sort: ", selectedValue);
+              sort_btn.onclick = (e) => {
+              console.log("selectedValue at sort: ", selectedValue);
+              function getDifference(a, b) {
+                return Math.abs(a - b);
+              }
+              var scores = [<%=@scores[0]%>,
+                                <%=@scores[1]%>,
+                                <%=@scores[2]%>];
+              var score = scores[selectedValue];
+              console.log(getDifference(-10, 10));
+              var sum=0;
+                for(var i = 0, max = scoreList.length; i < max; i++){
+                  console.log("value[", i, "]: ", scoreList[i].value);
+                  console.log("toggle[", i, "]: ", toggleList[i].checked);
+                  console.log("score[", i, "]: ", score[i]);
+                  console.log("diff[", i, "]: ", getDifference(scoreList[i].value, score[i]));
+                  if (toggleList[i].checked == true) sum= sum + getDifference(scoreList[i].value, score[i]);
+                  console.log("sum[", i, "]: ", sum);
+                }
+              };
             </script>
             <!-- Table Variants -->
             <table class="table">
