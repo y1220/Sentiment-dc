@@ -96,9 +96,6 @@
               });
           }
         }
-            // document.getElementById("task-top-0").style.display = "none";  //hide
-            // document.getElementById("task-top-1").style.display = "none";  //hide
-            // document.getElementById("task-top-2").style.display = "block"; //show
         </script>
 
         <!-- Sort task -->
@@ -130,14 +127,13 @@
               var elem = document.getElementsByClassName('range');
               var swit = document.getElementsByClassName('switch');
 
-              // console.log('elem: ',elem,' elem.length:', elem.length);
-            　 var rangeValue = function (elem, target) {
+              var scoreList=[];
+              var toggleList=[];
+              var rangeValue = function (elem, target) {
             　 　　return function(evt){
             　　　 　　target.innerHTML = elem.value;
             　　　}
             　 }
-              var scoreList=[];
-              var toggleList=[];
             　 for(var i = 0, max = elem.length; i < max; i++){
             　　　bar = elem[i].getElementsByTagName('input')[0];
             　　　target = elem[i].getElementsByTagName('span')[0];
@@ -202,9 +198,13 @@
               </tbody>
             </table>
             <script>
-              var t_scores = document.getElementsByClassName('task_score');
+              var t_scores = document.getElementsByClassName('task_score')[0];
               console.log('t_scores: ', t_scores);
               var sums= [0, 0, 0, 0, 0, 0];
+              var sums_map= new Map;
+              var sums_sorted;
+              var indexes;
+              var old_tasks = [];
               sort_btn.onclick = (e) => {
                 console.log("selectedValue at sort: ", selectedValue);
                 for(var i = 0, max_i = scores.length; i < max_i; i++){
@@ -219,15 +219,66 @@
                   }
                   console.log("DONE sums[", i, "]: ", sums[i]);
                 }
-                var sums_map= new Map;
                 console.log("!!!DONE sums: ", sums);
-                for (const [index, value] of sums.entries()) {
+                for (let [index, value] of sums.entries()) {
                   sums_map.set(index, value)
                 }
-                var sums_sorted = new Map([...sums_map.entries()].sort((a, b) => a[1] - b[1]));
+                sums_sorted = new Map([...sums_map.entries()].sort((a, b) => a[1] - b[1]));
                 console.log("sum_sorted: ",sums_sorted);
-                var indexes = Array.from(sums_sorted.keys());
+                indexes = Array.from(sums_sorted.keys());
                 console.log("indexes: ",indexes);
+                // reorder the task list according to the amount of the sum of differences
+                // 1. store current task name, scores into map
+                let ind=0;
+                tr_list = t_scores.getElementsByTagName('tr')
+                for (let tr_ele of tr_list) {
+                  th_ele = tr_list[ind].getElementsByTagName('th')[0];
+                  a_ele = th_ele.getElementsByTagName('a')[0];
+                  a_ele.getAttribute('href');
+                  task_link = a_ele.getAttribute('href');
+                  task_name = a_ele.innerHTML;
+                  old_tasks.push([task_name, task_link]);
+                  console.log('task_name[',ind,']: ', task_name);
+                  ind++;
+                }
+                console.log('old_tasks: ', old_tasks);
+
+                // 2. replace the values acccording to the changed order of indexes
+                let cnt = 0;
+                var updateTaskName = function (updated_task, target) {
+            　 　　return function(evt){
+                     console.log('target: ', target, ' updated_task: ', updated_task);
+            　　　 　　target.innerHTML = updated_task;
+              　　 }
+              　}
+                var updateTaskLink = function (updated_task, target) {
+            　 　　return function(evt){
+                     console.log('target: ', target, ' updated_task: ', updated_task);
+            　　　 　　target.href = updated_task;
+              　　 }
+              　}
+                tmp_scores=[];
+                for (let index of indexes) {
+              　　 target = t_scores.getElementsByTagName('tr')[cnt];
+                  console.log('target: ', target, ' cnt: ', cnt);
+
+                  target_a = target.getElementsByTagName('a')[0];
+                  console.log('target_a: ', target_a, 'old_tasks[index][0]: ', old_tasks[index][0], 'old_tasks[index][1]: ', old_tasks[index][1]);
+              // 　　 updateTaskName(old_tasks[index][0], target_a);
+              // 　　 updateTaskLink(old_tasks[index][1], target_a);
+                  document.getElementsByClassName('task_score')[0].getElementsByTagName('tr')[cnt].getElementsByTagName('a')[0].innerHTML=old_tasks[index][0];
+                  document.getElementsByClassName('task_score')[0].getElementsByTagName('tr')[cnt].getElementsByTagName('a')[0].href=old_tasks[index][1];
+                  tmp_scores_row=[];
+                 for(let ii = 0; ii < 7; ii++){
+                    tmp_scores_row.push(scores[index][ii]);
+                    console.log('ii: ', i, 'score:', scores[index][ii], 'cnt: ', cnt);
+                    document.getElementsByClassName('task_score')[0].getElementsByTagName('tr')[cnt].getElementsByTagName('td')[ii].innerHTML=scores[index][ii];
+                 }
+                 tmp_scores.push(tmp_scores_row);
+                  cnt++;
+            　   }
+                console.log('scores:', scores, 'tmp_scores: ', tmp_scores);
+                scores = tmp_scores;
               }
             </script>
             <!-- Pagination with icons -->
