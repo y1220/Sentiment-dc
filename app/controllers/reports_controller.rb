@@ -23,9 +23,10 @@ class ReportsController < ApplicationController
         break
       end
     end
-    enable = params["enable"] == "1" ? true : false
+    en = params["enable"] == "1" ? true : false
+    byebug
     av = params["av"]
-    da = DailyAvailability.new(user_id: 1, enable: true, availability_score: av, register_date: register_date)
+    da = DailyAvailability.new(user_id: 1, enable: en, availability_score: av, register_date: register_date)
     begin
       da.save
       flash[:notice]= "Thanks for your submission :)"
