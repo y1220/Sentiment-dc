@@ -145,7 +145,6 @@
             　　  bar.addEventListener('input', rangeValue(bar, target));
             　 }
               const sort_btn = document.querySelector('#sort-btn');
-              const sb = document.querySelector('#task-selection');
               console.log("selectedValue at sort: ", selectedValue);
               function getDifference(a, b) {
                 return Math.abs(a - b);
@@ -370,6 +369,8 @@
                   });
                 });
                 const btn = document.querySelector('#btn');
+                const sb = document.querySelector('#task-selection');
+
                 var selectedValues;
 
                 btn.onclick = (e) => {
