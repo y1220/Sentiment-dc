@@ -20,18 +20,18 @@
                         </thead>
                         <tbody>
                             <% @branches.each do |branch| %>
-                                <tr data-toggle="collapse" data-target="#demo<%= branch.id.to_s %>" class="accordion-toggle">
-                                    <td><button class="btn btn-default btn-xs"><span class="fa fa-eye"></span></button></td>
+                                <tr>
+                                    <td><a class="accordion-toggle" data-toggle="collapse" data-target="#git-bid<%= branch.id.to_s %>" style= "cursor: pointer;" type="button"><span class="fa fa-eye"></span></a></td>
                                     <td><%= branch.name %></td>
                                     <td style= "text-align: center;"><% if branch.url.present?  %><%= branch.url  %><% else%>
                                     <i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;<%= form.url_field :"url#{branch.name}-#{branch.id}", size: "50x5"%><% end %></td>
-                                    <td><%= Commit.last_commit_in_branch(branch.id) %></td>
+                                    <td><%= Commit.last_commit_at_in_branch(branch.id) %></td>
                                     <td><%= form.radio_button :branch_task, "#{branch.id}-#{@task.id}" %></td>
                                 </tr>
                                 <% if branch.commits.present? %>
                                     <tr>
                                         <td colspan="12" class="hiddenRow">
-                                            <div class="accordian-body collapse" id="demo<%= branch.id.to_s %>">
+                                            <div class="accordian-body collapse" id="git-bid<%= branch.id.to_s %>">
                                                 <table class="table table-striped">
                                                     <thead>
                                                         <tr class="info">
@@ -95,9 +95,9 @@
                             <% color_status = {'Open' => 'secondary', 'review' =>  'primary', 'Closed' => 'success', 'in_progress' =>  'info' } %>
                             <% color_priority = {'low' =>  'secondary', 'urgent' =>  'danger', 'high' =>  'warning', 'normal' =>  'info' } %>
                                 <% @task.find_children.count != 0 ? flag = 1 : flag = 0%>
-                                <tr data-toggle="collapse" data-target="#demo<%= @task.id.to_s %>" class="accordion-toggle">
+                                <tr>
                                     <% if flag == 1 %>
-                                        <td><button class="btn btn-default btn-xs"><span class="fa fa-eye"></span></button></td>
+                                        <td><a class="accordion-toggle" data-toggle="collapse" data-target="#task<%= @task.id.to_s %>" style= "cursor: pointer;" type="button"><span class="fa fa-eye"></span></a></td>
                                     <% else %>
                                         <td></td>
                                     <% end %>
@@ -121,7 +121,7 @@
                                 <% if @task.find_children.count != 0 %>
                                     <tr>
                                         <td colspan="12" class="hiddenRow">
-                                            <div class="accordian-body collapse" id="demo<%= @task.id.to_s %>">
+                                            <div class="accordian-body collapse" id="task<%= @task.id.to_s %>">
                                                 <table class="table table-striped">
                                                     <thead>
                                                         <tr class="info">

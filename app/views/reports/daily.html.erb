@@ -46,13 +46,13 @@
                             &nbsp;Willing to help others</h5>
                         <br/>
                         <div class="custom-control custom-switch">
-                            <div data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
+                            <div data-toggle="collapse" data-target="#help" class="accordion-toggle">
                                 <%= form.check_box :enable, class: "custom-control-input", id: "customSwitch1" %>
                                 <label class="custom-control-label" for="customSwitch1">(enable it if you can!)</label>
                             </div>
                         </div>
                         <br/>
-                        <div class="accordian-body collapse" id="demo1">
+                        <div class="accordian-body collapse" id="help">
                             <label for="customRange8" class="form-label">Availability</label>
                             <%= form.range_field :av, min: 0, max: 5, class: "form-range", id: "customRange1", style: "position: absolute; right: 150px; width: 515px;"%>
                         </div>

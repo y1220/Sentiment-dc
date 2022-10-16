@@ -26,9 +26,9 @@
                     <% color_status = {'Open' => 'secondary', 'review' =>  'primary', 'Closed' => 'success', 'in_progress' =>  'info' } %>
                     <% color_priority = {'low' =>  'secondary', 'urgent' =>  'danger', 'high' =>  'warning', 'normal' =>  'info' } %>
                         <% @task.find_children.count != 0 ? flag = 1 : flag = 0%>
-                        <tr data-toggle="collapse" data-target="#demo<%= @task.id.to_s %>" class="accordion-toggle">
+                        <tr>
                             <% if flag == 1 %>
-                                <td><button class="btn btn-default btn-xs"><span class="fa fa-eye"></span></button></td>
+                                <td><a style= "cursor: pointer;" data-toggle="collapse" data-target="#task-reg<%= @task.id.to_s %>" class="accordion-toggle"><span class="fa fa-eye"></span></a></td>
                             <% else %>
                                 <td></td>
                             <% end %>
@@ -55,7 +55,7 @@
                         <% if @task.find_children.count != 0 %>
                             <tr>
                             <td colspan="12" class="hiddenRow">
-                                <div class="accordian-body collapse" id="demo<%= @task.id.to_s %>">
+                                <div class="accordian-body collapse" id="task-reg<%= @task.id.to_s %>">
                                     <table class="table table-striped">
                                         <thead>
                                             <tr class="info">
