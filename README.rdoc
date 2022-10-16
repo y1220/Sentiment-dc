@@ -1,4 +1,3 @@
-== README
 # Project description
 Aiming for making a platform for software developers to visualize their task statuses,
 objective goal is to improve the approachability of collaboration inside of teams.
