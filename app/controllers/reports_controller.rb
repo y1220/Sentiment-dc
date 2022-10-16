@@ -24,7 +24,6 @@ class ReportsController < ApplicationController
       end
     end
     en = params["enable"] == "1" ? true : false
-    byebug
     av = params["av"]
     da = DailyAvailability.new(user_id: 1, enable: en, availability_score: av, register_date: register_date)
     begin

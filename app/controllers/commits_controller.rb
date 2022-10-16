@@ -29,6 +29,7 @@ class CommitsController < ApplicationController
 
   def register_task_commit
     # POST
+    c_list=[]
     params.keys.select{|x| x.start_with?("cmt")}.each do |commit|
       c_sep = commit.split(/-/)
       cid = c_sep[1]
@@ -38,8 +39,22 @@ class CommitsController < ApplicationController
       if !c.save
         show_error("Something went wrong..try again!","commits/index")
       end
+      c_list << cid.to_i
     end
+    # check if task has additional commits which were not selected by user -> delete them
+    tid = Commit.find(c_list[0]).task_id
+    c_list_db = Commit.where(task_id: tid).map(&:id)
 
+    if (c_list.sort != c_list_db.sort)
+      diff = c_list_db - c_list
+      diff.each do |cid|
+        c = Commit.find(cid)
+        c.task_id = nil
+        if !c.save
+          show_error("Something went wrong..try again!","commits/index")
+        end
+      end
+    end
     @tasks = Task.parent_list
     redirect_to action: "index"
   end
