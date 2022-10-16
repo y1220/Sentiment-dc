@@ -151,25 +151,29 @@
               const sort_btn = document.querySelector('#sort-btn');
               const sb = document.querySelector('#task-selection');
               console.log("selectedValue at sort: ", selectedValue);
-              sort_btn.onclick = (e) => {
-              console.log("selectedValue at sort: ", selectedValue);
               function getDifference(a, b) {
                 return Math.abs(a - b);
               }
               var scores = [<%=@scores[0]%>,
-                                <%=@scores[1]%>,
-                                <%=@scores[2]%>];
-              var score = scores[selectedValue];
-              console.log(getDifference(-10, 10));
-              var sum=0;
-                for(var i = 0, max = scoreList.length; i < max; i++){
-                  console.log("value[", i, "]: ", scoreList[i].value);
-                  console.log("toggle[", i, "]: ", toggleList[i].checked);
-                  console.log("score[", i, "]: ", score[i]);
-                  console.log("diff[", i, "]: ", getDifference(scoreList[i].value, score[i]));
-                  if (toggleList[i].checked == true) sum= sum + getDifference(scoreList[i].value, score[i]);
-                  console.log("sum[", i, "]: ", sum);
-                }
+                            <%=@scores[1]%>,
+                            <%=@scores[2]%>,
+                            <%=@scores[3]%>,
+                            <%=@scores[4]%>,
+                            <%=@scores[5]%>];
+              sort_btn.onclick = (e) => {
+                  console.log("selectedValue at sort: ", selectedValue);
+                  var score = scores[selectedValue];
+                  console.log(getDifference(-10, 10));
+                  var sum=0;
+                  for(var i = 0, max = scoreList.length; i < max; i++){
+                    console.log("value[", i, "]: ", scoreList[i].value);
+                    console.log("toggle[", i, "]: ", toggleList[i].checked);
+                    console.log("score[", i, "]: ", score[i]);
+                    console.log("diff[", i, "]: ", getDifference(scoreList[i].value, score[i]));
+                    if (toggleList[i].checked == true) sum= sum + getDifference(scoreList[i].value, score[i]);
+                    console.log("sum[", i, "]: ", sum);
+                  }
+                  //t_scores[0].getElementsByTagName('th')[0] task name
               };
             </script>
             <!-- Table Variants -->
@@ -186,8 +190,8 @@
                   <th scope="col">Data-manipulation</th>
                 </tr>
               </thead>
-              <tbody>
-                <% @task_name_list.each_with_index do |task, i|%>
+              <tbody class= "task_score">
+                <% @task_name_list.each_with_index do |task, i| #for now, consider that @task_name_list[i] has @scores[i]%>
                 <tr>
                   <th scope="row"><a href="<%= task.url%>"><%=task.name%></a></th>
                   <% (0..6).to_a.each do |j|%>
@@ -197,6 +201,35 @@
                 <% end %>
               </tbody>
             </table>
+            <script>
+              var t_scores = document.getElementsByClassName('task_score');
+              console.log('t_scores: ', t_scores);
+              var sums= [0, 0, 0, 0, 0, 0];
+              sort_btn.onclick = (e) => {
+                console.log("selectedValue at sort: ", selectedValue);
+                for(var i = 0, max_i = scores.length; i < max_i; i++){
+                    console.log("i: ", i);
+                  for(var j = 0, max_j = scoreList.length; j < max_j; j++){
+                    console.log("value[", j, "]: ", scoreList[j].value);
+                    console.log("toggle[", j, "]: ", toggleList[j].checked);
+                    console.log("scores[", i, "][", j, "]: ", scores[i][j]);
+                    console.log("diff[", i, "]: ", getDifference(scoreList[j].value, scores[i][j]));
+                    if (toggleList[j].checked == true) sums[i]= sums[i] + getDifference(scoreList[j].value, scores[i][j]);
+                    console.log("sums[", i, "]: ", sums[i]);
+                  }
+                  console.log("DONE sums[", i, "]: ", sums[i]);
+                }
+                var sums_map= new Map;
+                console.log("!!!DONE sums: ", sums);
+                for (const [index, value] of sums.entries()) {
+                  sums_map.set(index, value)
+                }
+                var sums_sorted = new Map([...sums_map.entries()].sort((a, b) => a[1] - b[1]));
+                console.log("sum_sorted: ",sums_sorted);
+                var indexes = Array.from(sums_sorted.keys());
+                console.log("indexes: ",indexes);
+              }
+            </script>
             <!-- Pagination with icons -->
             <nav aria-label="Page navigation example">
               <ul class="pagination">
@@ -286,7 +319,6 @@
                   });
                 });
                 const btn = document.querySelector('#btn');
-                const sb = document.querySelector('#task-selection');
                 var selectedValues;
 
                 btn.onclick = (e) => {
