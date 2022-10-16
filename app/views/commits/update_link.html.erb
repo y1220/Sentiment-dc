@@ -21,8 +21,8 @@
                     </thead>
                     <tbody>
                         <% @branches.each do |branch| %>
-                            <tr data-toggle="collapse" data-target="#demo<%= branch.id.to_s %>" class="accordion-toggle">
-                                <td><button class="btn btn-default btn-xs"><span class="fa fa-eye"></span></button></td>
+                            <tr>
+                                <td><a style= "cursor: pointer;" data-toggle="collapse" data-target="#branch<%= branch.id.to_s %>" class="accordion-toggle"><span class="fa fa-eye"></span></a></td>
                                 <td><%= branch.name %></td>
                                 <td style= "text-align: center;"><% if branch.url.present?  %><%= branch.url  %><% else%>
                                 <i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;<%= form.url_field :"url#{branch.name}-#{branch.id}", size: "50x5"%><% end %></td>
@@ -33,7 +33,7 @@
                             <% if branch.commits.present? %>
                                     <tr>
                                         <td colspan="12" class="hiddenRow">
-                                            <div class="accordian-body collapse" id="demo<%= branch.id.to_s %>">
+                                            <div class="accordian-body collapse" id="branch<%= branch.id.to_s %>">
                                                 <table class="table table-striped">
                                                     <thead>
                                                         <tr class="info">
