@@ -18,25 +18,28 @@ class Commit < ApplicationRecord
   end
 
   def self.update
+
     Branch.all.each do |branch|
       response = Commit.details(branch.name)
       response.each do |commit|
         time = commit['commit']['author']['date'][0..18]
         c_created= DateTime.new(time[0..3].to_i, time[5..6].to_i, time[8..9].to_i, time[11..12].to_i, time[14..15].to_i, time[17..18].to_i)
-        Branch.find(branch.id)
-        if Commit.where(cid: commit['sha']).count == 0
-          @commit = Commit.new(cid: commit['sha'], message: commit['commit']['message'], url: commit['html_url'],
-          user_id: User.where(gid: commit['author']['id'].to_s).first, branch_id: branch.id, commit_date: c_created)
-          if !@commit.save
-            return false, "Error: Commit creation failed"
+          if Commit.where(cid: commit['sha']).count == 0
+            @commit = Commit.new(cid: commit['sha'], message: commit['commit']['message'], url: commit['html_url'],
+            user_id: User.find_by(gid: commit['author']['id'].to_s).id, branch_id: branch.id, commit_date: c_created)
+            if !@commit.save
+              return false, "Error: Commit creation failed"
+            end
+          else
+            @commit = Commit.where(cid: commit['sha']).first
+            if branch.id == 5
+              @commit.branch_id = branch.id if @commit.branch_id != branch.id # avoid main to have commit from others which were added by merge
+            end
+            @commit.user_id = User.where(gid: commit['author']['id'].to_s).first.id
+            if !@commit.save
+              return false, "Error: Commit update failed"
+            end
           end
-        else
-          @commit = Commit.where(cid: commit['sha']).first
-          @commit.user_id = User.where(gid: commit['author']['id'].to_s).first.id
-          if !@commit.save
-            return false, "Error: Commit update failed"
-          end
-        end
       end
     end
   end
