@@ -183,6 +183,7 @@
                   <th scope="col">Back-end</th>
                   <th scope="col">Infrastructure</th>
                   <th scope="col">Data-manipulation</th>
+                  <th scope="col">Diff-score</th>
                 </tr>
               </thead>
               <tbody class= "task_score">
@@ -192,6 +193,7 @@
                   <% (0..6).to_a.each do |j|%>
                     <td><%=@scores[i][j]%></td>
                   <% end %>
+                  <td></td>
                 </tr>
                 <% end %>
               </tbody>
@@ -244,6 +246,7 @@
 
                 // 2. replace the values acccording to the changed order of indexes
                 let cnt = 0;
+                let sum_list = Array.from(sums_sorted.values());
                 var updateTaskName = function (updated_task, target) {
             　 　　return function(evt){
                      console.log('target: ', target, ' updated_task: ', updated_task);
@@ -273,10 +276,12 @@
                     console.log('ii: ', i, 'score:', scores[index][ii], 'cnt: ', cnt);
                     document.getElementsByClassName('task_score')[0].getElementsByTagName('tr')[cnt].getElementsByTagName('td')[ii].innerHTML=scores[index][ii];
                  }
+                  document.getElementsByClassName('task_score')[0].getElementsByTagName('tr')[cnt].getElementsByTagName('td')[7].innerHTML=sum_list[cnt];
+
                  tmp_scores.push(tmp_scores_row);
                   cnt++;
             　   }
-                console.log('scores:', scores, 'tmp_scores: ', tmp_scores);
+                console.log('scores:', scores, 'tmp_scores: ', tmp_scores, 'sum_list[', cnt, ']: ', sum_list[cnt]);
                 scores = tmp_scores;
               }
             </script>
