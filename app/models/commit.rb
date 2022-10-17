@@ -32,9 +32,6 @@ class Commit < ApplicationRecord
             end
           else
             @commit = Commit.where(cid: commit['sha']).first
-            if branch.id == 5
-              @commit.branch_id = branch.id if @commit.branch_id != branch.id # avoid main to have commit from others which were added by merge
-            end
             @commit.user_id = User.where(gid: commit['author']['id'].to_s).first.id
             if !@commit.save
               return false, "Error: Commit update failed"
