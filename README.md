@@ -12,6 +12,8 @@ Future focuses are to implement the ML algorithms to obtain the analysis functio
 * list up the skill set, seniority of developers
 * help matching based on needs, skills
 * similarity calculation of tasks
+* counting the visits of forum content, eventually used for analysis of content preferences, seniority level of developer
+* comparison of time used depends on week/month wise according to the needs
 
 
 ## Ruby version
