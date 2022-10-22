@@ -14,6 +14,8 @@ Future focuses are to implement the ML algorithms to obtain the analysis functio
 * similarity calculation of tasks
 * counting the visits of forum content, eventually used for analysis of content preferences, seniority level of developer
 * comparison of time used depends on week/month wise according to the needs
+* utilize Notion API to store and share the updated data among the team<br/>
+[tutorial of Notion API - databases](https://developers.notion.com/reference/database)
 
 
 ## Ruby version
