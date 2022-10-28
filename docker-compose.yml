@@ -31,7 +31,8 @@ services:
       - 'POSTGRES_PASSWORD=postgres'
   pgadmin4:
     image: dpage/pgadmin4:5.0
-    restart: always
+    # restart: always
+    privileged:  true
     ports:
       - 8888:80
     volumes:
