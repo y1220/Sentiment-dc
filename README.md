@@ -22,8 +22,8 @@ Future focuses are to implement the ML algorithms to obtain the analysis functio
 2.5
 
 ## Docker command for setup
-docker-compoose up -d
-docker-compoose exec web bash
+docker-compose up -d
+docker-compose exec web bash
 rails db:create
 rails db:migrate
 
