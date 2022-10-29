@@ -9,7 +9,7 @@ services:
     ports:
       - '3000:3000'
     volumes:
-      - '.:/sentiment-dc'
+      - '.:/sentiment-dc' # TODO: Mounting the whole project into the container creates some problems. E.g.: ./tmp/pids/server.pid must be force removed manually in prestart.sh
       - ./webapp:/opt/webapp
     environment:
       - 'DATABASE_PASSWORD=postgres'
@@ -19,9 +19,12 @@ services:
       - db
     links:
       - db
+    entrypoint: 
+    - bash
+    - /sentiment-dc/app/start.sh
 
   db:
-    image: postgres
+    image: postgres:latest
     volumes:
       - 'db-data:/var/lib/postgresql/data'
     ports:
@@ -30,15 +33,15 @@ services:
       - 'POSTGRES_USER=postgres'
       - 'POSTGRES_PASSWORD=postgres'
   pgadmin4:
-    image: dpage/pgadmin4:5.0
-    # restart: always
-    privileged:  true
+    image: dpage/pgadmin4:latest
+    restart: always
+    # privileged:  true
     ports:
       - 8888:80
     volumes:
       - ./docker/pgadmin4:/var/lib/pgadmin
     environment:
-      PGADMIN_DEFAULT_EMAIL: root
+      PGADMIN_DEFAULT_EMAIL: admin@server.com
       PGADMIN_DEFAULT_PASSWORD: root
     depends_on:
       - db
