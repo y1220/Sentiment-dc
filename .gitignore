@@ -16,4 +16,4 @@
 /volumes/pgadmin4/sessions/*
 
 # ignore sql
-/test.sessions.sql
+test.sessions.sql
