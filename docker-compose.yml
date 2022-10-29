@@ -39,7 +39,7 @@ services:
     ports:
       - 8888:80
     volumes:
-      - ./docker/pgadmin4:/var/lib/pgadmin
+      - ./volumes/pgadmin4:/var/lib/pgadmin
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@server.com
       PGADMIN_DEFAULT_PASSWORD: root

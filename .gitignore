@@ -12,5 +12,8 @@
 !/log/.keep
 /tmp
 
-# ignore docker volume
-/docker/*
+# ignore pgadmin4 sessions
+/volumes/pgadmin4/sessions/*
+
+# ignore sql
+/test.sessions.sql
