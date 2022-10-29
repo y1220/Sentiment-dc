@@ -24,7 +24,12 @@ Future focuses are to implement the ML algorithms to obtain the analysis functio
 
 ## Prerequisites (Linux)
 
-sudo chown -R 5050:5050 *<PGADMIN_VOLUME_HOSTPATH>*  
+sudo chown -R 5050:5050 *<PGADMIN_VOLUME_HOSTPATH>*
+
+
+## Utilities Scripts (Linux)
+
+Check the .local folder in the project root. It contains utilities scripts in order to develop and setup your local environment.
 
 ## Docker command for setup
 
