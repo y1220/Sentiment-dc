@@ -13,7 +13,10 @@
 /tmp
 
 # ignore pgadmin4 sessions
-/volumes/pgadmin4/sessions/*
+# /volumes/*
+
+# ignore venv
+/venv
 
 # ignore sql
 test.sessions.sql
