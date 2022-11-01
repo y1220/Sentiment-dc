@@ -64,8 +64,7 @@ ActiveRecord::Schema.define(version: 2022_10_08_100005) do
     t.index ["user_id"], name: "index_commits_on_user_id"
   end
 
-  create_table "daily_availabilities", id: false, force: :cascade do |t|
-    t.bigserial "id", null: false
+  create_table "daily_availabilities", force: :cascade do |t|
     t.boolean "enable"
     t.integer "availability_score"
     t.integer "user_id"
@@ -75,8 +74,7 @@ ActiveRecord::Schema.define(version: 2022_10_08_100005) do
     t.index ["user_id", "register_date"], name: "availability_index", unique: true
   end
 
-  create_table "daily_reports", id: false, force: :cascade do |t|
-    t.bigserial "id", null: false
+  create_table "daily_reports", force: :cascade do |t|
     t.integer "task_score"
     t.integer "need_help"
     t.integer "user_id"

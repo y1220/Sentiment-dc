@@ -26,7 +26,12 @@
 #   end
 # end
 
-# 4. associate user and task
+# 4. prepare tasks
+# {'First Task' => 'Awesome task on awesome app', 'Second Task' => 'More tasks on awesome app'}.each do |name, description|
+#     Task.create(name: name, description: description)
+# end
+
+# 5. associate user and task
 # 5.times do
 #   (1..User.all.count).to_a.each do |x|
 #      @user = User.find(x)

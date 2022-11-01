@@ -11,3 +11,12 @@
 /log/*
 !/log/.keep
 /tmp
+
+# ignore pgadmin4 sessions
+/volumes/*
+
+# ignore venv
+/venv
+
+# ignore sql
+test.sessions.sql

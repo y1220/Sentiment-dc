@@ -8,6 +8,7 @@ Also, by storing information about daily task status and your availability to he
 it suggests to whom you need to help, to whom you can ask help if you need.<br/>
 
 Future focuses are to implement the ML algorithms to obtain the analysis functionarities below.<br/>
+
 * evaluation of the task characteristics
 * list up the skill set, seniority of developers
 * help matching based on needs, skills
@@ -17,20 +18,32 @@ Future focuses are to implement the ML algorithms to obtain the analysis functio
 * utilize Notion API to store and share the updated data among the team<br/>
 [tutorial of Notion API - databases](https://developers.notion.com/reference/database)
 
-
 ## Ruby version
+
 2.5
 
+## Prerequisites (Linux)
+
+sudo chown -R 5050:5050 *<PGADMIN_VOLUME_HOSTPATH>*
+
+
+## Utilities Scripts (Linux)
+
+Check the .local folder in the project root. It contains utilities scripts in order to develop and setup your local environment.
+
 ## Docker command for setup
-docker-compoose up -d
-docker-compoose exec web bash
+
+docker-compose up -d
+docker-compose exec web bash
 rails db:create
 rails db:migrate
 
 ## Docker command for running server
+
 rails s -b 0.0.0.0
 
 ## Database creation
+
 (option 1): run a seed file
 rails db:seed
 
@@ -39,7 +52,9 @@ rails c
 Model.create(name: 'something'...)
 
 ## Database management
+
 [tutorial for connecting to pgadmin](https://www.youtube.com/watch?v=2BjrT14Heug)
 
 ## Test
+
 To be implemented in near future
