@@ -33,10 +33,11 @@ Check the .local folder in the project root. It contains utilities scripts in or
 
 ## Docker command for setup
 
-docker-compose up -d
-docker-compose exec web bash
-rails db:create
-rails db:migrate
+docker-compose up -d<br/>
+docker-compose exec web bash<br/>
+bundle install<br/>
+rails db:create<br/>
+rails db:migrate<br/>
 
 ## Docker command for running server
 
