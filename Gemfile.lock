@@ -194,6 +194,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  autoprefixer-rails
   bootstrap (~> 4.3.1)
   byebug
   coffee-rails

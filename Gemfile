@@ -33,6 +33,8 @@ gem "font-awesome-sass", "~> 6.2.0"
 
 gem "simple_calendar", "~> 2.4"
 
+gem "autoprefixer-rails"
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
