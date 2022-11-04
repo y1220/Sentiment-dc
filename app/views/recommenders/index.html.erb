@@ -183,6 +183,7 @@
                   <th scope="col">Back-end</th>
                   <th scope="col">Infrastructure</th>
                   <th scope="col">Data-manipulation</th>
+                  <th scope="col">Diff-score</th>
                 </tr>
               </thead>
               <tbody class= "task_score">
@@ -192,6 +193,7 @@
                   <% (0..6).to_a.each do |j|%>
                     <td><%=@scores[i][j]%></td>
                   <% end %>
+                  <td></td>
                 </tr>
                 <% end %>
               </tbody>
@@ -199,12 +201,12 @@
             <script>
               var t_scores = document.getElementsByClassName('task_score')[0];
               console.log('t_scores: ', t_scores);
-              var sums= [0, 0, 0, 0, 0, 0];
-              var sums_map= new Map;
-              var sums_sorted;
-              var indexes;
-              var old_tasks = [];
               sort_btn.onclick = (e) => {
+                var sums= [0, 0, 0, 0, 0, 0];
+                var sums_map= new Map;
+                var sums_sorted;
+                var indexes;
+                var old_tasks = [];
                 console.log("selectedValue at sort: ", selectedValue);
                 for(var i = 0, max_i = scores.length; i < max_i; i++){
                     console.log("i: ", i);
@@ -213,6 +215,7 @@
                     console.log("toggle[", j, "]: ", toggleList[j].checked);
                     console.log("scores[", i, "][", j, "]: ", scores[i][j]);
                     console.log("diff[", i, "]: ", getDifference(scoreList[j].value, scores[i][j]));
+                    // only if toggle is enabled, calculate the difference
                     if (toggleList[j].checked == true) sums[i]= sums[i] + getDifference(scoreList[j].value, scores[i][j]);
                     console.log("sums[", i, "]: ", sums[i]);
                   }
@@ -244,6 +247,7 @@
 
                 // 2. replace the values acccording to the changed order of indexes
                 let cnt = 0;
+                let sum_list = Array.from(sums_sorted.values());
                 var updateTaskName = function (updated_task, target) {
             　 　　return function(evt){
                      console.log('target: ', target, ' updated_task: ', updated_task);
@@ -273,10 +277,14 @@
                     console.log('ii: ', i, 'score:', scores[index][ii], 'cnt: ', cnt);
                     document.getElementsByClassName('task_score')[0].getElementsByTagName('tr')[cnt].getElementsByTagName('td')[ii].innerHTML=scores[index][ii];
                  }
+                  console.log('sum_list[',cnt, ']: ', sum_list[cnt]);
+                  document.getElementsByClassName('task_score')[0].getElementsByTagName('tr')[cnt].getElementsByTagName('td')[7].innerHTML=sum_list[cnt];
+
                  tmp_scores.push(tmp_scores_row);
                   cnt++;
             　   }
-                console.log('scores:', scores, 'tmp_scores: ', tmp_scores);
+                sum_list=[];
+                console.log('scores:', scores, 'tmp_scores: ', tmp_scores, '!!!sum_list[', cnt, ']: ', sum_list[cnt]);
                 scores = tmp_scores;
               }
             </script>
