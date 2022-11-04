@@ -34,7 +34,11 @@
               <%= link_to("Git link","/commits/update_link", class: "nav-link active", style: "text-decoration: none; color: black;")%>
             </li>
             <li class="nav-item">
-              <%= link_to("API key","/property_settings/index", class: "nav-link active", style: "text-decoration: none; color: black;")%>
+              <% if true %>
+                <%= link_to("Welcome","/property_settings/setup", class: "nav-link active", style: "text-decoration: none; color: black;")%>
+              <% else %>
+                <%= link_to("API key","/property_settings/index", class: "nav-link active", style: "text-decoration: none; color: black;")%>
+              <% end %>
             </li>
           </ul>
           <%# right side menu %>

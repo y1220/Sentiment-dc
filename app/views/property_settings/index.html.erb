@@ -29,8 +29,8 @@
                                         <td style= "text-align: center; "><% if property.value_text.present?  %>
                                             <a style= "cursor: pointer;" type="button"  data-toggle="modal" data-target="#modalForm-<%=property.id.to_s%>"><i class="fa-solid fa-pen-to-square" style="color: #4169E1;"></i></a><% end%>
                                         <% if (property.enabled == nil || property.enabled == true )  %>
-                                                                            <a href="#disablePopUp-<%=property.id.to_s%>" data-toggle="modal"><i class="fa-solid fa-trash-can" style= "color: #B22222; padding-left: 5px;"></i></a>
-                                                                         <% else  %><i class="fa fa-check" style= "color: #8FBC8F; padding-left: 5px;"><%= link_to("","/property_settings/enable_record/#{property.id.to_s}", class: "nav-link active", :method=> :put)%></i><% end %></td>
+                                            <a href="#disablePopUp-<%=property.id.to_s%>" data-toggle="modal"><i class="fa-solid fa-trash-can" style= "color: #B22222; padding-left: 5px;"></i></a>
+                                        <% else  %><i class="fa fa-check" style= "color: #8FBC8F; padding-left: 5px;"><%= link_to("","/property_settings/enable_record/#{property.id.to_s}", class: "nav-link active", :method=> :put)%></i><% end %></td>
                                     </tr>
 
                                 <% end %>

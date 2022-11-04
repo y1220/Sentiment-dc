@@ -5,6 +5,22 @@ class PropertySettingsController < ApplicationController
     @id_list= @properties.map(&:id)
   end
 
+  def setup
+    @properties= PropertySetting.all
+    if !@properties
+      # create needes keys for setup
+      ['Authorization', 'team_id', 'tasks_space_id', 'gitbranch_field_id', 'availabilities_list_id'].each do |key|
+        PropertySetting.create(company: "ClickUp", key_name: key, enabled: true)
+      end
+      ['repo_name', 'username'].each do |key|
+        PropertySetting.create(company: "GitHub", key_name: key, enabled: true)
+      end
+    end
+    @company_list=PropertySetting.all.map(&:company).uniq
+    @properties= PropertySetting.all
+    @id_list= @properties.map(&:id)
+  end
+
   def edit
     p= PropertySetting.find(params[:id])
     p.key_name = params[:key]

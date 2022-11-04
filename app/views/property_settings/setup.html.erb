@@ -1,0 +1,136 @@
+<div class="container" style="padding: 10px;">
+    <h1>Find values required for setup</h1>
+    <hr/>
+    <h3 style= "color: #A9A9A9">ClickUp</h3><br/>
+    <h5>&nbsp;1. create or prepare your workspace</h5>
+    <br/><h5>&nbsp;2. add space <font color= "#D3D3D">'Task management'</font>, column <font color= "#D3D3D">'BRANCH'</font> to track the progress of tasks</h5>
+    <%= image_tag 'task_clickup', class: "img-fluid", style: "width: 80%;"%></br>
+    &nbsp;&nbsp;Always, connect a branch when you open a new task to track each commit<br/>
+    <br/><h5>&nbsp;3. add space <font color= "#D3D3D">'Availability'</font>, list <font color= "#D3D3D">'Statuses'</font> to track status of your teammates</h5>
+    <%= image_tag 'status_clickup', class: "img-fluid", style: "width: 80%;"%><br/>
+    &nbsp;&nbsp;At the box of description, insert the message you want to share about the current status
+    <%= image_tag 'comment_clickup', class: "img-fluid", style: "width: 60%;"%><br/>
+    <br/><h5>&nbsp;4. check following information from your environment</h5>
+    &nbsp;&nbsp;In url, you can find <font color= "#FFD70">team_id</font>, <font color= "#00FFF">tasks_space_id</font>, <font color= "#00FFF">availabilities_list_id</font>
+    by selecting each space
+    <%= image_tag 'url_clickup', class: "img-fluid", style: "width: 80%;"%><br/>
+    <br/><h5>&nbsp;5. activate ClickUp API and obtain the token by <a href="https://help.clickup.com/hc/en-us/articles/6303426241687-Getting-Started-with-the-ClickUp-API">this link</a></h5>
+    &nbsp;&nbsp;Token will be provided here, register it as <font color= "#556B2">Authorization</font> removing "pk_"
+    <%= image_tag 'token_clickup', class: "img-fluid", style: "width: 80%;"%></br>
+    <br/><h5>&nbsp;6. Lastly, utilize postman to call GET request below to obtain <font color= "#D3D3D">'Branch column id'</font> as <font color= "#E9967">gitbranch_field_id</font></h5>
+    &nbsp;&nbsp;Replace your own <font color= "#8B008">team_id</font> here
+    <%= image_tag 'postman_clickup', class: "img-fluid", style: "width: 80%;"%>
+
+    <hr/>
+    <h3 style= "color: #A9A9A9">GitHub</h3><br/>
+    <h5>&nbsp;1. create or prepare your repository</h5>
+    <br/><h5>&nbsp;2. register repository name as <font color= "#D3D3D">'repo_name'</font>, owner of repository as <font color= "#D3D3D">username</font> to track the commits</h5>
+
+    <h1>Configure property keys and values</h1>
+    <hr/>
+        <%= form_with url: "/property_settings/update_key_value", method: :post do |form| %>
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <% @company_list.each do |company_name| %>
+                    <div class="panel-heading">
+                        <h3 style= "color: #A9A9A9"><%= company_name%></h3>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-condensed table-striped">
+                                <thead >
+                                    <tr>
+                                    <th scope="col" class="col-5" style= "text-align: center;">key</th>
+                                    <th scope="col" class="col-6" style= "text-align: center;">value</th>
+                                    <th style= "col-1"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% @properties.select{|p|p.company==company_name}.each do |property| %>
+                                        <tr>
+                                            <% (property.enabled==true || property.enabled==nil) ? line_css = '' : line_css = 'text-decoration: line-through;'  %>
+                                            <td style= "text-align: center;<%=line_css%>"><% if property.key_name.present?  %><%= property.key_name  %><% else%>
+                                            <i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;<%= form.text_field :"key-#{property.company}-#{property.id}", size: "50x5"%><% end %></td>
+                                            <td style= "text-align: center;<%=line_css%>"><% if property.value_text.present?  %><%= property.value_text  %><% else%>
+                                            <i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;<%= form.text_field :"value-#{property.company}-#{property.id}", size: "50x5"%><% end %></td>
+                                            <td style= "text-align: center; "><% if property.value_text.present?  %>
+                                                <a style= "cursor: pointer;" type="button"  data-toggle="modal" data-target="#modalForm-<%=property.id.to_s%>"><i class="fa-solid fa-pen-to-square" style="color: #4169E1;"></i></a><% end%>
+                                            <% if (property.enabled == nil || property.enabled == true )  %>
+                                                <a href="#disablePopUp-<%=property.id.to_s%>" data-toggle="modal"><i class="fa-solid fa-trash-can" style= "color: #B22222; padding-left: 5px;"></i></a>
+                                            <% else  %><i class="fa fa-check" style= "color: #8FBC8F; padding-left: 5px;"><%= link_to("","/property_settings/enable_record/#{property.id.to_s}", class: "nav-link active", :method=> :put)%></i><% end %></td>
+                                        </tr>
+
+                                    <% end %>
+                                </tbody>
+                        </table>
+                    </div>
+                <% end %>
+            </div>
+            </div>
+            <button type="button" class="btn btn-custom-success btn-sm" style= "display: block; margin-left: auto; margin-right: 0;">
+                <%= form.submit %>
+            </button>
+        </div>
+        <% end %>
+</div>
+
+
+<!-- Modal HTML -->
+<% @id_list.each do |id|%>
+<div id="disablePopUp-<%=id.to_s%>" class="modal fade">
+    <div class="modal-dialog modal-confirm">
+        <div class="modal-content">
+            <div class="modal-header flex-column">
+                <div class="icon-box">
+                    <i class="fa-solid fa-x"></i>
+                </div>
+                <h4 class="modal-title w-100">Are you sure?</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Do you really want to disable these records?</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger"><%= link_to("Disable","/property_settings/disable_record/#{id.to_s}", class: "nav-link active", style: "text-decoration: none; color: white;", :method=> :put)%></button>
+            </div>
+        </div>
+    </div>
+</div>
+<% end %>
+
+<% @properties.each do |property|%>
+<div class="modal fade" id="modalForm-<%=property.id.to_s%>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div style="width: 50%;">
+    <%= render partial:  "edit_property",  locals: {property: property} %>
+    </div>
+</div>
+<% end %>
+
+
+<script>
+    $('#modalForm').on('show.bs.modal', function () {
+        $("#submit, #close").click(function() {
+        // Validation
+        var form = $("#inputs")
+
+            if (form[0].checkValidity() === false) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+            form.addClass('was-validated')
+
+            //Declare and initialize variable for display inputs in div
+            var code = "";
+            $("#inputs").each(function() {
+                var text1 = $(this).find("#key").val();
+                var text2 = $(this).find("#value").val();
+                code += text1 + " " + text2;
+            });
+            // console.log(code);
+            // console.log('hello');
+
+
+            $("#results").html(code);
+        });
+    });
+</script>
