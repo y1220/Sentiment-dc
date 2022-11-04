@@ -32,12 +32,13 @@ sudo chown -R 5050:5050 *<PGADMIN_VOLUME_HOSTPATH>*
 Check the .local folder in the project root. It contains utilities scripts in order to develop and setup your local environment.
 
 ## Docker command for setup
-
-docker-compose up -d<br/>
-docker-compose exec web bash<br/>
-bundle install<br/>
-rails db:create<br/>
-rails db:migrate<br/>
+```diff
+docker-compose up -d
+docker-compose exec web bash
+bundle install
+rails db:create
+rails db:migrate
+```
 
 ## Docker command for running server
 
@@ -59,3 +60,39 @@ Model.create(name: 'something'...)
 ## Test
 
 To be implemented in near future
+
+## How to use
+
+(Pre-requirements)<br/>
+```diff
+- register ClickUp workspace, obtain your API token
+- prepare github repository, look for your repository id
+```
+
+(Procedure to use the platform)<br/>
+1. fron Welcome page, register your ClickUp keys and values<br/>
+```diff
+@@ key: value @@
+Authorization: API token
+team_id: int(8)
+tasks_space_id: int(8)
+availabilities_list_id: int(8)
+gitbranch_field_id: string(36)
+```
+
+2. likewise above, register your GitHub keys and values<br/>
+```diff
+repo_name: your repository name
+username: username of repository owner
+```
+
+3. from Tasks page, update task data
+```diff
+which creates records of tasks, branches, and users on ClickUp<br/>
+```
+
+4. from Commits page, update commit data<br/>
+```diff
+which instead, creates records of commits related to the branch registered in our db
+- please update commit before you merge the branch into different branch, otherwise the commit may be taken as wrong branch's ones   
+```
