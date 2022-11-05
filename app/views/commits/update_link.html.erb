@@ -21,6 +21,7 @@
                     </thead>
                     <tbody>
                         <% @branches.each do |branch| %>
+                        <% if branch.commits.present? %>
                             <tr>
                                 <td><a style= "cursor: pointer;" data-toggle="collapse" data-target="#branch<%= branch.id.to_s %>" class="accordion-toggle"><span class="fa fa-eye"></span></a></td>
                                 <td><%= branch.name %></td>
@@ -30,7 +31,7 @@
                                 <td><%= Commit.last_commit_by_in_branch(branch.id) %></td>
                                 <td><%= Commit.commit_count_in_30d(branch.id) %></td>
                             </tr>
-                            <% if branch.commits.present? %>
+
                                     <tr>
                                         <td colspan="12" class="hiddenRow">
                                             <div class="accordian-body collapse" id="branch<%= branch.id.to_s %>">
