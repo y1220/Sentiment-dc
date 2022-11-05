@@ -34,7 +34,7 @@
               <%= link_to("Git link","/commits/update_link", class: "nav-link active", style: "text-decoration: none; color: black;")%>
             </li>
             <li class="nav-item">
-              <% if true %>
+              <% if !PropertySetting.first # TO THINK: not sure if it causes heavy operation to execute all the time%>
                 <%= link_to("Welcome","/property_settings/setup", class: "nav-link active", style: "text-decoration: none; color: black;")%>
               <% else %>
                 <%= link_to("API key","/property_settings/index", class: "nav-link active", style: "text-decoration: none; color: black;")%>
