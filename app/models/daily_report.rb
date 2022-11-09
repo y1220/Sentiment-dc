@@ -131,7 +131,7 @@ class DailyReport < ApplicationRecord
                 }
             ],
             "properties": {
-                "Id": {
+                "Id": { #TODO: fix right properties for this table
                     "title": {}
                 },
                 "Task score": {
@@ -163,6 +163,9 @@ class DailyReport < ApplicationRecord
             return get_response
         end
         return nil
+    end
+
+    def self.update_daily_availabilities(daily_availabilities_db, da) #TODO: to be implemented
     end
 
     def self.update

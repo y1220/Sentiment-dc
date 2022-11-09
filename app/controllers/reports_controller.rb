@@ -84,7 +84,23 @@ class ReportsController < ApplicationController
     redirect_to action: "daily"
   end
 
-  def update_daily_availabilities
+  def create_availability_db
+    @p= PropertySetting.find_by(key_name: "daily_availabilities_db_id")
+    if @p.value_text.length == 0
+      response= DailyReport.create_daily_availabilities
+      @p.value_text= response["id"]
+      if @p.save
+        @p= PropertySetting.find_by(key_name: "daily_availabilities_db_id")
+        flash[:notice]= "create availability db successfully done!"
+      else
+        flash[:notice]= "ERROR! :creating availability db failed"
+      end
+    end
+    flash[:notice]= "availability db already exist!"
+    redirect_to action: "daily"
+  end
+
+  def update_daily_availabilities #TODO: to be implemented
   end
 
   private

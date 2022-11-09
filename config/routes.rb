@@ -29,7 +29,8 @@ Rails.application.routes.draw do
   post 'reports/daily_insert'
   post 'reports/create_daily_db'
   post 'reports/update_daily_reports'
-  get 'reports/update_daily_availabilities'
+  post 'reports/create_availability_db'
+  post 'reports/update_availability_reports'
 
 
   get 'property_settings/index'
