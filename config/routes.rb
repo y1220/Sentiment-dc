@@ -27,6 +27,9 @@ Rails.application.routes.draw do
   post 'branches/register_git_branch'
 
   post 'reports/daily_insert'
+  get 'reports/update_daily_reports'
+  get 'reports/update_daily_availabilities'
+
 
   get 'property_settings/index'
   get 'property_settings/setup'
@@ -35,6 +38,10 @@ Rails.application.routes.draw do
   put 'property_settings/edit/:id', to: 'property_settings#edit'
   put 'property_settings/disable_record/:id', to: 'property_settings#disable_record'
   put 'property_settings/enable_record/:id', to: 'property_settings#enable_record'
+
+  # get 'notion/index'
+  # post 'notion/update_daily_reports'
+  # post 'notion/update_daily_availabilities'
 
 
 

@@ -39,6 +39,33 @@ class ReportsController < ApplicationController
     redirect_to action: "daily"
   end
 
+  def update_daily_reports
+    p= PropertySetting.find_by(key_name: "daily_reports_db_id")
+    if !p
+      response= DailyReport.create_daily_reports
+      p= PropertySetting.new(company: "Notion", key_name: "daily_reports_db_id_test", value_text: response["id"])
+      if p.save
+        p= PropertySetting.find_by(key_name: "daily_reports_db_id")
+        flash[:notice]= "db id successfully registered!"
+      else
+        flash[:notice]= "ERROR! :saving db id failed"
+      end
+    end
+    daily_reports_db= p.value_text
+    user_id= 1 #TODO: after implement login func, replace vakue dynamically
+    DailyReport.register_to_notion(user_id).each do |dr|
+      update_response= DailyReport.update_daily_reports(daily_reports_db, dr)
+      if !update_response
+        flash[:notice]= "ERROR! :saving db id failed"
+        break
+      end
+    end
+    redirect_to action: "daily"
+  end
+
+  def update_daily_availabilities
+  end
+
   private
   def show_error (error_message, return_to_address)
     flash[:notice]= error_message
