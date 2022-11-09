@@ -52,7 +52,7 @@ class DailyReport < ApplicationRecord
         if get_response
             return get_response
         end
-        return nil
+        return false
     end
 
     def self.update_daily_reports(daily_reports_db, dr)
