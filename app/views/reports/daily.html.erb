@@ -17,9 +17,9 @@
      <div class="card">
         <div class="card-body">
             <button type="button" class="btn btn-custom-success btn-sm" style= "display: block; margin-left: auto; margin-right: 0;margin-bottom: 5px;">
-            <%= link_to("Create daily db in Notion","/reports/create_daily_db", class: "nav-link active", style: "text-decoration: none; color: black;")%></button>
+            <%= link_to("Create daily db in Notion","/reports/create_daily_db",  class: "nav-link active", style: "text-decoration: none; color: black;", method: :post)%></button>
             <button type="button" class="btn btn-custom-danger btn-sm" style= "display: block; margin-left: auto; margin-right: 0;">
-            <%= link_to("Update report for Notion","/reports/update_daily_reports", class: "nav-link active", style: "text-decoration: none; color: black;")%></button>
+            <%= link_to("Update report for Notion","/reports/update_daily_reports", class: "nav-link active", style: "text-decoration: none; color: black;", method: :post)%></button>
             <%= form_with url: "/reports/daily_insert", method: :post do |form| %>
             <h5 class="card-title">Self scoring&nbsp;<i class="fa-solid fa-hand-holding-heart"></i></h5>
             <p>Purpose of this survey is to track the status of each activity and distribute tasks according to the needs of the team. No need to hesitate to ask help if you need, also help out collegues if you have spare time, let's manage our team well altogether!</p>
