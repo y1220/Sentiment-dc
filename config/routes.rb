@@ -41,7 +41,7 @@ Rails.application.routes.draw do
   put 'property_settings/disable_record/:id', to: 'property_settings#disable_record'
   put 'property_settings/enable_record/:id', to: 'property_settings#enable_record'
 
-  # get 'notion/index'
+  get 'notion/index'
   # post 'notion/update_daily_reports'
   # post 'notion/update_daily_availabilities'
 
