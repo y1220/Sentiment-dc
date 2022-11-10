@@ -1,5 +1,6 @@
 class NotionController < ApplicationController
   def index
+    @users= User.all.map(&:username) #TODO: adjust to show team member
     @dates= []
     @tasks=[]
     @availabiity = []

@@ -74,7 +74,7 @@ body {
   justify-content: center;
   align-items: center;
   padding: 2rem 1rem;
-  background: #000;
+  background: rgba(200, 238, 200, 0.3);
 }
 
 .circle {
@@ -110,9 +110,10 @@ body {
   height: 115px;
   background: #000;
   border-radius: 50%;
-  font-size: 1.85em;
+  font-size: 1.35em;
   font-weight: 300;
   color: rgba(255, 255, 255, 0.75);
+  padding-left: 10px;
 }
 
 /* toggle enable */
