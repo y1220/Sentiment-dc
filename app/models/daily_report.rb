@@ -126,24 +126,21 @@ class DailyReport < ApplicationRecord
                 {
                     "type": "text",
                     "text": {
-                        "content": "Daily reports"
+                        "content": "Daily availabilities"
                     }
                 }
             ],
             "properties": {
-                "Id": { #TODO: fix right properties for this table
+                "Id": {
                     "title": {}
                 },
-                "Task score": {
-                    "number": {}
+                "Enable": {
+                    "checkbox": {}
                 },
-                "Need help": {
+                "Availability score": {
                     "number": {}
                 },
                 "User id": {
-                    "number": {}
-                },
-                "Task id": {
                     "number": {}
                 },
                 "Register date": {
@@ -166,6 +163,7 @@ class DailyReport < ApplicationRecord
     end
 
     def self.update_daily_availabilities(daily_availabilities_db, da) #TODO: to be implemented
+
     end
 
     def self.update

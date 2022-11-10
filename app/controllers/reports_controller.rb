@@ -95,8 +95,9 @@ class ReportsController < ApplicationController
       else
         flash[:notice]= "ERROR! :creating availability db failed"
       end
+    else
+      flash[:notice]= "availability db already exist!"
     end
-    flash[:notice]= "availability db already exist!"
     redirect_to action: "daily"
   end
 
