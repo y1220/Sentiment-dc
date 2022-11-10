@@ -30,7 +30,7 @@ Rails.application.routes.draw do
   post 'reports/create_daily_db'
   post 'reports/update_daily_reports'
   post 'reports/create_availability_db'
-  post 'reports/update_availability_reports'
+  post 'reports/update_daily_availabilities'
 
 
   get 'property_settings/index'

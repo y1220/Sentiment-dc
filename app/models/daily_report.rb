@@ -114,58 +114,6 @@ class DailyReport < ApplicationRecord
         return false
     end
 
-    def self.create_daily_availabilities
-        hash= ApplicationRecord.authenticate_notion
-        page_id= PropertySetting.find_by(company: "Notion", key_name: "page_id").value_text
-        json_body= {
-            "parent": {
-                "type": "page_id",
-                "page_id": page_id
-            },
-            "title": [
-                {
-                    "type": "text",
-                    "text": {
-                        "content": "Daily availabilities"
-                    }
-                }
-            ],
-            "properties": {
-                "Id": {
-                    "title": {}
-                },
-                "Enable": {
-                    "checkbox": {}
-                },
-                "Availability score": {
-                    "number": {}
-                },
-                "User id": {
-                    "number": {}
-                },
-                "Register date": {
-                    "date": {}
-                },
-                "Created at": {
-                    "created_time": {}
-                },
-                 "Updated at": {
-                    "last_edited_time": {}
-                }
-            }
-        }.to_json
-        response= post("/databases/", query: hash[:query], body: json_body, headers: hash[:headers])
-        get_response= JSON.parse(response.body)
-        if get_response
-            return get_response
-        end
-        return nil
-    end
-
-    def self.update_daily_availabilities(daily_availabilities_db, da) #TODO: to be implemented
-
-    end
-
     def self.update
         # response = Task.details
         # @task_info = response['tasks']

@@ -24,7 +24,7 @@ class ReportsController < ApplicationController
       end
     end
     en = params["enable"] == "1" ? true : false
-    av = params["av"]
+    av = en == true ? params["av"] : 0
     da = DailyAvailability.new(user_id: 1, enable: en, availability_score: av, register_date: register_date)
     begin
       da.save
@@ -87,7 +87,7 @@ class ReportsController < ApplicationController
   def create_availability_db
     @p= PropertySetting.find_by(key_name: "daily_availabilities_db_id")
     if @p.value_text.length == 0
-      response= DailyReport.create_daily_availabilities
+      response= DailyAvailability.create_daily_availabilities
       @p.value_text= response["id"]
       if @p.save
         @p= PropertySetting.find_by(key_name: "daily_availabilities_db_id")
@@ -101,7 +101,33 @@ class ReportsController < ApplicationController
     redirect_to action: "daily"
   end
 
-  def update_daily_availabilities #TODO: to be implemented
+  def update_daily_availabilities
+    @p= PropertySetting.find_by(key_name: "daily_availabilities_db_id")
+    if @p
+      daily_availabilities_db= @p.value_text
+      user_id= 1 #TODO: after implement login func, replace vakue dynamically
+      @cnt= 0
+      DailyAvailability.register_to_notion(user_id).each do |da|
+        if !da.registered
+          update_response= DailyAvailability.update_daily_availabilities(daily_availabilities_db, da)
+          if !update_response
+            flash[:notice]= "ERROR! :saving db id failed"
+            break
+          else
+            @cnt+= 1
+            da.registered = true
+            if !da.save
+              flash[:notice]= "ERROR! :updating daily repository instance failed"
+              break
+            end
+          end
+        end
+      end
+      flash[:notice]= "availability data(#{@cnt.to_s}) has been correctly inserted into Notion!"
+    else
+      flash[:notice]= "firstly, please create availability db in Notion!"
+    end
+    redirect_to action: "daily"
   end
 
   private
