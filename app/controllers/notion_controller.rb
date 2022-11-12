@@ -19,5 +19,17 @@ class NotionController < ApplicationController
       @tasks << {name: task.name, scores: scores}
     end
     @dates = @dates.map{|x| x.strftime('%Y-%m-%d')}
+    @create_report_db= PropertySetting.find_by(key_name: "daily_reports_db_id").value_text.present? ? false : true
+    @create_availability_db= PropertySetting.find_by(key_name: "daily_availabilities_db_id").value_text.present? ? false : true
+    report_link= PropertySetting.find_by(key_name: "daily_reports_link")
+    availability_link= PropertySetting.find_by(key_name: "daily_availabilities_link")
+    @report_link= report_link ? report_link.value_text : "/reports/daily"
+    @availability_link= availability_link ? availability_link.value_text : "/reports/daily"
+  end
+
+  def import_daily_reports
+  end
+
+  def import_daily_availabilities
   end
 end

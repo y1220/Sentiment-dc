@@ -66,38 +66,39 @@
         </div>
     </div>
 
-     <div class="card">
+    <div class="card">
         <div class="card-body">
             <h5 class="card-title">Sharing on Notion&nbsp;<i class="fa-solid fa-hand-holding-heart"></i></h5>
             <div class="row">
-  <div class="col-sm-6">
-    <div class="card">
-      <div class="card-body" style="text-align: center;">
-            <h6 class="card-title">Daily report&nbsp;<a href="<%= @report_link%>"><i class="fa-solid fa-database"></i></a></h6>
-            <% if @create_report_db%>
-                <button type="button" class="btn btn-custom-success btn-sm">
-                <%= link_to("Create db","/reports/create_report_db",  class: "nav-link active", style: "text-decoration: none; color: black;", method: :post)%></button>
-            <% else %>
-                <button type="button" class="btn btn-custom-danger btn-sm">
-                <%= link_to("Update","/reports/update_daily_reports", class: "nav-link active", style: "text-decoration: none; color: black;", method: :post)%></button>
-            <% end %>
-        </div>
-    </div>
-  </div>
-  <div class="col-sm-6">
-    <div class="card">
-      <div class="card-body" style="text-align: center;">
-            <h6 class="card-title">Daily availability&nbsp;<a href="<%= @availability_link%>"><i class="fa-solid fa-smile"></i></a></h6>
-            <% if @create_availability_db %>
-                <button type="button" class="btn btn-custom-success btn-sm">
-                <%= link_to("Create db","/reports/create_availability_db",  class: "nav-link active", style: "text-decoration: none; color: black;", method: :post)%></button>
-            <% else %>
-                <button type="button" class="btn btn-custom-danger btn-sm">
-                <%= link_to("Update","/reports/update_daily_availabilities", class: "nav-link active", style: "text-decoration: none; color: black;", method: :post)%></button>
-            <% end %>
-         </div>
-    </div>
-  </div>
+                <div class="col-sm-6">
+                    <div class="card">
+                    <div class="card-body" style="text-align: center;">
+                            <h6 class="card-title">Daily report&nbsp;<a href="<%= @report_link%>" target="_blank"><i class="fa-solid fa-database"></i></a></h6>
+                            <% if @create_report_db%>
+                                <button type="button" class="btn btn-custom-success btn-sm">
+                                <%= link_to("Create db","/reports/create_report_db",  class: "nav-link active", style: "text-decoration: none; color: black;", method: :post)%></button>
+                            <% else %>
+                                <button type="button" class="btn btn-custom-danger btn-sm">
+                                <%= link_to("Update","/reports/update_daily_reports", class: "nav-link active", style: "text-decoration: none; color: black;", method: :post)%></button>
+                            <% end %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card">
+                    <div class="card-body" style="text-align: center;">
+                            <h6 class="card-title">Daily availability&nbsp;<a href="<%= @availability_link%>" target="_blank"><i class="fa-solid fa-smile"></i></a></h6>
+                            <% if @create_availability_db %>
+                                <button type="button" class="btn btn-custom-success btn-sm">
+                                <%= link_to("Create db","/reports/create_availability_db",  class: "nav-link active", style: "text-decoration: none; color: black;", method: :post)%></button>
+                            <% else %>
+                                <button type="button" class="btn btn-custom-danger btn-sm">
+                                <%= link_to("Update","/reports/update_daily_availabilities", class: "nav-link active", style: "text-decoration: none; color: black;", method: :post)%></button>
+                            <% end %>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -15,7 +15,7 @@
             <!-- Self scoring -->
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Self scoring <span>| This Week</span></h5>
+                    <h5 class="card-title">Task statuses <span>| This Week</span></h5>
                     <!-- Line Chart -->
                     <div id="teamReportsChart"></div>
 
@@ -101,7 +101,68 @@
                     </div>
                 </div>
             </div><!-- End Member availability  -->
-        </div>
+
+            <!-- Member help needs  -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Member help needs <span>| This Week</span></h5>
+                    <div class="wrap-circles">
+                        <div class="circle per-0">
+                            <div class="inner"><%=@users[1]%></div>
+                        </div>
+                        <div class="circle per-25">
+                            <div class="inner"><%=@users[3]%></div>
+                        </div>
+                        <div class="circle per-50">
+                            <div class="inner"><%=@users[5]%></div>
+                        </div>
+                        <div class="circle per-75">
+                            <div class="inner"><%=@users[6]%></div>
+                        </div>
+                        <div class="circle per-100">
+                            <div class="inner"><%=@users[7]%></div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- End Member help needs  -->
+
+            <!-- Notion import  -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Importing from Notion&nbsp;<i class="fa-solid fa-hand-holding-heart"></i></h5>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card">
+                            <div class="card-body" style="text-align: center;">
+                                    <h6 class="card-title">Daily report&nbsp;<a href="<%= @report_link%>" target="_blank"><i class="fa-solid fa-database"></i></a></h6>
+                                    <% if @create_report_db%>
+                                        <button type="button" class="btn btn-custom-success btn-sm">
+                                        <%= link_to("Create db","/reports/create_report_db",  class: "nav-link active", style: "text-decoration: none; color: black;", method: :post)%></button>
+                                    <% else %>
+                                        <button type="button" class="btn btn-custom-danger btn-sm">
+                                        <%= link_to("Import","/notion/import_daily_reports", class: "nav-link active", style: "text-decoration: none; color: black;", method: :post)%></button>
+                                    <% end %>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="card">
+                            <div class="card-body" style="text-align: center;">
+                                    <h6 class="card-title">Daily availability&nbsp;<a href="<%= @availability_link%>" target="_blank"><i class="fa-solid fa-smile"></i></a></h6>
+                                    <% if @create_availability_db %>
+                                        <button type="button" class="btn btn-custom-success btn-sm">
+                                        <%= link_to("Create db","/reports/create_availability_db",  class: "nav-link active", style: "text-decoration: none; color: black;", method: :post)%></button>
+                                    <% else %>
+                                        <button type="button" class="btn btn-custom-danger btn-sm">
+                                        <%= link_to("Import","/notion/import_daily_availabilities", class: "nav-link active", style: "text-decoration: none; color: black;", method: :post)%></button>
+                                    <% end %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- End Notion import  -->
     </div>
 </section>
 </div>
