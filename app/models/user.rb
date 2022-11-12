@@ -15,8 +15,8 @@ class User < ActiveRecord::Base
 
     def self.details
         hash= ApplicationRecord.authenticate_clickUp
-        team_id= PropertySetting.where(company: "ClickUp", key_name: "team_id").first.value_text
-        list_id= PropertySetting.where(company: "ClickUp", key_name: "availabilities_list_id").first.value_text
+        team_id= PropertySetting.find_by(company: "ClickUp", key_name: "team_id").value_text
+        list_id= PropertySetting.find_by(company: "ClickUp", key_name: "availabilities_list_id").value_text
 
         response = get("/team/#{team_id}/task?subtasks=true&include_closed=true&list_ids%5B%5D=#{list_id}", query: hash[:query], headers: hash[:headers])
         JSON.parse(response.body)
@@ -33,7 +33,7 @@ class User < ActiveRecord::Base
                     return false, "Error: User creation failed"
                 end
             else
-                @user = User.where(cid: user['assignees'][0]['id']).first
+                @user = User.find_by(cid: user['assignees'][0]['id'])
                 @user.username = user['name']
                 @user.comment = user['description']
                 @user.last_status = user['status']['status']
