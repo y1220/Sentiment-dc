@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_10_205549) do
+ActiveRecord::Schema.define(version: 2022_11_12_085418) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -64,8 +64,7 @@ ActiveRecord::Schema.define(version: 2022_11_10_205549) do
     t.index ["user_id"], name: "index_commits_on_user_id"
   end
 
-  create_table "daily_availabilities", id: false, force: :cascade do |t|
-    t.bigserial "id", null: false
+  create_table "daily_availabilities", force: :cascade do |t|
     t.boolean "enable"
     t.integer "availability_score"
     t.integer "user_id"
@@ -73,6 +72,7 @@ ActiveRecord::Schema.define(version: 2022_11_10_205549) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "registered"
+    t.string "nid"
     t.index ["user_id", "register_date"], name: "availability_index", unique: true
   end
 
@@ -85,6 +85,7 @@ ActiveRecord::Schema.define(version: 2022_11_10_205549) do
     t.datetime "updated_at", null: false
     t.integer "task_id"
     t.boolean "registered"
+    t.string "nid"
     t.index ["user_id", "register_date", "task_id"], name: "task_report_index", unique: true
   end
 
