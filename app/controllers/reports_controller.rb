@@ -1,4 +1,6 @@
 class ReportsController < ApplicationController
+  @@user_id = 19
+
   def daily
     @create_report_db= PropertySetting.find_by(key_name: "daily_reports_db_id").value_text.present? ? false : true
     @create_availability_db= PropertySetting.find_by(key_name: "daily_availabilities_db_id").value_text.present? ? false : true
@@ -6,8 +8,8 @@ class ReportsController < ApplicationController
     availability_link= PropertySetting.find_by(key_name: "daily_availabilities_link")
     @report_link= report_link ? report_link.value_text : "/reports/daily"
     @availability_link= availability_link ? availability_link.value_text : "/reports/daily"
-    @register_dates=DailyAvailability.where(user_id:1).map(&:register_date)
-    @tasks = User.find(1).tasks
+    @register_dates=DailyAvailability.where(user_id: @@user_id).map(&:register_date)
+    @tasks = User.find(@@user_id).tasks
   end
 
   def daily_insert
@@ -17,7 +19,7 @@ class ReportsController < ApplicationController
       task_score = params[task]
       task_id = task.split(/-/)[1]
       need_help = params["nh-"+task_id.to_s]
-      dr = DailyReport.new(user_id: 1, task_id: task_id, cuid: User.find(1).cid, ct_id: Task.find(task_id).cid, task_score: task_score, need_help: need_help, register_date: register_date)
+      dr = DailyReport.new(user_id: @@user_id, task_id: task_id, cuid: User.find(@@user_id).cid, ct_id: Task.find(task_id).cid, task_score: task_score, need_help: need_help, register_date: register_date)
       begin
         dr.save
       rescue => e
@@ -31,7 +33,7 @@ class ReportsController < ApplicationController
     end
     en = params["enable"] == "1" ? true : false
     av = en == true ? params["av"] : 0
-    da = DailyAvailability.new(user_id: 1, cuid: User.find(1).cid, enable: en, availability_score: av, register_date: register_date)
+    da = DailyAvailability.new(user_id: @@user_id, cuid: User.find(@@user_id).cid, enable: en, availability_score: av, register_date: register_date)
     begin
       da.save
       flash[:notice]= "Thanks for your submission :)"

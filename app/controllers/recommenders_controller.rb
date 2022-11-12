@@ -1,4 +1,5 @@
 class RecommendersController < ApplicationController
+  @@user_id = 1
   def index
     @users = User.all.order("id")[0..3]
     @task_name_list= Task.all.last(6)
@@ -10,7 +11,7 @@ class RecommendersController < ApplicationController
     [82.3, 11.3, 29.3, 48.7, 24.8, 16.2, 18.7],
     [16.3, 18.2, 26.3, 52.4, 42.7, 16.3, 36.9]
     ]
-    @tasks = User.first.tasks.last(3) #NEED FIX: fetch selected user
+    @tasks = User.find(@@user_id).tasks.last(3) #NEED FIX: fetch selected user
     @radar_scores= [
       {   name: @tasks.first.name,
         scores: [82.6, 11.5, 27.9, 45.7, 25.9, 33.3, 51.2]},
@@ -27,7 +28,7 @@ class RecommendersController < ApplicationController
   def update_clickup
     User.update
     @users = User.all
-    @tasks = User.first.tasks
+    @tasks = User.find(@@user_id).tasks
     redirect_to action: "index"
   end
 end

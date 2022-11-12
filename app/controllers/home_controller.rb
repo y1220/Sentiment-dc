@@ -1,9 +1,10 @@
 class HomeController < ApplicationController
+  @@user_id
   def index
     @dates= []
     @tasks=[]
     @availabiity = []
-    tasks= User.first.tasks
+    tasks= User.find(@@user_id).tasks
     tasks.each_with_index do |task, i|
       (@dates = DailyReport.where(user_id: 1, task_id: task.id).sort_by(&:register_date).last(5).map{|x| x.register_date}) if i == 0
       scores= []

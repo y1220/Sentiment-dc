@@ -16,12 +16,21 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Task statuses <span>| This Week</span></h5>
+                    <!-- Select user -->
+                    <select id="user-selection">
+                        <% @user_list.each do |user| %>
+                        <option value="<%= user.id.to_s%>"><%= user.username%></option>
+                        <% end %>
+                    </select>
+                    &nbsp;<button id="btn-user" onclick="selectUser()" class="btn btn-custom-success btn-sm" ><i class="fa-solid fa-play" style="color: white;"></i></button>
+                    <!-- End Select user -->
                     <!-- Line Chart -->
                     <div id="teamReportsChart"></div>
 
                     <script>
+                    var apexChart;
                     document.addEventListener("DOMContentLoaded", () => {
-                        new ApexCharts(document.querySelector("#teamReportsChart"), {
+                        apexChart = new ApexCharts(document.querySelector("#teamReportsChart"), {
                         series: [
                                 {name: 'Help availability',
                                 data: ['<%=@availabiity[0]%>', '<%=@availabiity[1]%>', '<%=@availabiity[2]%>', '<%=@availabiity[3]%>', '<%=@availabiity[4]%>']}
@@ -72,6 +81,125 @@
                         }
                         }).render();
                     });
+
+                    const btn_user = document.querySelector('#btn-user');
+                    const ub = document.querySelector('#user-selection');
+
+                    var selectedValues;
+
+                    btn_user.onclick = (e) => {
+                        e.preventDefault();
+                        selectedValues = [].filter
+                            .call(ub.options, option => option.selected)
+                            .map(option => option.value);
+                        // console.log('selected:',selectedValues);
+                        updateChart();
+                        //apexChart.render();
+
+                    };
+
+                    function updateChart(){
+                        var uid = selectedValues[0];
+                        $.ajax({
+                        url: '/notion/select_user.json',
+                        data: {uid: uid},
+                        dataType: "json",
+                        success: function(response) {
+                            console.log(response);
+                        var dates = response.dates;
+                        var availabiity = response.availabiity;
+                        var tasks = response.tasks;
+                        // apexChart.updateOptions(document.querySelector("#teamReportsChart"), {
+                        try{
+                        apexChart.chartOptions = {...this.chartOptions, ...{
+                            series: [
+                                { name: 'Help availability',
+                                  data: [availabiity[0], availabiity[1], availabiity[2], availabiity[3], availabiity[4]] }
+                                ,
+                                 {
+                                    name: tasks[0].name,
+                                    data: [tasks[0].scores[0], tasks[0].scores[1], tasks[0].scores[2], tasks[0].scores[3], tasks[0].scores[4]]
+                                },
+                                {
+                                    name: tasks[0].name,
+                                    data: [tasks[0].scores[0], tasks[0].scores[1], tasks[0].scores[2], tasks[0].scores[3], tasks[0].scores[4]]
+                                },
+                                {
+                                    name: tasks[0].name,
+                                    data: [tasks[0].scores[0], tasks[0].scores[1], tasks[0].scores[2], tasks[0].scores[3], tasks[0].scores[4]]
+                                },
+                                {
+                                    name: tasks[0].name,
+                                    data: [tasks[0].scores[0], tasks[0].scores[1], tasks[0].scores[2], tasks[0].scores[3], tasks[0].scores[4]]
+                                }
+                                // tasks.forEach(function (task, i) {
+                                //     {
+                                //         name: task.name,
+                                //         data: [task.scores[0], task.scores[1], task.scores[2], task.scores[3], task.scores[4]]
+                                //     }
+                                //     if ( i - 1 != tasks.length ){
+                                //         ,
+                                //     }
+                                // });
+                            ],
+                                chart: {
+                                height: 350,
+                                type: 'area',
+                                toolbar: {
+                                show: false
+                                },
+                            },
+                            markers: {
+                                size: 4
+                            },
+                            colors: ['#FFB6C1', '#4154f1', '#2eca6a', '#ff771d', '#5F9EA0'],
+                            fill: {
+                                type: "gradient",
+                                gradient: {
+                                shadeIntensity: 1,
+                                opacityFrom: 0.3,
+                                opacityTo: 0.4,
+                                stops: [0, 90, 100]
+                                }
+                            },
+                            dataLabels: {
+                                enabled: false
+                            },
+                            stroke: {
+                                curve: 'smooth',
+                                width: 2
+                            },
+                            xaxis: {
+                                    type: 'datetime',
+                                    categories: [dates[0], dates[1], dates[2], dates[3], dates[4]]
+                            },
+                            tooltip: {
+                                x: {
+                                format: 'dd/MM/yy HH:mm'
+                                },
+                            }
+                            // xaxis: {
+                            //     type: 'datetime',
+                            //     categories: [dates[0], dates[1], dates[2], dates[3], dates[4]]
+                            // }
+                        // });
+                        }};
+                        //
+
+                        }
+                        catch(e){
+                        alert(e)
+                        }
+                        // apexChart.update();
+                        // apexChart.series[0].data = [availabiity[0], availabiity[1], availabiity[2], availabiity[3], availabiity[4]];
+                        // apexChart.xaxis.categories = [dates[0], dates[1], dates[2], dates[3], dates[4]]
+                        // apexChart.update();
+                        },
+                        error: function(error){console.log(error)}
+                        });
+                        // console.log('array:', array);
+                    }
+
                     </script>
 
                     <!-- End Line Chart -->
