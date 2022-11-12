@@ -36,6 +36,12 @@ class DailyReport < ApplicationRecord
                 "Task id": {
                     "number": {}
                 },
+                "ClickUp User id": {
+                    "rich_text": {}
+                },
+                "ClickUp Task id": {
+                    "rich_text": {}
+                },
                 "Register date": {
                     "date": {}
                 },
@@ -82,6 +88,24 @@ class DailyReport < ApplicationRecord
                 },
                 "Task id": {
                     "number": dr.task_id
+                },
+                "ClickUp User id": {
+                    "rich_text": [
+                        {
+                            "text": {
+                                "content": User.find(dr.user_id).cid
+                            }
+                        }
+                    ]
+                },
+                "ClickUp Task id": {
+                    "rich_text": [
+                        {
+                            "text": {
+                                "content": Task.find(dr.task_id).cid
+                            }
+                        }
+                    ]
                 },
                 "Register date": {
                     "date": {

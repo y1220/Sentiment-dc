@@ -33,6 +33,9 @@ class DailyAvailability < ApplicationRecord
                 "User id": {
                     "number": {}
                 },
+                "ClickUp User id": {
+                    "rich_text": {}
+                },
                 "Register date": {
                     "date": {}
                 },
@@ -76,6 +79,15 @@ class DailyAvailability < ApplicationRecord
                 },
                 "User id": {
                     "number": da.user_id
+                },
+                "ClickUp User id": {
+                    "rich_text": [
+                        {
+                            "text": {
+                                "content": User.find(da.user_id).cid
+                            }
+                        }
+                    ]
                 },
                 "Register date": {
                     "date": {
