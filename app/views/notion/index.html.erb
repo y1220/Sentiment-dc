@@ -15,7 +15,7 @@
             <!-- Self scoring -->
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Task statuses <span>| This Week</span></h5>
+                    <h5 class="card-title">Member status <span>| This Week</span></h5>
                     <!-- Select user -->
                     <select id="user-selection">
                         <% @user_list.each do |user| %>
@@ -79,9 +79,11 @@
                             format: 'dd/MM/yy HH:mm'
                             },
                         }
-                        }).render();
-                    });
+                        });
+                        apexChart.render();
 
+
+                    });
                     const btn_user = document.querySelector('#btn-user');
                     const ub = document.querySelector('#user-selection');
 
@@ -93,12 +95,6 @@
                             .call(ub.options, option => option.selected)
                             .map(option => option.value);
                         // console.log('selected:',selectedValues);
-                        updateChart();
-                        //apexChart.render();
-
-                    };
-
-                    function updateChart(){
                         var uid = selectedValues[0];
                         $.ajax({
                         url: '/notion/select_user.json',
@@ -109,39 +105,41 @@
                         var dates = response.dates;
                         var availabiity = response.availabiity;
                         var tasks = response.tasks;
-                        // apexChart.updateOptions(document.querySelector("#teamReportsChart"), {
+                            console.log(tasks);
+                            console.log(tasks[0].name);
+                        var task_map = [{ name: 'Help availability',
+                                          data: [availabiity[0], availabiity[1], availabiity[2], availabiity[3], availabiity[4]] }];
+                        tasks.forEach(function (task, i) {
+                            task_map.push({
+                                name: task.name,
+                                data: [ task.scores[0], task.scores[1], task.scores[2], task.scores[3], task.scores[4] ]
+                            })
+                        });
+
                         try{
-                        apexChart.chartOptions = {...this.chartOptions, ...{
-                            series: [
-                                { name: 'Help availability',
-                                  data: [availabiity[0], availabiity[1], availabiity[2], availabiity[3], availabiity[4]] }
-                                ,
-                                 {
-                                    name: tasks[0].name,
-                                    data: [tasks[0].scores[0], tasks[0].scores[1], tasks[0].scores[2], tasks[0].scores[3], tasks[0].scores[4]]
-                                },
-                                {
-                                    name: tasks[0].name,
-                                    data: [tasks[0].scores[0], tasks[0].scores[1], tasks[0].scores[2], tasks[0].scores[3], tasks[0].scores[4]]
-                                },
-                                {
-                                    name: tasks[0].name,
-                                    data: [tasks[0].scores[0], tasks[0].scores[1], tasks[0].scores[2], tasks[0].scores[3], tasks[0].scores[4]]
-                                },
-                                {
-                                    name: tasks[0].name,
-                                    data: [tasks[0].scores[0], tasks[0].scores[1], tasks[0].scores[2], tasks[0].scores[3], tasks[0].scores[4]]
-                                }
-                                // tasks.forEach(function (task, i) {
-                                //     {
-                                //         name: task.name,
-                                //         data: [task.scores[0], task.scores[1], task.scores[2], task.scores[3], task.scores[4]]
-                                //     }
-                                //     if ( i - 1 != tasks.length ){
-                                //         ,
-                                //     }
-                                // });
-                            ],
+                        apexChart.updateOptions({
+                        // apexChart.chartOptions = {...this.chartOptions, ...{
+                            series: task_map
+
+
+                                //  {
+                                //     name: tasks[0].name,
+                                //     data: [tasks[0].scores[0], tasks[0].scores[1], tasks[0].scores[2], tasks[0].scores[3], tasks[0].scores[4]]
+                                // },
+                                // {
+                                //     name: tasks[0].name,
+                                //     data: [tasks[0].scores[0], tasks[0].scores[1], tasks[0].scores[2], tasks[0].scores[3], tasks[0].scores[4]]
+                                // },
+                                // {
+                                //     name: tasks[0].name,
+                                //     data: [tasks[0].scores[0], tasks[0].scores[1], tasks[0].scores[2], tasks[0].scores[3], tasks[0].scores[4]]
+                                // },
+                                // {
+                                //     name: tasks[0].name,
+                                //     data: [tasks[0].scores[0], tasks[0].scores[1], tasks[0].scores[2], tasks[0].scores[3], tasks[0].scores[4]]
+                                // }
+
+                            ,
                                 chart: {
                                 height: 350,
                                 type: 'area',
@@ -182,24 +180,18 @@
                             //     type: 'datetime',
                             //     categories: [dates[0], dates[1], dates[2], dates[3], dates[4]]
                             // }
-                        // });
-                        }};
-                        //
-
+                        });
+                        // }};
                         }
                         catch(e){
                         alert(e)
                         }
-                        // apexChart.update();
                         // apexChart.series[0].data = [availabiity[0], availabiity[1], availabiity[2], availabiity[3], availabiity[4]];
                         // apexChart.xaxis.categories = [dates[0], dates[1], dates[2], dates[3], dates[4]]
-                        // apexChart.update();
                         },
                         error: function(error){console.log(error)}
                         });
-                        // console.log('array:', array);
-                    }
-
+                    };
                     </script>
 
                     <!-- End Line Chart -->
