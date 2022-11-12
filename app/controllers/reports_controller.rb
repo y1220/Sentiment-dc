@@ -70,6 +70,7 @@ class ReportsController < ApplicationController
           else
             @cnt+= 1
             dr.registered = true
+            dr.nid = update_response
             if !dr.save
               flash[:notice]= "ERROR! :updating daily repository instance failed"
               break
@@ -116,6 +117,7 @@ class ReportsController < ApplicationController
           else
             @cnt+= 1
             da.registered = true
+            da.nid = update_response
             if !da.save
               flash[:notice]= "ERROR! :updating daily repository instance failed"
               break

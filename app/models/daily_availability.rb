@@ -103,7 +103,7 @@ class DailyAvailability < ApplicationRecord
         response= post("/pages/", query: hash[:query], body: json_body, headers: hash[:headers])
         post_response= JSON.parse(response.body)
         if post_response
-            return true
+            return post_response['id']
         end
         return false
     end
