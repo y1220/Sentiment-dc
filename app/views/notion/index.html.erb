@@ -86,7 +86,6 @@
                     });
                     const btn_user = document.querySelector('#btn-user');
                     const ub = document.querySelector('#user-selection');
-
                     var selectedValues;
 
                     btn_user.onclick = (e) => {
@@ -94,19 +93,15 @@
                         selectedValues = [].filter
                             .call(ub.options, option => option.selected)
                             .map(option => option.value);
-                        // console.log('selected:',selectedValues);
                         var uid = selectedValues[0];
                         $.ajax({
                         url: '/notion/select_user.json',
                         data: {uid: uid},
                         dataType: "json",
                         success: function(response) {
-                            console.log(response);
                         var dates = response.dates;
                         var availabiity = response.availabiity;
                         var tasks = response.tasks;
-                            console.log(tasks);
-                            console.log(tasks[0].name);
                         var task_map = [{ name: 'Help availability',
                                           data: [availabiity[0], availabiity[1], availabiity[2], availabiity[3], availabiity[4]] }];
                         tasks.forEach(function (task, i) {
@@ -118,28 +113,7 @@
 
                         try{
                         apexChart.updateOptions({
-                        // apexChart.chartOptions = {...this.chartOptions, ...{
-                            series: task_map
-
-
-                                //  {
-                                //     name: tasks[0].name,
-                                //     data: [tasks[0].scores[0], tasks[0].scores[1], tasks[0].scores[2], tasks[0].scores[3], tasks[0].scores[4]]
-                                // },
-                                // {
-                                //     name: tasks[0].name,
-                                //     data: [tasks[0].scores[0], tasks[0].scores[1], tasks[0].scores[2], tasks[0].scores[3], tasks[0].scores[4]]
-                                // },
-                                // {
-                                //     name: tasks[0].name,
-                                //     data: [tasks[0].scores[0], tasks[0].scores[1], tasks[0].scores[2], tasks[0].scores[3], tasks[0].scores[4]]
-                                // },
-                                // {
-                                //     name: tasks[0].name,
-                                //     data: [tasks[0].scores[0], tasks[0].scores[1], tasks[0].scores[2], tasks[0].scores[3], tasks[0].scores[4]]
-                                // }
-
-                            ,
+                            series: task_map,
                                 chart: {
                                 height: 350,
                                 type: 'area',
@@ -176,18 +150,11 @@
                                 format: 'dd/MM/yy HH:mm'
                                 },
                             }
-                            // xaxis: {
-                            //     type: 'datetime',
-                            //     categories: [dates[0], dates[1], dates[2], dates[3], dates[4]]
-                            // }
                         });
-                        // }};
                         }
                         catch(e){
                         alert(e)
                         }
-                        // apexChart.series[0].data = [availabiity[0], availabiity[1], availabiity[2], availabiity[3], availabiity[4]];
-                        // apexChart.xaxis.categories = [dates[0], dates[1], dates[2], dates[3], dates[4]]
                         },
                         error: function(error){console.log(error)}
                         });
