@@ -14,15 +14,10 @@
         <h5 style= "text-align: center; color:<%=@color%>;"><%=date.month.to_s + ' / ' + date.day.to_s %></h5>
     <% end %>
 
-     <div class="card">
+    <div class="card">
         <div class="card-body">
-            <button type="button" class="btn btn-custom-success btn-sm" style= "display: block; margin-left: auto; margin-right: 0;margin-bottom: 5px;">
-            <%= link_to("Create daily Notion db","/reports/create_daily_db",  class: "nav-link active", style: "text-decoration: none; color: black;", method: :post)%></button>
-            <button type="button" class="btn btn-custom-danger btn-sm" style= "display: block; margin-left: auto; margin-right: 0;margin-bottom: 5px;">
-            <%= link_to("Update report in Notion","/reports/update_daily_reports", class: "nav-link active", style: "text-decoration: none; color: black;", method: :post)%></button>
-
-            <%= form_with url: "/reports/daily_insert", method: :post do |form| %>
             <h5 class="card-title">Self scoring&nbsp;<i class="fa-solid fa-hand-holding-heart"></i></h5>
+            <%= form_with url: "/reports/daily_insert", method: :post do |form| %>
             <p>Purpose of this survey is to track the status of each activity and distribute tasks according to the needs of the team. No need to hesitate to ask help if you need, also help out collegues if you have spare time, let's manage our team well altogether!</p>
             <br/>
             <div class="row mb-5">
@@ -47,10 +42,6 @@
                     <% end %>
 
                     <div>
-                        <button type="button" class="btn btn-custom-success btn-sm" style= "display: block; margin-left: auto; margin-right: 0;margin-bottom: 5px;">
-                        <%= link_to("Create availability Notion db","/reports/create_availability_db",  class: "nav-link active", style: "text-decoration: none; color: black;", method: :post)%></button>
-                        <button type="button" class="btn btn-custom-danger btn-sm" style= "display: block; margin-left: auto; margin-right: 0;margin-bottom: 5px;">
-                        <%= link_to("Update availability in Notion","/reports/update_daily_availabilities", class: "nav-link active", style: "text-decoration: none; color: black;", method: :post)%></button>
                         <h5 for="customRange7" class="form-label" style="background-color: #F0F0F0;"><i class="fa-regular fa-handshake"></i>
                             &nbsp;Willing to help others</h5>
                         <br/>
@@ -72,6 +63,41 @@
                 </div>
             </div>
             <% end %>
+        </div>
+    </div>
+
+     <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Sharing on Notion&nbsp;<i class="fa-solid fa-hand-holding-heart"></i></h5>
+            <div class="row">
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body" style="text-align: center;">
+            <h6 class="card-title">Daily report&nbsp;<a href="<%= @report_link%>"><i class="fa-solid fa-database"></i></a></h6>
+            <% if @create_report_db%>
+                <button type="button" class="btn btn-custom-success btn-sm">
+                <%= link_to("Create db","/reports/create_report_db",  class: "nav-link active", style: "text-decoration: none; color: black;", method: :post)%></button>
+            <% else %>
+                <button type="button" class="btn btn-custom-danger btn-sm">
+                <%= link_to("Update","/reports/update_daily_reports", class: "nav-link active", style: "text-decoration: none; color: black;", method: :post)%></button>
+            <% end %>
+        </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body" style="text-align: center;">
+            <h6 class="card-title">Daily availability&nbsp;<a href="<%= @availability_link%>"><i class="fa-solid fa-smile"></i></a></h6>
+            <% if @create_availability_db %>
+                <button type="button" class="btn btn-custom-success btn-sm">
+                <%= link_to("Create db","/reports/create_availability_db",  class: "nav-link active", style: "text-decoration: none; color: black;", method: :post)%></button>
+            <% else %>
+                <button type="button" class="btn btn-custom-danger btn-sm">
+                <%= link_to("Update","/reports/update_daily_availabilities", class: "nav-link active", style: "text-decoration: none; color: black;", method: :post)%></button>
+            <% end %>
+         </div>
+    </div>
+  </div>
         </div>
     </div>
 </div>

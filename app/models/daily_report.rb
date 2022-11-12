@@ -93,7 +93,7 @@ class DailyReport < ApplicationRecord
                     "rich_text": [
                         {
                             "text": {
-                                "content": User.find(dr.user_id).cid
+                                "content": dr.cuid ? dr.cuid : User.find(dr.user_id).cid
                             }
                         }
                     ]
@@ -102,7 +102,7 @@ class DailyReport < ApplicationRecord
                     "rich_text": [
                         {
                             "text": {
-                                "content": Task.find(dr.task_id).cid
+                                "content": dr.ct_id ? dr.ct_id : Task.find(dr.task_id).cid
                             }
                         }
                     ]

@@ -1,5 +1,11 @@
 class ReportsController < ApplicationController
   def daily
+    @create_report_db= PropertySetting.find_by(key_name: "daily_reports_db_id").value_text.present? ? false : true
+    @create_availability_db= PropertySetting.find_by(key_name: "daily_availabilities_db_id").value_text.present? ? false : true
+    report_link= PropertySetting.find_by(key_name: "daily_reports_link")
+    availability_link= PropertySetting.find_by(key_name: "daily_availabilities_link")
+    @report_link= report_link ? report_link.value_text : "/reports/daily"
+    @availability_link= availability_link ? availability_link.value_text : "/reports/daily"
     @register_dates=DailyAvailability.where(user_id:1).map(&:register_date)
     @tasks = User.find(1).tasks
   end
@@ -11,7 +17,7 @@ class ReportsController < ApplicationController
       task_score = params[task]
       task_id = task.split(/-/)[1]
       need_help = params["nh-"+task_id.to_s]
-      dr = DailyReport.new(user_id: 1, task_id: task_id, task_score: task_score, need_help: need_help, register_date: register_date)
+      dr = DailyReport.new(user_id: 1, task_id: task_id, cuid: User.find(1).cid, ct_id: Task.find(task_id).cid, task_score: task_score, need_help: need_help, register_date: register_date)
       begin
         dr.save
       rescue => e
@@ -25,7 +31,7 @@ class ReportsController < ApplicationController
     end
     en = params["enable"] == "1" ? true : false
     av = en == true ? params["av"] : 0
-    da = DailyAvailability.new(user_id: 1, enable: en, availability_score: av, register_date: register_date)
+    da = DailyAvailability.new(user_id: 1, cuid: User.find(1).cid, enable: en, availability_score: av, register_date: register_date)
     begin
       da.save
       flash[:notice]= "Thanks for your submission :)"
@@ -39,13 +45,14 @@ class ReportsController < ApplicationController
     redirect_to action: "daily"
   end
 
-  def create_daily_db
+  def create_report_db
     @p= PropertySetting.find_by(key_name: "daily_reports_db_id")
-    if @p.value_text == nil
+    if @p.value_text.empty?
       response= DailyReport.create_daily_reports
       @p.value_text= response["id"]
       if @p.save
         @p= PropertySetting.find_by(key_name: "daily_reports_db_id")
+        PropertySetting.create(company: 'Notion', key_name: 'daily_reports_link', value_text: response["url"])
         flash[:notice]= "create report db successfully done!"
       else
         flash[:notice]= "ERROR! :creating report db failed"
@@ -88,11 +95,12 @@ class ReportsController < ApplicationController
 
   def create_availability_db
     @p= PropertySetting.find_by(key_name: "daily_availabilities_db_id")
-    if @p.value_text == nil
+    if @p.value_text.empty?
       response= DailyAvailability.create_daily_availabilities
       @p.value_text= response["id"]
       if @p.save
         @p= PropertySetting.find_by(key_name: "daily_availabilities_db_id")
+        PropertySetting.create(company: 'Notion', key_name: 'daily_availabilities_link', value_text: response["url"])
         flash[:notice]= "create availability db successfully done!"
       else
         flash[:notice]= "ERROR! :creating availability db failed"

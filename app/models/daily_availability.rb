@@ -84,7 +84,7 @@ class DailyAvailability < ApplicationRecord
                     "rich_text": [
                         {
                             "text": {
-                                "content": User.find(da.user_id).cid
+                                "content": da.cuid ? da.cuid : User.find(da.user_id).cid
                             }
                         }
                     ]

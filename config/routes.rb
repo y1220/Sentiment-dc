@@ -27,7 +27,7 @@ Rails.application.routes.draw do
   post 'branches/register_git_branch'
 
   post 'reports/daily_insert'
-  post 'reports/create_daily_db'
+  post 'reports/create_report_db'
   post 'reports/update_daily_reports'
   post 'reports/create_availability_db'
   post 'reports/update_daily_availabilities'
