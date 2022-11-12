@@ -34,11 +34,11 @@
                     <% else %>
                         <td></td>
                     <% end %>
-                    <td> <a href="<%= task.url%>"><%= task.name %></a></td>
+                    <td> <a href="<%= task.url%>" target="_blank"><%= task.name %></a></td>
                     <td><%= task.description %></td>
                     <% b_name = task.branch_id ? Branch.find(task.branch_id).name : nil %>
                     <% b_url = task.branch_id ? Branch.find(task.branch_id).url : "assign_git/#{task.cid}" %>
-                    <td style= "text-align: center;"><a href="<%= b_url %>"><%= b_name %><% if b_name.nil?%><i class="fa-solid fa-pen-to-square"></i><% end %></a></td>
+                    <td style= "text-align: center;"><a href="<%= b_url %>" target="_blank"><%= b_name %><% if b_name.nil?%><i class="fa-solid fa-pen-to-square"></i><% end %></a></td>
                     <td><%= task.cid %></td>
                     <% if task.status.present? %>
                         <td><span class="badge bg-<%= color_status[task.status] %>"><%= task.status %></span></td>
@@ -70,7 +70,7 @@
                                         <% if branch_exist == 1%>
                                             <% Commit.where(branch_id: task.branch.id).last(7).sort_by(&:commit_date).reverse.each do |child| %>
                                                 <tr>
-                                                    <td><a href="<%= child.url %>"><%= child.message %></a></td>
+                                                    <td><a href="<%= child.url %>" target="_blank"><%= child.message %></a></td>
                                                     <td><%= User.find(child.user_id).username %></td>
                                                     <td><%= child.commit_date %></td>
                                                 </tr>
@@ -78,7 +78,7 @@
                                         <% else%>
                                             <% Commit.for_task(task.id).each do |child| %>
                                                 <tr>
-                                                    <td><a href="<%= child.url %>"><%= child.message %></a></td>
+                                                    <td><a href="<%= child.url %>" target="_blank"><%= child.message %></a></td>
                                                     <td><%= User.find(child.user_id).username %></td>
                                                     <td><%= child.commit_date %></td>
                                                 </tr>
