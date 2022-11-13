@@ -137,7 +137,7 @@
                     <!-- Select task & duration -->
                     &nbsp;<select id="av-task-selection">
                         <% @task_list.each_with_index do |task, i| %>
-                        <option value="<%= i.to_s%>"><%= task.name%></option>
+                        <option value="<%= i.to_s%>-<%= task.id.to_s%>"><%= task.name%></option>
                         <% end %>
                     </select>
                     &nbsp;<button id="btn-av-task" onclick="selectAvTask()" class="btn btn-custom-success btn-sm" ><i class="fa-solid fa-play" style="color: white;"></i></button>
@@ -151,7 +151,7 @@
                     <% @task_list.each_with_index do |task, i|%>
                         <div class="wrap-circles" id= "wrap-task-<%=i.to_s%>" style="display: none;">
                         <% task.users.each_with_index do |user, j|%>
-                            <div class="circle per-user-<%=j.to_s%>">
+                            <div class="circle per-user-<%=j%>">
                                 <div class="inner"><%=user.username%></div>
                             </div>
                         <% end %>
@@ -166,6 +166,8 @@
 
                     var selectedAvTaskValue;
                     var selectedAvDurationValue;
+                    var i_id;
+                    var docHtml;
 
                     var availabilities = [];
                     function selectAvTask() {
@@ -174,15 +176,16 @@
                             selectedAvTaskValue = [].filter
                                 .call(av_task.options, option => option.selected)
                                 .map(option => option.value)[0];
-
+                        // adjust to pass also task_id
                             console.log('selectedAvTaskValue:', selectedAvTaskValue);
+                            i_id = selectedAvTaskValue.split(/[-,]/);
 
                             for (var i=0, n=av_task.options.length;i<n;i++) {
                             var x = document.getElementById("wrap-task-" + i);
                             console.log('x:', x);
                             console.log('"wrap-task-" + i:', "wrap-task-" + i);
 
-                            i == selectedAvTaskValue ? x.style.display = "" : x.style.display = "none"
+                            i == i_id[0] ? x.style.display = "" : x.style.display = "none"
                             }
                         };
                     }
@@ -197,6 +200,41 @@
                             console.log('selectedAvDurationValue:', selectedAvDurationValue);
 
                             // call ajax to fetch selected duration data fron Notion
+                            $.ajax({
+                            url: '/notion/select_team_availabilities.json',
+                            data: {duration: selectedAvDurationValue, task: i_id[1]},
+                            dataType: "json",
+                            success: function(response) {
+                            // { availabiities: availabiities }
+                            // { cuid: ... , score: ...}
+                            // { cuid: ... , scores: [...]}
+
+                            var availabiities = response.availabiities;
+                            var map_cuid_j = response.map_cuid_j;
+                            availabiities.forEach(function (object, i) {
+                                let score = selectedAvDurationValue == 0 ? object.score * 20 : object.scores.reduce((a, b) => a + b, 0) * 20;
+                                // transform cuid to j
+                                console.log('object:', object);
+
+                                console.log('score:', score);
+                                console.log('object.cuid:', object.cuid);
+
+                                console.log('map_cuid_j[object.cuid]:', map_cuid_j['' + object.cuid]);
+
+                                console.log('circle per-user- + map_cuid_j[object.cuid]:', "circle per-user-" + map_cuid_j[object.cuid]);
+                                console.log('document.getElementsByClassName...:', document.getElementsByClassName("circle per-user-" + map_cuid_j['' + object.cuid]));
+
+                                console.log('i_id[0]:', i_id[0]);
+
+                                console.log('document.getElementsByClassName...:', document.getElementsByClassName("circle per-user-" + map_cuid_j['' + object.cuid][i_id[0]]));
+                                docHtml = document.getElementsByClassName("circle per-user-" + map_cuid_j['' + object.cuid]);
+                                "conic-gradient(#B5838D" + object.score  +  "%, #FFCDB2 0)"
+                                console.log('conic-gradient(#B5838D...:', "conic-gradient(#B5838D" + score +  "%, #FFCDB2 0)");
+
+                                document.getElementsByClassName("circle per-user-" + map_cuid_j['' + object.cuid])[i_id[0]].style.backgroundImage = "conic-gradient(#B5838D " + score +  "%, #FFCDB2 0)";
+                            });
+                            }
+                            });
                             // override css value
                                 <%#
                                 .my-nice-class {

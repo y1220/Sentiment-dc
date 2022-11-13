@@ -139,6 +139,78 @@ class DailyReport < ApplicationRecord
         return false
     end
 
+    def self.get_past_week_team_availabilities(cuid_list)
+        hash= ApplicationRecord.authenticate_notion
+        report_db= PropertySetting.find_by(company: "Notion", key_name: "daily_reports_db_id").value_text
+        list= []
+        cuid_list.each do |cuid|
+            list.push({
+                "property": "ClickUp User id",
+                "rich_text": {
+                    "equals": "42560944"
+                }
+            })
+        end
+        json_body= {
+            "filter": {
+                "and": [
+                            {
+                                "property": "Register date",
+                                    "date": {
+                                        "past_week": {}
+                                    }
+                            },
+                            {
+                            "or": list
+                            }
+                ]
+            }
+        }.to_json
+        #hash[:query]= { :id => report_db }
+        response= post("/databases/#{report_db}/query", query: hash[:query], body: json_body, headers: hash[:headers])
+        get_response= JSON.parse(response.body)
+        if get_response
+            return get_response
+        end
+        return false
+    end
+
+    def self.get_latest_team_availabilities(cuid_list)
+        hash= ApplicationRecord.authenticate_notion
+        report_db= PropertySetting.find_by(company: "Notion", key_name: "daily_availabilities_db_id").value_text
+        list= []
+        cuid_list.each do |cuid|
+            list.push({
+                "property": "ClickUp User id",
+                "rich_text": {
+                    "equals": "42560944"
+                }
+            })
+        end
+        json_body= {
+            "filter": {
+                "and": [
+                            {
+                                "property": "Register date",
+                                    "date": {
+                                        "on_or_after": "2022-11-11"
+                                    }
+                            },
+                            {
+                            "or": list
+                            }
+                ]
+            }
+        }.to_json
+        #hash[:query]= { :id => report_db }
+        response= post("/databases/#{report_db}/query", query: hash[:query], body: json_body, headers: hash[:headers])
+        get_response= JSON.parse(response.body)
+        if get_response
+            return get_response
+        end
+        return false
+    end
+
     def self.update
         # response = Task.details
         # @task_info = response['tasks']

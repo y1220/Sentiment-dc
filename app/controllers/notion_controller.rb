@@ -54,6 +54,55 @@ class NotionController < ApplicationController
     return render json: { dates: @dates, tasks: @tasks, availabiity: @availabiity}
   end
 
+  def select_team_availabilities
+    duration= params['duration'] == 1 ? 'past_week' : 'latest'
+    cuid_list= Task.find(params['task']).users.map(&:cid)
+
+    # Notion GET request
+    response= ''
+    availabiities= []
+    map_cuid_j= []
+    cuid_list.each_with_index do |cuid, j|
+      map_cuid_j.push({cuid=> j})
+    end
+    if duration == 'past_week'
+      response= DailyReport.get_past_week_team_availabilities(cuid_list)
+      drafts = []
+      response["results"].each do |result|
+        object= {}
+        object['cuid']= result["properties"]["ClickUp User id"]["rich_text"][0]["text"]["content"]
+        object['score']= result["properties"]["Availability score"]["number"]
+        drafts.push(object)
+        cuid_list.each do |cuid|
+          availabiities.push({ cuid: cuid, scores: drafts.select{|draft| draft['cuid'] == cuid}})
+        end
+      end
+    else
+      response= DailyReport.get_latest_team_availabilities(cuid_list)
+      response["results"].each do |result|
+        object= {}
+        object['cuid']= result["properties"]["ClickUp User id"]["rich_text"][0]["text"]["content"]
+        object['score']= result["properties"]["Availability score"]["number"]
+        availabiities.push(object)
+      end
+
+    end
+
+    return render json: { availabiities: availabiities, map_cuid_j: map_cuid_j.inject(&:merge) }
+  end
+
+  def select_team_help_needs
+    duration= params['duration'] == 1 ? 'past_week' : 'latest'
+    task= Task.find(params['task'])
+    cuid_list= task.users.map(&:cid)
+
+    # Notion GET request
+    response= DailyReport.get_team_daily_reports(duration, cuid_list, task.id)
+    needs= []
+
+    return render json: { needs: needs}
+  end
+
   def import_daily_reports
   end
 
