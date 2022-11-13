@@ -134,31 +134,82 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Member availability <span>| This Week</span></h5>
-                    <!-- Select duration -->
+                    <!-- Select task & duration -->
+                    &nbsp;<select id="av-task-selection">
+                        <% @task_list.each_with_index do |task, i| %>
+                        <option value="<%= i.to_s%>"><%= task.name%></option>
+                        <% end %>
+                    </select>
+                    &nbsp;<button id="btn-av-task" onclick="selectAvTask()" class="btn btn-custom-success btn-sm" ><i class="fa-solid fa-play" style="color: white;"></i></button>
                     <select id="av-duration-selection">
                         <% @duration_list.each_with_index do |duration, i| %>
                         <option value="<%= i.to_s%>"><%= duration%></option>
                         <% end %>
                     </select>
                     &nbsp;<button id="btn-av-duration" onclick="selectAvDuration()" class="btn btn-custom-success btn-sm" ><i class="fa-solid fa-play" style="color: white;"></i></button>
-                    <!-- End Select duration -->
-                    <div class="wrap-circles">
-                        <div class="circle per-0">
-                            <div class="inner"><%=@users[1]%></div>
+                    <!-- End Select task & duration -->
+                    <% @task_list.each_with_index do |task, i|%>
+                        <div class="wrap-circles" id= "wrap-task-<%=i.to_s%>" style="display: none;">
+                        <% task.users.each_with_index do |user, j|%>
+                            <div class="circle per-user-<%=j.to_s%>">
+                                <div class="inner"><%=user.username%></div>
+                            </div>
+                        <% end %>
                         </div>
-                        <div class="circle per-25">
-                            <div class="inner"><%=@users[2]%></div>
-                        </div>
-                        <div class="circle per-50">
-                            <div class="inner"><%=@users[3]%></div>
-                        </div>
-                        <div class="circle per-75">
-                            <div class="inner"><%=@users[4]%></div>
-                        </div>
-                        <div class="circle per-100">
-                            <div class="inner"><%=@users[0]%></div>
-                        </div>
-                    </div>
+                    <% end %>
+                    <!-- End Tables without borders -->
+                    <script>
+                    const av_task = document.querySelector('#av-task-selection');
+                    const button_av_task = document.querySelector('#btn-av-task');
+                    const av_duration = document.querySelector('#av-duration-selection');
+                    const button_av_duration = document.querySelector('#btn-av-duration');
+
+                    var selectedAvTaskValue;
+                    var selectedAvDurationValue;
+
+                    var availabilities = [];
+                    function selectAvTask() {
+                        button_av_task.onclick = (e) => {
+                            e.preventDefault();
+                            selectedAvTaskValue = [].filter
+                                .call(av_task.options, option => option.selected)
+                                .map(option => option.value)[0];
+
+                            console.log('selectedAvTaskValue:', selectedAvTaskValue);
+
+                            for (var i=0, n=av_task.options.length;i<n;i++) {
+                            var x = document.getElementById("wrap-task-" + i);
+                            console.log('x:', x);
+                            console.log('"wrap-task-" + i:', "wrap-task-" + i);
+
+                            i == selectedAvTaskValue ? x.style.display = "" : x.style.display = "none"
+                            }
+                        };
+                    }
+
+                    function selectAvDuration() {
+                        button_av_duration.onclick = (e) => {
+                            e.preventDefault();
+                            selectedAvDurationValue = [].filter
+                                .call(av_duration.options, option => option.selected)
+                                .map(option => option.value)[0];
+
+                            console.log('selectedAvDurationValue:', selectedAvDurationValue);
+
+                            // call ajax to fetch selected duration data fron Notion
+                            // override css value
+                                <%#
+                                .my-nice-class {
+                                    max-width: 40%;
+                                    max-height: 40%;
+                                }
+                                document.getElementsByClassName("nav-questions").style.maxHeight="40%";
+                                .circle.per-25 {
+                                background-image: conic-gradient(#B5838D 25%, #FFCDB2 0);
+                                } %>
+                        };
+                    }
+                    </script>
                 </div>
             </div><!-- End Member availability  -->
 
