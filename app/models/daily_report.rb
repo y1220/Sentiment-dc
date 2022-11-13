@@ -141,13 +141,13 @@ class DailyReport < ApplicationRecord
 
     def self.get_past_week_team_availabilities(cuid_list)
         hash= ApplicationRecord.authenticate_notion
-        report_db= PropertySetting.find_by(company: "Notion", key_name: "daily_reports_db_id").value_text
+        report_db= PropertySetting.find_by(company: "Notion", key_name: "daily_availabilities_db_id").value_text
         list= []
         cuid_list.each do |cuid|
             list.push({
                 "property": "ClickUp User id",
                 "rich_text": {
-                    "equals": "42560944"
+                    "equals": cuid
                 }
             })
         end
@@ -183,7 +183,7 @@ class DailyReport < ApplicationRecord
             list.push({
                 "property": "ClickUp User id",
                 "rich_text": {
-                    "equals": "42560944"
+                    "equals": cuid
                 }
             })
         end

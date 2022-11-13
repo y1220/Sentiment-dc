@@ -150,9 +150,9 @@
                     <!-- End Select task & duration -->
                     <% @task_list.each_with_index do |task, i|%>
                         <div class="wrap-circles" id= "wrap-task-<%=i.to_s%>" style="display: none;">
-                        <% task.users.each_with_index do |user, j|%>
-                            <div class="circle per-user-<%=j%>">
-                                <div class="inner"><%=user.username%></div>
+                        <% 6.times do |j|%>
+                            <div class="circle per-user-<%=j%>" style="display: none;">
+                                <div class="inner"><div class="name-<%= j%>"></div></div>
                             </div>
                         <% end %>
                         </div>
@@ -176,16 +176,19 @@
                             selectedAvTaskValue = [].filter
                                 .call(av_task.options, option => option.selected)
                                 .map(option => option.value)[0];
-                        // adjust to pass also task_id
-                            console.log('selectedAvTaskValue:', selectedAvTaskValue);
                             i_id = selectedAvTaskValue.split(/[-,]/);
 
                             for (var i=0, n=av_task.options.length;i<n;i++) {
                             var x = document.getElementById("wrap-task-" + i);
-                            console.log('x:', x);
-                            console.log('"wrap-task-" + i:', "wrap-task-" + i);
 
                             i == i_id[0] ? x.style.display = "" : x.style.display = "none"
+                            // document.getElementsByClassName("circle per-user-0")[i].style.display = "none";
+                            // document.getElementsByClassName("circle per-user-1")[i].style.display = "none";
+                            // document.getElementsByClassName("circle per-user-2")[i].style.display = "none";
+                            // document.getElementsByClassName("circle per-user-3")[i].style.display = "none";
+                            // document.getElementsByClassName("circle per-user-4")[i].style.display = "none";
+                            // document.getElementsByClassName("circle per-user-5")[i].style.display = "none";
+
                             }
                         };
                     }
@@ -211,27 +214,25 @@
 
                             var availabiities = response.availabiities;
                             var map_cuid_j = response.map_cuid_j;
+
                             availabiities.forEach(function (object, i) {
-                                let score = selectedAvDurationValue == 0 ? object.score * 20 : object.scores.reduce((a, b) => a + b, 0) * 20;
-                                // transform cuid to j
-                                console.log('object:', object);
-
-                                console.log('score:', score);
-                                console.log('object.cuid:', object.cuid);
-
-                                console.log('map_cuid_j[object.cuid]:', map_cuid_j['' + object.cuid]);
-
-                                console.log('circle per-user- + map_cuid_j[object.cuid]:', "circle per-user-" + map_cuid_j[object.cuid]);
-                                console.log('document.getElementsByClassName...:', document.getElementsByClassName("circle per-user-" + map_cuid_j['' + object.cuid]));
-
-                                console.log('i_id[0]:', i_id[0]);
-
-                                console.log('document.getElementsByClassName...:', document.getElementsByClassName("circle per-user-" + map_cuid_j['' + object.cuid][i_id[0]]));
-                                docHtml = document.getElementsByClassName("circle per-user-" + map_cuid_j['' + object.cuid]);
-                                "conic-gradient(#B5838D" + object.score  +  "%, #FFCDB2 0)"
-                                console.log('conic-gradient(#B5838D...:', "conic-gradient(#B5838D" + score +  "%, #FFCDB2 0)");
-
-                                document.getElementsByClassName("circle per-user-" + map_cuid_j['' + object.cuid])[i_id[0]].style.backgroundImage = "conic-gradient(#B5838D " + score +  "%, #FFCDB2 0)";
+                                let score = 0;
+                                if (selectedAvDurationValue == 0) {
+                                    score = object.score * 20;
+                                } else {
+                                    let score_length = object.scores.length;
+                                    console.log("object: ", object);
+                                    object.scores.forEach((x, index)=>{
+                                        score = score + x;
+                                    })
+                                    score = score/score_length * 20;
+                                }
+                                console.log(score);
+                                console.log('document.getElementsByClassName...[i_id[0]]:', document.getElementsByClassName("circle per-user-" + i)[i_id[0]]);
+                                docHtml = document.getElementsByClassName("name-" + i);
+                                document.getElementsByClassName("name-" + i)[i_id[0]].innerHTML = object.username
+                                document.getElementsByClassName("circle per-user-" + i)[i_id[0]].style.backgroundImage = "conic-gradient(#B5838D " + score +  "%, #FFCDB2 0)";
+                                document.getElementsByClassName("circle per-user-" + i)[i_id[0]].style.display = "";
                             });
                             }
                             });
