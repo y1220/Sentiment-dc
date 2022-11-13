@@ -1,5 +1,5 @@
 class ReportsController < ApplicationController
-  @@user_id = 19
+  @@user_id = 19 #TODO: for now manipulate directly here to select a user
 
   def daily
     @create_report_db= PropertySetting.find_by(key_name: "daily_reports_db_id").value_text.present? ? false : true
@@ -10,6 +10,8 @@ class ReportsController < ApplicationController
     @availability_link= availability_link ? availability_link.value_text : "/reports/daily"
     @register_dates=DailyAvailability.where(user_id: @@user_id).map(&:register_date)
     @tasks = User.find(@@user_id).tasks
+    @pending_report= DailyReport.pending
+    @pending_availability= DailyAvailability.pending
   end
 
   def daily_insert
@@ -69,9 +71,8 @@ class ReportsController < ApplicationController
     @p= PropertySetting.find_by(key_name: "daily_reports_db_id")
     if @p
       daily_reports_db= @p.value_text
-      user_id= 1 #TODO: after implement login func, replace vakue dynamically
       @cnt= 0
-      DailyReport.register_to_notion(user_id).each do |dr|
+      DailyReport.register_to_notion(@@user_id).each do |dr|
         if !dr.registered
           update_response= DailyReport.update_daily_reports(daily_reports_db, dr)
           if !update_response
@@ -117,9 +118,8 @@ class ReportsController < ApplicationController
     @p= PropertySetting.find_by(key_name: "daily_availabilities_db_id")
     if @p
       daily_availabilities_db= @p.value_text
-      user_id= 1 #TODO: after implement login func, replace vakue dynamically
       @cnt= 0
-      DailyAvailability.register_to_notion(user_id).each do |da|
+      DailyAvailability.register_to_notion(@@user_id).each do |da|
         if !da.registered
           update_response= DailyAvailability.update_daily_availabilities(daily_availabilities_db, da)
           if !update_response

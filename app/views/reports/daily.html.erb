@@ -79,7 +79,7 @@
                                 <%= link_to("Create db","/reports/create_report_db",  class: "nav-link active", style: "text-decoration: none; color: black;", method: :post)%></button>
                             <% else %>
                                 <button type="button" class="btn btn-custom-danger btn-sm">
-                                <%= link_to("Update","/reports/update_daily_reports", class: "nav-link active", style: "text-decoration: none; color: black;", method: :post)%></button>
+                                <%= link_to("Update(#{@pending_report})","/reports/update_daily_reports", class: "nav-link active", style: "text-decoration: none; color: black;", method: :post)%></button>
                             <% end %>
                         </div>
                     </div>
@@ -93,7 +93,7 @@
                                 <%= link_to("Create db","/reports/create_availability_db",  class: "nav-link active", style: "text-decoration: none; color: black;", method: :post)%></button>
                             <% else %>
                                 <button type="button" class="btn btn-custom-danger btn-sm">
-                                <%= link_to("Update","/reports/update_daily_availabilities", class: "nav-link active", style: "text-decoration: none; color: black;", method: :post)%></button>
+                                <%= link_to("Update(#{@pending_availability})","/reports/update_daily_availabilities", class: "nav-link active", style: "text-decoration: none; color: black;", method: :post)%></button>
                             <% end %>
                         </div>
                     </div>

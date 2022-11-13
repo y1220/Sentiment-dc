@@ -3,6 +3,7 @@ class DailyReport < ApplicationRecord
     base_uri "https://api.notion.com/v1"
 
     scope :register_to_notion, ->(uid) {where('registered is not true AND user_id = ?',  uid)}
+    scope :pending, -> {where('registered is not true').count}
 
     def self.create_daily_reports
         hash= ApplicationRecord.authenticate_notion
