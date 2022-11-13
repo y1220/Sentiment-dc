@@ -27,6 +27,8 @@ class NotionController < ApplicationController
     availability_link= PropertySetting.find_by(key_name: "daily_availabilities_link")
     @report_link= report_link ? report_link.value_text : "/reports/daily"
     @availability_link= availability_link ? availability_link.value_text : "/reports/daily"
+    @task_list= User.find(@@user_id).tasks
+    @duration_list= ['latest', 'weekly average']
   end
 
   def select_user
