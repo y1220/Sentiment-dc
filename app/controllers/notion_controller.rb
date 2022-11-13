@@ -61,11 +61,7 @@ class NotionController < ApplicationController
     # Notion GET request
     response= ''
     availabiities= []
-    map_cuid_j= []
 
-    cuid_list.each_with_index do |cuid, j|
-      map_cuid_j.push({cuid=> j})
-    end
     if duration == 'past_week'
       response= DailyReport.get_past_week_team_availabilities(cuid_list)
       drafts = []
@@ -74,9 +70,9 @@ class NotionController < ApplicationController
         object['cuid']= result["properties"]["ClickUp User id"]["rich_text"][0]["text"]["content"]
         object['score']= result["properties"]["Availability score"]["number"]
         drafts.push(object)
-        cuid_list.each do |cuid|
-          availabiities.push({ cuid: cuid, scores: drafts.select{|draft| draft['cuid'] == cuid}.map{|d| d[:score]}, username: User.find_by(cid: object['cuid']).username})
-        end
+      end
+      cuid_list.each do |cuid|
+        availabiities.push({ cuid: cuid, scores: drafts.select{|draft| draft['cuid'] == cuid}.map{|d| d['score']}, username: User.find_by(cid: cuid).username})
       end
     else
       response= DailyReport.get_latest_team_availabilities(cuid_list)
@@ -87,9 +83,8 @@ class NotionController < ApplicationController
         object['username']= User.find_by(cid: object['cuid']).username
         availabiities.push(object)
       end
-
     end
-    return render json: { availabiities: availabiities, map_cuid_j: map_cuid_j.inject(&:merge) }
+    return render json: { availabiities: availabiities}
   end
 
   def select_team_help_needs
