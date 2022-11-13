@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  @@user_id
+  @@user_id = 1
   def index
     @dates= []
     @tasks=[]

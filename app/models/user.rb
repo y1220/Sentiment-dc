@@ -43,4 +43,8 @@ class User < ActiveRecord::Base
             end
         end
     end
+
+    def active_tasks
+        self.tasks.select { |task| task.status != "Closed" }
+    end
 end
