@@ -6,7 +6,7 @@ class NotionController < ApplicationController
     @dates= []
     @tasks=[]
     @availabiity = []
-    tasks= User.find(@@user_id).tasks
+    tasks= User.find(@@user_id).active_tasks
     tasks.each_with_index do |task, i|
       (@dates = DailyReport.where(user_id: @@user_id, task_id: task.id).sort_by(&:register_date).last(5).map{|x| x.register_date}) if i == 0
       scores= []
@@ -27,7 +27,7 @@ class NotionController < ApplicationController
     availability_link= PropertySetting.find_by(key_name: "daily_availabilities_link")
     @report_link= report_link ? report_link.value_text : "/reports/daily"
     @availability_link= availability_link ? availability_link.value_text : "/reports/daily"
-    @task_list= User.find(@@user_id).tasks
+    @task_list= User.find(@@user_id).active_tasks
     @duration_list= ['latest', 'weekly average']
   end
 
@@ -36,7 +36,7 @@ class NotionController < ApplicationController
     @dates= []
     @tasks=[]
     @availabiity = []
-    tasks= User.find(@user_id).tasks
+    tasks= User.find(@user_id).active_tasks
     tasks.each_with_index do |task, i|
       (@dates = DailyReport.where(user_id: @user_id, task_id: task.id).sort_by(&:register_date).last(5).map{|x| x.register_date}) if i == 0
       scores= []

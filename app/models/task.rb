@@ -14,7 +14,7 @@ class Task < ActiveRecord::Base
 
   scope :children_list, -> {where("parent IS NOT null")}
   scope :parent_list, -> {where("parent IS null")}
-
+  scope :active_tasks, -> {where.not("status = ?", Task.statuses[:Closed])}
 
   def self.details
     hash= ApplicationRecord.authenticate_clickUp

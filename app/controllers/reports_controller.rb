@@ -9,7 +9,7 @@ class ReportsController < ApplicationController
     @report_link= report_link ? report_link.value_text : "/reports/daily"
     @availability_link= availability_link ? availability_link.value_text : "/reports/daily"
     @register_dates=DailyAvailability.where(user_id: @@user_id).map(&:register_date)
-    @tasks = User.find(@@user_id).tasks
+    @tasks = User.find(@@user_id).active_tasks
     @pending_report= DailyReport.pending
     @pending_availability= DailyAvailability.pending
   end

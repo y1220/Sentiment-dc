@@ -35,7 +35,7 @@
             </tr>
           </thead>
           <% color_status = {'available' => 'success', 'normal' =>  'info', 'busy' => 'danger' } %>
-          <% User.find(1).tasks.last(3).each_with_index do |task, i|%>
+          <% User.find(1).active_tasks.last(3).each_with_index do |task, i|%>
             <tbody id= "task-top-<%=i.to_s%>" style="display: none;">
               <tr style="background-color: lightblue; padding: 3px;">
                 <td></td>
