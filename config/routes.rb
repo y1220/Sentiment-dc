@@ -44,6 +44,8 @@ Rails.application.routes.draw do
   get 'notion/index'
   get 'notion/select_user'
   get 'notion/select_team_availabilities'
+  get 'notion/select_team_help_needs'
+
 
   post 'notion/import_daily_reports'
   post 'notion/import_daily_availabilities'

@@ -167,7 +167,6 @@
                         var selectedAvTaskValue;
                         var selectedAvDurationValue;
                         var i_id_av;
-                        var docHtml;
 
                         var availabilities = [];
                         function selectAvTask() {
@@ -222,7 +221,6 @@
                                     }
                                     console.log(score);
                                     console.log('document.getElementsByClassName...[i_id_av[0]]:', document.getElementsByClassName("circle per-av-user-" + i)[i_id_av[0]]);
-                                    docHtml = document.getElementsByClassName("name-av-" + i);
                                     document.getElementsByClassName("name-av-" + i)[i_id_av[0]].innerHTML = object.username
                                     document.getElementsByClassName("score-av-" + i)[i_id_av[0]].innerHTML = score
                                     // override css value
@@ -257,11 +255,21 @@
                     <!-- End Select task & duration -->
                    <% @task_list.each_with_index do |task, i| #assuming that maximun number of teammates = 6 %>
                         <div class="wrap-circles" id= "wrap-help-task-<%=i.to_s%>" style="display: none;">
+                        <div style="font-size: 25px; color: #9dd0be;">help needs</div>
                         <% 6.times do |j|%>
                             <div class="circle per-help-user-<%=j%>" style="display: none;">
                                 <div class="inner"><div class="name-help-<%= j%>"></div></div>
-                            </div><br/>
+                            </div>
                             <div class="score-help-<%= j%>" style="font-size: 28px; margin-top: 120px; color: #9dd0be;"></div>
+                        <% end %>
+                        </div>
+                        <div class="wrap-circles" id= "wrap-status-task-<%=i.to_s%>" style="display: none;">
+                        <div style="font-size: 25px; color: #9dd0be;">task statuses</div>
+                        <% 6.times do |j|%>
+                            <div class="circle per-status-user-<%=j%>" style="display: none;">
+                                <div class="inner"><div class="name-status-<%= j%>"></div></div>
+                            </div>
+                            <div class="score-status-<%= j%>" style="font-size: 28px; margin-top: 120px; color: #9dd0be;"></div>
                         <% end %>
                         </div>
                     <% end %>
@@ -275,7 +283,6 @@
                         var selectedHelpTaskValue;
                         var selectedHelpDurationValue;
                         var i_id_help;
-                        var docHtml;
 
                         var helpailabilities = [];
                         function selectHelpTask() {
@@ -288,8 +295,12 @@
 
                                 for (var i=0, n=help_task.options.length;i<n;i++) {
                                 var x = document.getElementById("wrap-help-task-" + i);
+                                var y = document.getElementById("wrap-status-task-" + i);
+
 
                                 i == i_id_help[0] ? x.style.display = "" : x.style.display = "none";
+                                i == i_id_help[0] ? y.style.display = "" : y.style.display = "none";
+
                                 }
                             };
                         }
@@ -305,7 +316,7 @@
 
                                 // call ajax to fetch selected duration data fron Notion
                                 $.ajax({
-                                url: '/notion/select_team_availabilities.json',
+                                url: '/notion/select_team_help_needs.json',
                                 data: {duration: selectedHelpDurationValue, task: i_id_help[1]},
                                 dataType: "json",
                                 success: function(response) {
@@ -313,12 +324,14 @@
                                 // { cuid: ... , score: ...}
                                 // { cuid: ... , scores: [...]}
 
-                                var availabiities = response.availabiities;
+                                var needs = response.needs;
 
-                                availabiities.forEach(function (object, i) {
+                                needs.forEach(function (object, i) {
                                     let score = 0;
+                                    let task_score = 0;
                                     if (selectedHelpDurationValue == 0) {
                                         score = object.score * 20;
+                                        task_score = object.task_score * 20;
                                     } else {
                                         let score_length = object.scores.length;
                                         console.log("object: ", object);
@@ -327,15 +340,27 @@
                                         })
                                         score = score/score_length * 20;
                                         score = score.toFixed(1)
+
+                                        let task_score_length = object.task_scores.length;
+                                        object.task_scores.forEach((x, index)=>{
+                                            task_score = task_score + x;
+                                        })
+                                        task_score = task_score/task_score_length * 20;
+                                        task_score = task_score.toFixed(1)
                                     }
                                     console.log(score);
                                     console.log('document.getElementsByClassName...[i_id_help[0]]:', document.getElementsByClassName("circle per-help-user-" + i)[i_id_help[0]]);
-                                    docHtml = document.getElementsByClassName("name-help-" + i);
                                     document.getElementsByClassName("name-help-" + i)[i_id_help[0]].innerHTML = object.username
                                     document.getElementsByClassName("score-help-" + i)[i_id_help[0]].innerHTML = score
                                     // override css value
                                     document.getElementsByClassName("circle per-help-user-" + i)[i_id_help[0]].style.backgroundImage = "conic-gradient(#B5838D " + score +  "%, #FFCDB2 0)";
                                     document.getElementsByClassName("circle per-help-user-" + i)[i_id_help[0]].style.display = "";
+
+                                    document.getElementsByClassName("name-status-" + i)[i_id_help[0]].innerHTML = object.username
+                                    document.getElementsByClassName("score-status-" + i)[i_id_help[0]].innerHTML = task_score
+                                    // override css value
+                                    document.getElementsByClassName("circle per-status-user-" + i)[i_id_help[0]].style.backgroundImage = "conic-gradient(#B5838D " + task_score +  "%, #FFCDB2 0)";
+                                    document.getElementsByClassName("circle per-status-user-" + i)[i_id_help[0]].style.display = "";
                                 });
                                 }
                                 });

@@ -88,13 +88,39 @@ class NotionController < ApplicationController
   end
 
   def select_team_help_needs
-    duration= params['duration'] == 1 ? 'past_week' : 'latest'
+    duration= params['duration'] == '1' ? 'past_week' : 'latest'
     task= Task.find(params['task'])
     cuid_list= task.users.map(&:cid)
 
     # Notion GET request
-    response= DailyReport.get_team_daily_reports(duration, cuid_list, task.id)
+    response= ''
     needs= []
+
+    if duration == 'past_week'
+      response= DailyReport.get_past_week_team_needs(cuid_list, task.cid)
+      drafts = []
+      response["results"].each do |result|
+        object= {}
+        object['cuid']= result["properties"]["ClickUp User id"]["rich_text"][0]["text"]["content"]
+        object['score']= result["properties"]["Need help"]["number"]
+        object['task_score']= result["properties"]["Task score"]["number"]
+        drafts.push(object)
+      end
+      cuid_list.each do |cuid|
+        needs.push({ cuid: cuid, scores: drafts.select{|draft| draft['cuid'] == cuid}.map{|d| d['score']},
+                   task_scores: drafts.select{|draft| draft['cuid'] == cuid}.map{|d| d['task_score']}, username: User.find_by(cid: cuid).username})
+      end
+    else
+      response= DailyReport.get_latest_team_needs(cuid_list, task.cid)
+      response["results"].each do |result|
+        object= {}
+        object['cuid']= result["properties"]["ClickUp User id"]["rich_text"][0]["text"]["content"]
+        object['score']= result["properties"]["Need help"]["number"]
+        object['task_score']= result["properties"]["Task score"]["number"]
+        object['username']= User.find_by(cid: object['cuid']).username
+        needs.push(object)
+      end
+    end
 
     return render json: { needs: needs}
   end
