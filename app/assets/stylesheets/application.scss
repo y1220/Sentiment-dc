@@ -69,11 +69,12 @@ body {
 /*** <--- CIRCLE STYLES ---> ***/
 .wrap-circles {
   display: flex;
-  min-height: 50vh;
+  min-height: 30vh;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  padding: 2rem 1rem;
+  padding: 1rem 1rem;
+  margin: 10px;
   background: rgba(200, 238, 200, 0.3);
 }
 
