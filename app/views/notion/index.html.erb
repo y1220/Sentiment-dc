@@ -148,105 +148,91 @@
                     </select>
                     &nbsp;<button id="btn-av-duration" onclick="selectAvDuration()" class="btn btn-custom-success btn-sm" ><i class="fa-solid fa-play" style="color: white;"></i></button>
                     <!-- End Select task & duration -->
-                    <% @task_list.each_with_index do |task, i|%>
-                        <div class="wrap-circles" id= "wrap-task-<%=i.to_s%>" style="display: none;">
+                    <% @task_list.each_with_index do |task, i| #assuming that maximun number of teammates = 6 %>
+                        <div class="wrap-circles" id= "wrap-av-task-<%=i.to_s%>" style="display: none;">
                         <% 6.times do |j|%>
-                            <div class="circle per-user-<%=j%>" style="display: none;">
-                                <div class="inner"><div class="name-<%= j%>"></div></div>
-                            </div>
+                            <div class="circle per-av-user-<%=j%>" style="display: none;">
+                                <div class="inner"><div class="name-av-<%= j%>"></div></div>
+                            </div><br/>
+                            <div class="score-av-<%= j%>" style="font-size: 28px; margin-top: 120px; color: #9dd0be;"></div>
                         <% end %>
                         </div>
                     <% end %>
-                    <!-- End Tables without borders -->
                     <script>
-                    const av_task = document.querySelector('#av-task-selection');
-                    const button_av_task = document.querySelector('#btn-av-task');
-                    const av_duration = document.querySelector('#av-duration-selection');
-                    const button_av_duration = document.querySelector('#btn-av-duration');
+                        const av_task = document.querySelector('#av-task-selection');
+                        const button_av_task = document.querySelector('#btn-av-task');
+                        const av_duration = document.querySelector('#av-duration-selection');
+                        const button_av_duration = document.querySelector('#btn-av-duration');
 
-                    var selectedAvTaskValue;
-                    var selectedAvDurationValue;
-                    var i_id;
-                    var docHtml;
+                        var selectedAvTaskValue;
+                        var selectedAvDurationValue;
+                        var i_id_av;
+                        var docHtml;
 
-                    var availabilities = [];
-                    function selectAvTask() {
-                        button_av_task.onclick = (e) => {
-                            e.preventDefault();
-                            selectedAvTaskValue = [].filter
-                                .call(av_task.options, option => option.selected)
-                                .map(option => option.value)[0];
-                            i_id = selectedAvTaskValue.split(/[-,]/);
+                        var availabilities = [];
+                        function selectAvTask() {
+                            button_av_task.onclick = (e) => {
+                                e.preventDefault();
+                                selectedAvTaskValue = [].filter
+                                    .call(av_task.options, option => option.selected)
+                                    .map(option => option.value)[0];
+                                i_id_av = selectedAvTaskValue.split(/[-,]/);
 
-                            for (var i=0, n=av_task.options.length;i<n;i++) {
-                            var x = document.getElementById("wrap-task-" + i);
+                                for (var i=0, n=av_task.options.length;i<n;i++) {
+                                var x = document.getElementById("wrap-av-task-" + i);
 
-                            i == i_id[0] ? x.style.display = "" : x.style.display = "none"
-                            // document.getElementsByClassName("circle per-user-0")[i].style.display = "none";
-                            // document.getElementsByClassName("circle per-user-1")[i].style.display = "none";
-                            // document.getElementsByClassName("circle per-user-2")[i].style.display = "none";
-                            // document.getElementsByClassName("circle per-user-3")[i].style.display = "none";
-                            // document.getElementsByClassName("circle per-user-4")[i].style.display = "none";
-                            // document.getElementsByClassName("circle per-user-5")[i].style.display = "none";
-
-                            }
-                        };
-                    }
-
-                    function selectAvDuration() {
-                        button_av_duration.onclick = (e) => {
-                            e.preventDefault();
-                            selectedAvDurationValue = [].filter
-                                .call(av_duration.options, option => option.selected)
-                                .map(option => option.value)[0];
-
-                            console.log('selectedAvDurationValue:', selectedAvDurationValue);
-
-                            // call ajax to fetch selected duration data fron Notion
-                            $.ajax({
-                            url: '/notion/select_team_availabilities.json',
-                            data: {duration: selectedAvDurationValue, task: i_id[1]},
-                            dataType: "json",
-                            success: function(response) {
-                            // { availabiities: availabiities }
-                            // { cuid: ... , score: ...}
-                            // { cuid: ... , scores: [...]}
-
-                            var availabiities = response.availabiities;
-
-                            availabiities.forEach(function (object, i) {
-                                let score = 0;
-                                if (selectedAvDurationValue == 0) {
-                                    score = object.score * 20;
-                                } else {
-                                    let score_length = object.scores.length;
-                                    console.log("object: ", object);
-                                    object.scores.forEach((x, index)=>{
-                                        score = score + x;
-                                    })
-                                    score = score/score_length * 20;
+                                i == i_id_av[0] ? x.style.display = "" : x.style.display = "none";
                                 }
-                                console.log(score);
-                                console.log('document.getElementsByClassName...[i_id[0]]:', document.getElementsByClassName("circle per-user-" + i)[i_id[0]]);
-                                docHtml = document.getElementsByClassName("name-" + i);
-                                document.getElementsByClassName("name-" + i)[i_id[0]].innerHTML = object.username
-                                document.getElementsByClassName("circle per-user-" + i)[i_id[0]].style.backgroundImage = "conic-gradient(#B5838D " + score +  "%, #FFCDB2 0)";
-                                document.getElementsByClassName("circle per-user-" + i)[i_id[0]].style.display = "";
-                            });
-                            }
-                            });
-                            // override css value
-                                <%#
-                                .my-nice-class {
-                                    max-width: 40%;
-                                    max-height: 40%;
+                            };
+                        }
+
+                        function selectAvDuration() {
+                            button_av_duration.onclick = (e) => {
+                                e.preventDefault();
+                                selectedAvDurationValue = [].filter
+                                    .call(av_duration.options, option => option.selected)
+                                    .map(option => option.value)[0];
+
+                                console.log('selectedAvDurationValue:', selectedAvDurationValue);
+
+                                // call ajax to fetch selected duration data fron Notion
+                                $.ajax({
+                                url: '/notion/select_team_availabilities.json',
+                                data: {duration: selectedAvDurationValue, task: i_id_av[1]},
+                                dataType: "json",
+                                success: function(response) {
+                                // { availabiities: availabiities }
+                                // { cuid: ... , score: ...}
+                                // { cuid: ... , scores: [...]}
+
+                                var availabiities = response.availabiities;
+
+                                availabiities.forEach(function (object, i) {
+                                    let score = 0;
+                                    if (selectedAvDurationValue == 0) {
+                                        score = object.score * 20;
+                                    } else {
+                                        let score_length = object.scores.length;
+                                        console.log("object: ", object);
+                                        object.scores.forEach((x, index)=>{
+                                            score = score + x;
+                                        })
+                                        score = score/score_length * 20;
+                                        score = score.toFixed(1)
+                                    }
+                                    console.log(score);
+                                    console.log('document.getElementsByClassName...[i_id_av[0]]:', document.getElementsByClassName("circle per-av-user-" + i)[i_id_av[0]]);
+                                    docHtml = document.getElementsByClassName("name-av-" + i);
+                                    document.getElementsByClassName("name-av-" + i)[i_id_av[0]].innerHTML = object.username
+                                    document.getElementsByClassName("score-av-" + i)[i_id_av[0]].innerHTML = score
+                                    // override css value
+                                    document.getElementsByClassName("circle per-av-user-" + i)[i_id_av[0]].style.backgroundImage = "conic-gradient(#B5838D " + score +  "%, #FFCDB2 0)";
+                                    document.getElementsByClassName("circle per-av-user-" + i)[i_id_av[0]].style.display = "";
+                                });
                                 }
-                                document.getElementsByClassName("nav-questions").style.maxHeight="40%";
-                                .circle.per-25 {
-                                background-image: conic-gradient(#B5838D 25%, #FFCDB2 0);
-                                } %>
-                        };
-                    }
+                                });
+                            };
+                        }
                     </script>
                 </div>
             </div><!-- End Member availability  -->
@@ -257,8 +243,8 @@
                     <h5 class="card-title">Member help needs <span>| This Week</span></h5>
                     <!-- Select task & duration -->
                     &nbsp;<select id="help-task-selection">
-                        <% @task_list.each do |task| %>
-                        <option value="<%= task.id.to_s%>"><%= task.name%></option>
+                        <% @task_list.each_with_index do |task, i| %>
+                        <option value="<%= i.to_s%>-<%= task.id.to_s%>"><%= task.name%></option>
                         <% end %>
                     </select>
                     &nbsp;<button id="btn-help-task" onclick="selectHelpTask()" class="btn btn-custom-success btn-sm" ><i class="fa-solid fa-play" style="color: white;"></i></button>
@@ -269,23 +255,93 @@
                     </select>
                     &nbsp;<button id="btn-help-duration" onclick="selectHelpDuration()" class="btn btn-custom-success btn-sm" ><i class="fa-solid fa-play" style="color: white;"></i></button>
                     <!-- End Select task & duration -->
-                    <div class="wrap-circles">
-                        <div class="circle per-0">
-                            <div class="inner"><%=@users[1]%></div>
+                   <% @task_list.each_with_index do |task, i| #assuming that maximun number of teammates = 6 %>
+                        <div class="wrap-circles" id= "wrap-help-task-<%=i.to_s%>" style="display: none;">
+                        <% 6.times do |j|%>
+                            <div class="circle per-help-user-<%=j%>" style="display: none;">
+                                <div class="inner"><div class="name-help-<%= j%>"></div></div>
+                            </div><br/>
+                            <div class="score-help-<%= j%>" style="font-size: 28px; margin-top: 120px; color: #9dd0be;"></div>
+                        <% end %>
                         </div>
-                        <div class="circle per-25">
-                            <div class="inner"><%=@users[2]%></div>
-                        </div>
-                        <div class="circle per-50">
-                            <div class="inner"><%=@users[3]%></div>
-                        </div>
-                        <div class="circle per-75">
-                            <div class="inner"><%=@users[4]%></div>
-                        </div>
-                        <div class="circle per-100">
-                            <div class="inner"><%=@users[0]%></div>
-                        </div>
-                    </div>
+                    <% end %>
+
+                    <script>
+                        const help_task = document.querySelector('#help-task-selection');
+                        const button_help_task = document.querySelector('#btn-help-task');
+                        const help_duration = document.querySelector('#help-duration-selection');
+                        const button_help_duration = document.querySelector('#btn-help-duration');
+
+                        var selectedHelpTaskValue;
+                        var selectedHelpDurationValue;
+                        var i_id_help;
+                        var docHtml;
+
+                        var helpailabilities = [];
+                        function selectHelpTask() {
+                            button_help_task.onclick = (e) => {
+                                e.preventDefault();
+                                selectedHelpTaskValue = [].filter
+                                    .call(help_task.options, option => option.selected)
+                                    .map(option => option.value)[0];
+                                i_id_help = selectedHelpTaskValue.split(/[-,]/);
+
+                                for (var i=0, n=help_task.options.length;i<n;i++) {
+                                var x = document.getElementById("wrap-help-task-" + i);
+
+                                i == i_id_help[0] ? x.style.display = "" : x.style.display = "none";
+                                }
+                            };
+                        }
+
+                        function selectHelpDuration() {
+                            button_help_duration.onclick = (e) => {
+                                e.preventDefault();
+                                selectedHelpDurationValue = [].filter
+                                    .call(help_duration.options, option => option.selected)
+                                    .map(option => option.value)[0];
+
+                                console.log('selectedHelpDurationValue:', selectedHelpDurationValue);
+
+                                // call ajax to fetch selected duration data fron Notion
+                                $.ajax({
+                                url: '/notion/select_team_availabilities.json',
+                                data: {duration: selectedHelpDurationValue, task: i_id_help[1]},
+                                dataType: "json",
+                                success: function(response) {
+                                // { availabiities: availabiities }
+                                // { cuid: ... , score: ...}
+                                // { cuid: ... , scores: [...]}
+
+                                var availabiities = response.availabiities;
+
+                                availabiities.forEach(function (object, i) {
+                                    let score = 0;
+                                    if (selectedHelpDurationValue == 0) {
+                                        score = object.score * 20;
+                                    } else {
+                                        let score_length = object.scores.length;
+                                        console.log("object: ", object);
+                                        object.scores.forEach((x, index)=>{
+                                            score = score + x;
+                                        })
+                                        score = score/score_length * 20;
+                                        score = score.toFixed(1)
+                                    }
+                                    console.log(score);
+                                    console.log('document.getElementsByClassName...[i_id_help[0]]:', document.getElementsByClassName("circle per-help-user-" + i)[i_id_help[0]]);
+                                    docHtml = document.getElementsByClassName("name-help-" + i);
+                                    document.getElementsByClassName("name-help-" + i)[i_id_help[0]].innerHTML = object.username
+                                    document.getElementsByClassName("score-help-" + i)[i_id_help[0]].innerHTML = score
+                                    // override css value
+                                    document.getElementsByClassName("circle per-help-user-" + i)[i_id_help[0]].style.backgroundImage = "conic-gradient(#B5838D " + score +  "%, #FFCDB2 0)";
+                                    document.getElementsByClassName("circle per-help-user-" + i)[i_id_help[0]].style.display = "";
+                                });
+                                }
+                                });
+                            };
+                        }
+                    </script>
                 </div>
             </div><!-- End Member help needs  -->
 
