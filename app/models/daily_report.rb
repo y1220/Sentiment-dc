@@ -166,7 +166,47 @@ class DailyReport < ApplicationRecord
                 ]
             }
         }.to_json
-        #hash[:query]= { :id => report_db }
+        response= post("/databases/#{report_db}/query", query: hash[:query], body: json_body, headers: hash[:headers])
+        get_response= JSON.parse(response.body)
+        if get_response
+            return get_response
+        end
+        return false
+    end
+
+    def self.get_past_week_team_needs(cuid_list, ct_id)
+        hash= ApplicationRecord.authenticate_notion
+        report_db= PropertySetting.find_by(company: "Notion", key_name: "daily_reports_db_id").value_text
+        list= []
+        cuid_list.each do |cuid|
+            list.push({
+                "property": "ClickUp User id",
+                "rich_text": {
+                    "equals": cuid
+                }
+            })
+        end
+        json_body= {
+            "filter": {
+                "and": [
+                            {
+                                "property": "Register date",
+                                    "date": {
+                                        "past_week": {}
+                                    }
+                            },
+                            {
+                            "or": list
+                            },
+                            {
+                                "property": "ClickUp Task id",
+                                    "rich_text": {
+                                        "equals": ct_id
+                                    }
+                            }
+                ]
+            }
+        }.to_json
         response= post("/databases/#{report_db}/query", query: hash[:query], body: json_body, headers: hash[:headers])
         get_response= JSON.parse(response.body)
         if get_response
@@ -202,7 +242,47 @@ class DailyReport < ApplicationRecord
                 ]
             }
         }.to_json
-        #hash[:query]= { :id => report_db }
+        response= post("/databases/#{report_db}/query", query: hash[:query], body: json_body, headers: hash[:headers])
+        get_response= JSON.parse(response.body)
+        if get_response
+            return get_response
+        end
+        return false
+    end
+
+    def self.get_latest_team_needs(cuid_list, ct_id)
+        hash= ApplicationRecord.authenticate_notion
+        report_db= PropertySetting.find_by(company: "Notion", key_name: "daily_reports_db_id").value_text
+        list= []
+        cuid_list.each do |cuid|
+            list.push({
+                "property": "ClickUp User id",
+                "rich_text": {
+                    "equals": cuid
+                }
+            })
+        end
+        json_body= {
+            "filter": {
+                "and": [
+                            {
+                                "property": "Register date",
+                                    "date": {
+                                        "on_or_after": "2022-11-11"
+                                    }
+                            },
+                            {
+                            "or": list
+                            },
+                            {
+                                "property": "ClickUp Task id",
+                                    "rich_text": {
+                                        "equals": ct_id
+                                    }
+                            }
+                ]
+            }
+        }.to_json
         response= post("/databases/#{report_db}/query", query: hash[:query], body: json_body, headers: hash[:headers])
         get_response= JSON.parse(response.body)
         if get_response
