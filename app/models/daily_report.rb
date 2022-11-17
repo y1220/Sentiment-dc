@@ -233,7 +233,7 @@ class DailyReport < ApplicationRecord
                             {
                                 "property": "Register date",
                                     "date": {
-                                        "on_or_after": Date.yesterday.strftime('%Y-%m-%d')
+                                        "on_or_after": 5.days.ago.strftime('%Y-%m-%d')
                                     }
                             },
                             {
@@ -268,7 +268,7 @@ class DailyReport < ApplicationRecord
                             {
                                 "property": "Register date",
                                     "date": {
-                                        "on_or_after": Date.yesterday.strftime('%Y-%m-%d')
+                                        "on_or_after": 5.days.ago.strftime('%Y-%m-%d')
                                     }
                             },
                             {
