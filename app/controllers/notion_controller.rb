@@ -60,7 +60,7 @@ class NotionController < ApplicationController
 
     # Notion GET request
     response= ''
-    availabiities= []
+    availabilities= []
 
     if duration == 'past_week'
       response= DailyReport.get_past_week_team_availabilities(cuid_list)
@@ -72,7 +72,7 @@ class NotionController < ApplicationController
         drafts.push(object)
       end
       cuid_list.each do |cuid|
-        availabiities.push({ cuid: cuid, scores: drafts.select{|draft| draft['cuid'] == cuid}.map{|d| d['score']}, username: User.find_by(cid: cuid).username})
+        availabilities.push({ cuid: cuid, scores: drafts.select{|draft| draft['cuid'] == cuid}.map{|d| d['score']}, username: User.find_by(cid: cuid).username})
       end
     else
       response= DailyReport.get_latest_team_availabilities(cuid_list)
@@ -81,10 +81,13 @@ class NotionController < ApplicationController
         object['cuid']= result["properties"]["ClickUp User id"]["rich_text"][0]["text"]["content"]
         object['score']= result["properties"]["Availability score"]["number"]
         object['username']= User.find_by(cid: object['cuid']).username
-        availabiities.push(object)
+        object['date']= result["properties"]["Register date"]["date"]["start"]
+
+        availabilities.push(object)
       end
+      availabilities= availabilities.sort_by{|h| [h['username'], h['date']]}.reverse.uniq!{|h| h['username'] }
     end
-    return render json: { availabiities: availabiities}
+    return render json: { availabilities: availabilities}
   end
 
   def select_team_help_needs
@@ -118,8 +121,11 @@ class NotionController < ApplicationController
         object['score']= result["properties"]["Need help"]["number"]
         object['task_score']= result["properties"]["Task score"]["number"]
         object['username']= User.find_by(cid: object['cuid']).username
+        object['date']= result["properties"]["Register date"]["date"]["start"]
         needs.push(object)
       end
+      needs= needs.sort_by{|h| [h['username'], h['date']]}.reverse.uniq!{|h| h['username'] }
+
     end
 
     return render json: { needs: needs}

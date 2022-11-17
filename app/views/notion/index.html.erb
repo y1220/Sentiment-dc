@@ -200,13 +200,13 @@
                                 data: {duration: selectedAvDurationValue, task: i_id_av[1]},
                                 dataType: "json",
                                 success: function(response) {
-                                // { availabiities: availabiities }
+                                // { availabilities: availabilities }
                                 // { cuid: ... , score: ...}
                                 // { cuid: ... , scores: [...]}
 
-                                var availabiities = response.availabiities;
+                                var availabilities = response.availabilities;
 
-                                availabiities.forEach(function (object, i) {
+                                availabilities.forEach(function (object, i) {
                                     let score = 0;
                                     if (selectedAvDurationValue == 0) {
                                         score = object.score * 20;
@@ -320,7 +320,7 @@
                                 data: {duration: selectedHelpDurationValue, task: i_id_help[1]},
                                 dataType: "json",
                                 success: function(response) {
-                                // { availabiities: availabiities }
+                                // { availabilities: availabilities }
                                 // { cuid: ... , score: ...}
                                 // { cuid: ... , scores: [...]}
 

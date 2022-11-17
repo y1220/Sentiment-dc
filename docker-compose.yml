@@ -19,7 +19,7 @@ services:
       - db
     links:
       - db
-    entrypoint: 
+    entrypoint:
     - bash
     - /sentiment-dc/app/start.sh
 

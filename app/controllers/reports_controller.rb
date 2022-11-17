@@ -1,5 +1,5 @@
 class ReportsController < ApplicationController
-  @@user_id = 19 #TODO: for now manipulate directly here to select a user
+  @@user_id = 4 #TODO: for now manipulate directly here to select a user
 
   def daily
     @create_report_db= PropertySetting.find_by(key_name: "daily_reports_db_id").value_text.present? ? false : true
