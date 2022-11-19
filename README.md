@@ -17,6 +17,8 @@ Future focuses are to implement the ML algorithms to obtain the analysis functio
 * comparison of time used depends on week/month wise according to the needs
 * utilize Notion API to store and share the updated data among the team<br/>
 [tutorial of Notion API - databases](https://developers.notion.com/reference/database)
+* organize the accessible comments list regarding the code snippets<br/>
+[documentation about GitHub link generation](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/creating-a-permanent-link-to-a-code-snippet)
 
 ## Ruby version
 
