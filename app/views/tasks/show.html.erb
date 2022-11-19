@@ -13,6 +13,7 @@
                 <th>description</th>
                 <th>git branch</th>
                 <th>task id</th>
+                <th>type</th>
                 <th>status</th>
                 <th>priority</th>
                 <th>due date</th>
@@ -38,16 +39,23 @@
                     <% b_url = task.branch_id ? Branch.find(task.branch_id).url : nil%>
                     <td><a href="<%= b_url %>"><%= b_name %></a></td>
                     <td><%= task.cid %></td>
+                    <td>
+                        <% if task.task_types.present? %>
+                            <% task.task_types.each do |type| %>
+                                <div class="badge bg-<%= color_status[task.status] %>" style="background-color: <%= type.color %> !important;"><%= type.name %></div>
+                            <% end %>
+                        <% end %>
+                    </td>
+                    <td>
                     <% if task.status.present? %>
-                        <td><span class="badge bg-<%= color_status[task.status] %>"><%= task.status %></span></td>
-                    <% else %>
-                        <td></td>
+                        <span class="badge bg-<%= color_status[task.status] %>"><%= task.status %></span>
                     <% end %>
+                    </td>
+                    <td>
                     <% if %>
-                    <td><span class="badge bg-<%= color_priority[task.priority] %>"><%= task.priority %></span></td>
-                    <% else %>
-                        <td></td>
+                    <span class="badge bg-<%= color_priority[task.priority] %>"><%= task.priority %></span>
                     <% end %>
+                    </td>
                     <td><%= task.format_due_date %></td>
                     <td><%= task.format_date_created %></td>
                     <td><%= task.format_date_closed %></td>

@@ -33,6 +33,7 @@ class Task < ActiveRecord::Base
       flag_branch = 0
       t_created= Time.at(task['date_created'][0..9].to_i)
       dd_created = DateTime.parse(t_created.to_s)
+      @type_list = []
       if !task['due_date'].nil?
         t_due= Time.at(task['date_created'][0..9].to_i)
         dd_due = DateTime.parse(t_due.to_s)
@@ -90,7 +91,6 @@ class Task < ActiveRecord::Base
         if !task['custom_fields'][1]['value'].nil?
           options= task['custom_fields'][1]['type_config']['options']
           task['custom_fields'][1]['value'].each do |value|
-            @type_list = []
             if !TaskType.where(cid: value).present?
               @type= TaskType.new(name: options.select {|x| x['id'] == value}[0]['label'],
                                   cid: value,
@@ -142,7 +142,7 @@ class Task < ActiveRecord::Base
           return false, "Error: Task update failed"
         end
       else
-        @task = Task.where(cid: task['id']).first
+        @task = Task.find_by(cid: task['id'])
         @task.name = task['name']
         @task.description = task['description']
         @task.status = task['status']['status'] == 'in progress' ? 'in_progress' : task['status']['status']
