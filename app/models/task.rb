@@ -30,7 +30,7 @@ class Task < ActiveRecord::Base
     response = Task.details
     @task_info = response['tasks']
     @task_info.each do |task|
-      flag = 0
+      flag_branch = 0
       t_created= Time.at(task['date_created'][0..9].to_i)
       dd_created = DateTime.parse(t_created.to_s)
       if !task['due_date'].nil?
@@ -54,34 +54,73 @@ class Task < ActiveRecord::Base
           return false, "Error: List creation failed"
         end
       end
-      # <!-- Select branch -->
-      if task['custom_fields'].count != 0 && !task['custom_fields'][0]['type_config']['options'][0]['name'].nil? && !task['custom_fields'][0]['value'].nil?
-        if !Branch.where(value: task['custom_fields'][0]['value']).present?
-          @branch= Branch.new(name: task['custom_fields'][0]['type_config']['options'].select {|x|
-            x['orderindex'] == task['custom_fields'][0]['value']}[0]['name'],
-                              value: task['custom_fields'][0]['value'],
-                              bid: task['custom_fields'][0]['type_config']['options'].select {|x|
-                                x['orderindex'] == task['custom_fields'][0]['value']}[0]['id'],
-                              field_id: task['custom_fields'][0]['id'] )
-          if !@branch.save
-            return false, "Error: Branch creation failed"
-          else
-            flag = 1
+      # <!-- Select branch : dropdown version-->
+      flag_branch = 0
+      if task['custom_fields'].count != 0 && !task['custom_fields'][0].nil?
+        if !task['custom_fields'][0]['value'].nil?
+          if !Branch.where(value: task['custom_fields'][0]['value']).present?
+            @branch= Branch.new(name: task['custom_fields'][0]['type_config']['options'].select {|x|
+              x['orderindex'] == task['custom_fields'][0]['value']}[0]['name'],
+                                value: task['custom_fields'][0]['value'],
+                                bid: task['custom_fields'][0]['type_config']['options'].select {|x|
+                                  x['orderindex'] == task['custom_fields'][0]['value']}[0]['id'],
+                                field_id: task['custom_fields'][0]['id'] )
+            if !@branch.save
+              return false, "Error: Branch creation failed"
+            else
+              flag_branch = 1
+            end
+          else # update branch info in case there are any modifications
+            @branch = Branch.where(value: task['custom_fields'][0]['value']).first
+            @branch.name = task['custom_fields'][0]['type_config']['options'].select {|x| x['orderindex'] == task['custom_fields'][0]['value']}[0]['name']
+            @branch.bid = task['custom_fields'][0]['type_config']['options'].select {|x| x['orderindex'] == task['custom_fields'][0]['value']}[0]['id']
+            @branch.field_id = task['custom_fields'][0]['id']
           end
-        else
-          @branch = Branch.where(value: task['custom_fields'][0]['value']).first
-          @branch.name = task['custom_fields'][0]['type_config']['options'].select {|x| x['orderindex'] == task['custom_fields'][0]['value']}[0]['name']
-          @branch.bid = task['custom_fields'][0]['type_config']['options'].select {|x| x['orderindex'] == task['custom_fields'][0]['value']}[0]['id']
-          @branch.field_id = task['custom_fields'][0]['id']
-        end
-        if !@branch.save
-          return false, "Error: Branch update failed"
-        else
-          flag = 1
+          if !@branch.save
+            return false, "Error: Branch update failed"
+          else
+            flag_branch = 1
+          end
         end
       end
       # <!-- End Select branch -->
-
+      # <!-- Select type : label version-->
+      flag_type = 0
+      if task['custom_fields'].count != 0 && !task['custom_fields'][1].nil?
+        if !task['custom_fields'][1]['value'].nil?
+          options= task['custom_fields'][1]['type_config']['options']
+          task['custom_fields'][1]['value'].each do |value|
+            @type_list = []
+            if !TaskType.where(cid: value).present?
+              @type= TaskType.new(name: options.select {|x| x['id'] == value}[0]['label'],
+                                  cid: value,
+                                  color: options.select {|x| x['id'] == value}[0]['color'],
+                                  field_id: task['custom_fields'][1]['id'],
+                                  field_name:  task['custom_fields'][1]['name'])
+              if !@type.save
+                return false, "Error: Type creation failed"
+              else
+                flag_type = 1
+                @type_list << @type
+              end
+            else # update type info in case there are any modifications
+              @type = TaskType.where(cid: value).first
+              @type.name = options.select {|x| x['id'] == value}[0]['label']
+              @type.cid = value
+              @type.color = options.select {|x| x['id'] == value}[0]['color']
+              @type.field_id = task['custom_fields'][1]['id']
+              @type.field_name = task['custom_fields'][1]['name']
+              if !@type.save
+                return false, "Error: Branch update failed"
+              else
+                flag_type = 1
+                @type_list << @type
+              end
+            end
+          end
+        end
+      end
+      # <!-- End Select type -->
       if Task.where(cid: task['id']).empty?
         @task = Task.new(cid: task['id'], name: task['name'], description: task['description'],
         parent: task['parent'], url: task['url'], # parent: inserted id is cid of parent task
@@ -90,6 +129,17 @@ class Task < ActiveRecord::Base
         date_closed: dd_closed ? dd_closed : nil, list_id: List.where(cid: task['list']['id']).first.id)
         if !@task.save
           return false, "Error: Task creation failed"
+        end
+        if flag_branch == 1
+          @task.branch_id = @branch.id
+        end
+        if flag_type == 1
+          @type_list.each do |type|
+            @task.task_types << type if !@task.task_types.include? type
+          end
+        end
+        if !@task.save
+          return false, "Error: Task update failed"
         end
       else
         @task = Task.where(cid: task['id']).first
@@ -100,8 +150,13 @@ class Task < ActiveRecord::Base
         @task.archived = task['archived']
         @task.due_date = dd_due ? dd_due : nil
         @task.date_closed = dd_closed ? dd_closed : nil
-        if flag == 1
+        if flag_branch == 1
           @task.branch_id = @branch.id
+        end
+        if flag_type == 1
+          @type_list.each do |type|
+            @task.task_types << type if !@task.task_types.include? type
+          end
         end
         if !@task.save
           return false, "Error: Task update failed"
