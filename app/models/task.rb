@@ -4,6 +4,7 @@ class Task < ActiveRecord::Base
   belongs_to :branch
   has_many :commits
   has_and_belongs_to_many :users
+  has_and_belongs_to_many :task_types
 
   include HTTParty
   base_uri "https://api.clickup.com/api/v2"
@@ -53,6 +54,7 @@ class Task < ActiveRecord::Base
           return false, "Error: List creation failed"
         end
       end
+      # <!-- Select branch -->
       if task['custom_fields'].count != 0 && !task['custom_fields'][0]['type_config']['options'][0]['name'].nil? && !task['custom_fields'][0]['value'].nil?
         if !Branch.where(value: task['custom_fields'][0]['value']).present?
           @branch= Branch.new(name: task['custom_fields'][0]['type_config']['options'].select {|x|
@@ -78,6 +80,8 @@ class Task < ActiveRecord::Base
           flag = 1
         end
       end
+      # <!-- End Select branch -->
+
       if Task.where(cid: task['id']).empty?
         @task = Task.new(cid: task['id'], name: task['name'], description: task['description'],
         parent: task['parent'], url: task['url'], # parent: inserted id is cid of parent task
