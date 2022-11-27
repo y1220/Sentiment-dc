@@ -13,7 +13,8 @@ class HomeController < ApplicationController
           score = DailyAvailability.where(user_id: 1, register_date: date).first.availability_score
           score.present? ? @availabiity << score*20 :  @availabiity << 0
         end
-        score= DailyReport.where(user_id: 1, task_id: task.id, register_date: date).first.task_score
+        report= DailyReport.where(user_id: 1, task_id: task.id, register_date: date).first
+        score= report ? report.task_score : 0
         score.present? ? scores << score*20 : scores << 0
       end
       @tasks << {name: task.name, scores: scores}
