@@ -34,6 +34,8 @@ gem "font-awesome-sass", "~> 6.2.0"
 gem "simple_calendar", "~> 2.4"
 
 gem "autoprefixer-rails"
+# add tag to filter
+gem "acts-as-taggable-on", "~> 6.0"
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
