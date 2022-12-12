@@ -35,6 +35,11 @@ gem "simple_calendar", "~> 2.4"
 
 gem "autoprefixer-rails"
 
+# elasticsearch for filtering and sorting
+# https://github.com/elastic/elasticsearch-rails
+# gem "elasticsearch-model", github: "elastic/elasticsearch-rails", branch: "5.x"
+# gem "elasticsearch-rails", github: "elastic/elasticsearch-rails", branch: "5.x"
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

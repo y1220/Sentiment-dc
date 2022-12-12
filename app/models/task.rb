@@ -1,5 +1,6 @@
 class Task < ActiveRecord::Base
-
+  # include Elasticsearch::Model
+  # include Elasticsearch::Model::Callbacks
   belongs_to :list
   belongs_to :branch
   has_many :commits
