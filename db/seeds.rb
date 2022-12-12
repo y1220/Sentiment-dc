@@ -40,3 +40,14 @@
 #      @user.save
 #   end
 # end
+
+# 6. add tags on tasks
+# Task.all.each do |task|
+#     types= task.task_types
+#     if types.count != 0
+#         types.each do |t|
+#             task.tag_list.add(t.name)
+#             task.save
+#         end
+#     end
+# end
