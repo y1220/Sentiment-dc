@@ -14,6 +14,8 @@ Rails.application.routes.draw do
   get 'tasks/index'
   get 'tasks/show'
   get 'tasks/update_clickup'
+  get 'tasks/filter_search'
+
 
   get 'commits/index'
   get 'commits/update_link'
