@@ -1,129 +1,133 @@
 <div class="container" style="padding: 10px;">
     <h1>Task info taken via API call</h1>
-    <button type="button" class="btn btn-custom-danger btn-sm" style= "display: block; margin-left: auto; margin-right: 0;">
-    <%= link_to("Update task data from ClickUp","/tasks/update_clickup", class: "nav-link active", style: "text-decoration: none; color: black;")%></button>
-    <div class="panel-heading">
-		Task list
-	</div>
-
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th></th>
-                <th>task name</th>
-                <th>description</th>
-                <th>git branch</th>
-                <th>task id</th>
-                <th>type</th>
-                <th>status</th>
-                <th>priority</th>
-                <th>due date</th>
-                <th>created</th>
-                <th>closed</th>
-                <th>commit registeration</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% color_status = {'Open' => 'secondary', 'review' =>  'primary', 'Closed' => 'success', 'in_progress' =>  'info' } %>
-            <% color_priority = {'low' =>  'secondary', 'urgent' =>  'danger', 'high' =>  'warning', 'normal' =>  'info' } %>
-            <% @tag_list.each do |tags| %>
-            <tr><td><%= tags[:name]%></td></tr>
-            <% tags[:list].each do |task| %>
-                <% task.find_children.count != 0 ? flag = 1 : flag = 0%>
-                <tr>
-                    <% if flag == 1 %>
-                        <td><a style= "cursor: pointer;" data-toggle="collapse" data-target="#task<%= task.id.to_s %>" class="accordion-toggle"><span class="fa fa-eye"></span></a></td>
-                    <% else %>
-                        <td></td>
-                    <% end %>
-                    <td> <a href="<%= task.url%>"><%= task.name %></a></td>
-                    <td><%= task.description %></td>
-                    <% b_name = task.branch_id ? Branch.find(task.branch_id).name : nil %>
-                    <% b_url = task.branch_id ? Branch.find(task.branch_id).url : nil%>
-                    <td><a href="<%= b_url %>"><%= b_name %></a></td>
-                    <td><%= task.cid %></td>
-                    <td>
-                        <% if task.task_types.present? %>
-                            <% task.task_types.each do |type| %>
-                                <div class="badge bg-<%= color_status[task.status] %>" style="background-color: <%= type.color %> !important;"><%= type.name %></div>
-                            <% end %>
-                        <% end %>
-                    </td>
-                    <td>
-                    <% if task.status.present? %>
-                        <span class="badge bg-<%= color_status[task.status] %>"><%= task.status %></span>
-                    <% end %>
-                    </td>
-                    <td>
-                    <% if %>
-                    <span class="badge bg-<%= color_priority[task.priority] %>"><%= task.priority %></span>
-                    <% end %>
-                    </td>
-                    <td><%= task.format_due_date %></td>
-                    <td><%= task.format_date_created %></td>
-                    <td><%= task.format_date_closed %></td>
-                    <% if task.date_closed.present? %>
-                        <% if task.branch.present? %>
-                            <% if task.commits.present? %>
-                                <td style="text-align: center;"><a href="/commits/show_task_commit/<%=task.cid %>" class="btn btn-default btn-sm">
-                                    <i class="fa fa-book" aria-hidden="true"></i></a>
-                                </td>
-                            <% else %>
-                                <td style="background-color: #E4C5CD !important; text-align: center;"><a href="/commits/task_registration/<%=task.cid %>" class="btn btn-default btn-sm">
-                                    <i class="fa-solid fa-pen-to-square"></i></a>
-                                </td>
-                            <% end %>
-                        <% else %>
-                            <td style= "text-align: center;"><%= 'No branch' %></td>
-                        <% end %>
-                    <% else %>
-                        <td></td>
-                    <% end %>
-                </tr>
-                <% if task.find_children.count != 0 %>
+    <% TaskType.all.map(&:name).each_with_index do |t_name, i| %>
+        <button type="button" class="btn btn-outline-secondary accordion-toggle" style="margin: 7px; width: 140px;" data-toggle="collapse"
+        data-target="#type<%= i.to_s %>"><%= t_name%></button>
+    <% end %>
+    <% color_status = {'Open' => 'secondary', 'review' =>  'primary', 'Closed' => 'success', 'in_progress' =>  'info' } %>
+    <% color_priority = {'low' =>  'secondary', 'urgent' =>  'danger', 'high' =>  'warning', 'normal' =>  'info' } %>
+    <table>
+        <% @tag_list.each_with_index do |tags, i| %>
+            <tr><td>
+                <div class="accordian-body collapse" id="type<%= i.to_s %>">
+                <table class="table table-striped">
+                    <thead>
                     <tr>
-                    <td colspan="12" class="hiddenRow">
-                        <div class="accordian-body collapse" id="task<%= task.id.to_s %>">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr class="info">
-                                        <th>subtask name</th>
-                                        <th>description</th>
-                                        <th>status</th>
-                                        <th>priority</th>
-                                        <th>due date</th>
-                                        <th>created</th>
-                                        <th>closed</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% task.find_children.each do |child| %>
-                                        <tr>
-                                            <td><%= child.name %></td>
-                                            <td><%= child.description %></td>
-                                            <% if task.status.present? %>
-                                                <td><span class="badge bg-<%= color_status[task.status] %>"><%= task.status %></span></td>
-                                            <% else %>
-                                                <td></td>
-                                            <% end %>
-                                            <% if %>
-                                            <td><span class="badge bg-<%= color_priority[task.priority] %>"><%= task.priority %></span></td>
-                                            <% else %>
-                                                <td></td>
-                                            <% end %>
-                                            <td><%= child.format_due_date %></td>
-                                            <td><%= child.format_date_created %></td>
-                                            <td><%= child.format_date_closed %></td>
-                                        </tr>
-                                    <% end %>
-                                </tbody>
-                            </table>
-                        </div>
-                    </td>
+                        <th></th>
+                        <th>task name</th>
+                        <th>description</th>
+                        <th>git branch</th>
+                        <th>task id</th>
+                        <th>type</th>
+                        <th>status</th>
+                        <th>priority</th>
+                        <th>due date</th>
+                        <th>created</th>
+                        <th>closed</th>
+                        <th>commit registeration</th>
                     </tr>
-                <% end %>
-            <% end %>
-            <% end %>
-        </tbody>
+                    </thead>
+                    <tbody>
+                        <tr><td><%= tags[:name]%></td></tr>
+                        <% tags[:list].each do |task| %>
+                            <% task.find_children.count != 0 ? flag = 1 : flag = 0%>
+                            <tr>
+                                <% if flag == 1 %>
+                                    <td><a style= "cursor: pointer;" data-toggle="collapse" data-target="#task<%= task.id.to_s %>" class="accordion-toggle"><span class="fa fa-eye"></span></a></td>
+                                <% else %>
+                                    <td></td>
+                                <% end %>
+                                <td> <a href="<%= task.url%>"><%= task.name %></a></td>
+                                <td><%= task.description %></td>
+                                <% b_name = task.branch_id ? Branch.find(task.branch_id).name : nil %>
+                                <% b_url = task.branch_id ? Branch.find(task.branch_id).url : nil%>
+                                <td><a href="<%= b_url %>"><%= b_name %></a></td>
+                                <td><%= task.cid %></td>
+                                <td>
+                                    <% if task.task_types.present? %>
+                                        <% task.task_types.each do |type| %>
+                                            <div class="badge bg-<%= color_status[task.status] %>" style="background-color: <%= type.color %> !important;"><%= type.name %></div>
+                                        <% end %>
+                                    <% end %>
+                                </td>
+                                <td>
+                                <% if task.status.present? %>
+                                    <span class="badge bg-<%= color_status[task.status] %>"><%= task.status %></span>
+                                <% end %>
+                                </td>
+                                <td>
+                                <% if %>
+                                <span class="badge bg-<%= color_priority[task.priority] %>"><%= task.priority %></span>
+                                <% end %>
+                                </td>
+                                <td><%= task.format_due_date %></td>
+                                <td><%= task.format_date_created %></td>
+                                <td><%= task.format_date_closed %></td>
+                                <% if task.date_closed.present? %>
+                                    <% if task.branch.present? %>
+                                        <% if task.commits.present? %>
+                                            <td style="text-align: center;"><a href="/commits/show_task_commit/<%=task.cid %>" class="btn btn-default btn-sm">
+                                                <i class="fa fa-book" aria-hidden="true"></i></a>
+                                            </td>
+                                        <% else %>
+                                            <td style="background-color: #E4C5CD !important; text-align: center;"><a href="/commits/task_registration/<%=task.cid %>" class="btn btn-default btn-sm">
+                                                <i class="fa-solid fa-pen-to-square"></i></a>
+                                            </td>
+                                        <% end %>
+                                    <% else %>
+                                        <td style= "text-align: center;"><%= 'No branch' %></td>
+                                    <% end %>
+                                <% else %>
+                                    <td></td>
+                                <% end %>
+                            </tr>
+                            <% if task.find_children.count != 0 %>
+                                <tr>
+                                <td colspan="12" class="hiddenRow">
+                                    <div class="accordian-body collapse" id="task<%= task.id.to_s %>">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr class="info">
+                                                    <th>subtask name</th>
+                                                    <th>description</th>
+                                                    <th>status</th>
+                                                    <th>priority</th>
+                                                    <th>due date</th>
+                                                    <th>created</th>
+                                                    <th>closed</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% task.find_children.each do |child| %>
+                                                    <tr>
+                                                        <td><%= child.name %></td>
+                                                        <td><%= child.description %></td>
+                                                        <% if task.status.present? %>
+                                                            <td><span class="badge bg-<%= color_status[task.status] %>"><%= task.status %></span></td>
+                                                        <% else %>
+                                                            <td></td>
+                                                        <% end %>
+                                                        <% if %>
+                                                        <td><span class="badge bg-<%= color_priority[task.priority] %>"><%= task.priority %></span></td>
+                                                        <% else %>
+                                                            <td></td>
+                                                        <% end %>
+                                                        <td><%= child.format_due_date %></td>
+                                                        <td><%= child.format_date_created %></td>
+                                                        <td><%= child.format_date_closed %></td>
+                                                    </tr>
+                                                <% end %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </td>
+                                </tr>
+                            <% end %>
+                        <% end %>
+                    </tbody>
+                </table>
+                </div>
+            </td></tr>
+        <% end %>
     </table>
 </div>
