@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   root 'home#index'
   resources :products
 
+  get 'admin/user_create'
   get 'home/index'
   get 'reports/daily'
   get 'recommenders/index'
