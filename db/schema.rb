@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_12_194029) do
+ActiveRecord::Schema.define(version: 2023_03_03_223337) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -215,6 +215,7 @@ ActiveRecord::Schema.define(version: 2022_12_12_194029) do
     t.datetime "updated_at", null: false
     t.integer "last_status"
     t.text "comment"
+    t.string "git_username"
   end
 
   add_foreign_key "checklists", "tasks"
