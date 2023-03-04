@@ -1,5 +1,7 @@
 <div class="container" style="padding: 10px;">
     <h1>User management</h1>
+    <button type="button" class="btn btn-custom-danger btn-sm" style= "display: block; margin-left: auto; margin-right: 0;margin-bottom: 5px;">
+    <%= link_to("GitHub repository setting","/repositories/index", class: "nav-link active", style: "text-decoration: none; color: black;")%></button>
     <button type="button" class="btn btn-custom-danger btn-sm" style= "display: block; margin-left: auto; margin-right: 0;">
     <%= link_to("Update user data from GitHub","/commits/update_github", class: "nav-link active", style: "text-decoration: none; color: black;")%></button>
     <div class="panel-heading">
@@ -22,7 +24,7 @@
             <% color_priority = {'low' =>  'secondary', 'urgent' =>  'danger', 'high' =>  'warning', 'normal' =>  'info' } %>
             <% @users.each do |user| %>
                 <tr>
-                    <td><a href="https://github.com/<%= user.git_username%>"><%= user.username %></a></td>
+                    <td><a href="https://github.com/<%= user.git_username%>" target="_blank"><%= user.username %></a></td>
                     <td><%= user.cid %></td>
                     <td><%= user.gid %></td>
                     <td><%= user.role %></td>

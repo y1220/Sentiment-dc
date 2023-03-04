@@ -1,0 +1,39 @@
+<div class="container" style="padding: 10px;">
+    <h1>GitHub repository management</h1>
+    <button type="button" class="btn btn-custom-danger btn-sm" style= "display: block; margin-left: auto; margin-right: 0;">
+    <a style= "cursor: pointer;text-decoration: none; color: black;" type="button"  data-toggle="modal" data-target="#modalForm-repo">Add new repository</a>
+    </button>
+    <div class="panel-heading">
+		repository list
+	</div>
+        <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>title</th>
+                <th>description</th>
+                <th>owner</th>
+                <th>created at</th>
+                <th>updated at</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% color_status = {'Open' => 'secondary', 'review' =>  'primary', 'Closed' => 'success', 'in_progress' =>  'info' } %>
+            <% color_priority = {'low' =>  'secondary', 'urgent' =>  'danger', 'high' =>  'warning', 'normal' =>  'info' } %>
+            <% @repositories.each do |repo| %>
+                <tr>
+                    <td><a href="https://github.com/<%= repo.owner%>/<%= repo.title %>" target="_blank"><%= repo.title %></a></td>
+                    <td><%= repo.description %></td>
+                    <td><%= repo.owner %></td>
+                    <td><%= repo.format_created_at %></td>
+                    <td><%= repo.format_updated_at %></td>
+                </tr>
+            <% end %>
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="modalForm-repo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div style="width: 50%;">
+    <%= render partial:  "edit_repository",  locals: {repo: @repository} %>
+    </div>
+</div>
