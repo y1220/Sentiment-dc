@@ -53,7 +53,8 @@ Rails.application.routes.draw do
   post 'notion/import_daily_reports'
   post 'notion/import_daily_availabilities'
 
-
+  get 'repositories/index'
+  post 'repositories/create'
 
 
 

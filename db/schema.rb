@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_03_223337) do
+ActiveRecord::Schema.define(version: 2023_03_04_085637) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -126,6 +126,14 @@ ActiveRecord::Schema.define(version: 2023_03_03_223337) do
     t.string "key_name"
     t.string "value_text"
     t.boolean "enabled"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "repositories", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.string "owner"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
