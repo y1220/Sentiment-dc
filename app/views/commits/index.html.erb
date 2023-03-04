@@ -1,10 +1,12 @@
 <div class="container" style="padding: 10px;">
     <h1>Commit info taken via API call</h1>
+    <% @repositories.each do |repo| %>
+    <div class="panel-heading">
+		Commit list of <%= repo.title%>
+	</div>
+    <% end %>
     <button type="button" class="btn btn-custom-danger btn-sm" style= "display: block; margin-left: auto; margin-right: 0;">
     <%= link_to("Update commit data from GitHub","/commits/update_github", class: "nav-link active", style: "text-decoration: none; color: black;")%></button>
-    <div class="panel-heading">
-		Commit list of <%= @repo_name%>
-	</div>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -12,6 +14,7 @@
                 <th>task name</th>
                 <th>description</th>
                 <th style= "text-align: center;">branch</th>
+                <th>repository</th>
                 <th>task id</th>
                 <th>status</th>
                 <th>priority</th>
@@ -39,6 +42,7 @@
                     <% b_name = task.branch_id ? Branch.find(task.branch_id).name : nil %>
                     <% b_url = task.branch_id ? Branch.find(task.branch_id).url : "assign_git/#{task.cid}" %>
                     <td style= "text-align: center;"><a href="<%= b_url %>" target="_blank"><%= b_name %><% if b_name.nil?%><i class="fa-solid fa-pen-to-square"></i><% end %></a></td>
+                    <td><%= task.repository ? task.repository.title : nil %></td>
                     <td><%= task.cid %></td>
                     <% if task.status.present? %>
                         <td><span class="badge bg-<%= color_status[task.status] %>"><%= task.status %></span></td>

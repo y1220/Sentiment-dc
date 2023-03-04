@@ -39,7 +39,7 @@
                     <% b_name = task.branch_id ? Branch.find(task.branch_id).name : nil %>
                     <% b_url = task.branch_id ? Branch.find(task.branch_id).url : nil%>
                     <td><a href="<%= b_url %>"><%= b_name %></a></td>
-                    <td><%= task.branch.repository ? task.branch.repository.title : nil %></td>
+                    <td><%= task.repository ? task.repository.title : nil %></td>
                     <td><%= task.cid %></td>
                     <td>
                         <% if task.task_types.present? %>
