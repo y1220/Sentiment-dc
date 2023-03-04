@@ -2,6 +2,8 @@ class User < ActiveRecord::Base
     has_many :commits
     has_and_belongs_to_many :tasks
     has_and_belongs_to_many :availabilities, after_add: :update_last_status
+    has_many :repositories_users
+    has_many :repositories, through: :repositories_users
 
     include HTTParty
     base_uri "https://api.clickup.com/api/v2"

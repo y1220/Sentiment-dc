@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   resources :products
 
   get 'admin/user_create'
+  get 'admin/user_update/:id', to: 'admin#user_update'
+
   get 'home/index'
   get 'reports/daily'
   get 'recommenders/index'

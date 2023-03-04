@@ -1,4 +1,7 @@
 class Repository < ApplicationRecord
+    has_many :repositories_users
+    has_many :users, through: :repositories_users
+
     def format_created_at
         self.created_at.present? ? self.created_at.strftime('%m-%d-%Y %l:%M %p') : nil
     end
