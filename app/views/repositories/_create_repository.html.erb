@@ -1,5 +1,5 @@
 <div class="modal-dialog modal-content shadow" style="padding: 20px; margin: 330px;">
-    <%= form_with url: "/repositories/edit/#{repo.id.to_s}", method: :put do |form| %>
+    <%= form_with url: "/repositories/create", method: :post do |form| %>
         <div class="form-group mx-2 mb-3">
             <label for="owner">Owner</label>
             <%= form.text_field :owner, value: repo.owner, style: "width: 95%"%>

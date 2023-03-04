@@ -14,6 +14,7 @@
                 <th>owner</th>
                 <th>created at</th>
                 <th>updated at</th>
+                <th style= "col-1"></th>
             </tr>
         </thead>
         <tbody>
@@ -26,6 +27,9 @@
                     <td><%= repo.owner %></td>
                     <td><%= repo.format_created_at %></td>
                     <td><%= repo.format_updated_at %></td>
+                    <td style= "text-align: center; ">
+                    <a style= "cursor: pointer;" type="button"  data-toggle="modal" data-target="#modalForm-<%=repo.id.to_s%>"><i class="fa-solid fa-pen-to-square" style="color: #4169E1;"></i></a></td>
+
                 </tr>
             <% end %>
         </tbody>
@@ -34,6 +38,14 @@
 
 <div class="modal fade" id="modalForm-repo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div style="width: 50%;">
-    <%= render partial:  "edit_repository",  locals: {repo: @repository} %>
+    <%= render partial:  "create_repository",  locals: {repo: @repository} %>
     </div>
 </div>
+
+<% @repositories.each do |repo| %>
+<div class="modal fade" id="modalForm-<%=repo.id.to_s%>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div style="width: 50%;">
+    <%= render partial:  "edit_repository",  locals: {repo: repo} %>
+    </div>
+</div>
+<% end %>
