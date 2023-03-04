@@ -1,0 +1,36 @@
+<div class="container" style="padding: 10px;">
+    <h1>User management</h1>
+    <button type="button" class="btn btn-custom-danger btn-sm" style= "display: block; margin-left: auto; margin-right: 0;">
+    <%= link_to("Update user data from GitHub","/commits/update_github", class: "nav-link active", style: "text-decoration: none; color: black;")%></button>
+    <div class="panel-heading">
+		User list
+	</div>
+        <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>username</th>
+                <th>clickup id</th>
+                <th>github id</th>
+                <th>role</th>
+                <th>status</th>
+                <th>created at</th>
+                <th>updated at</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% color_status = {'Open' => 'secondary', 'review' =>  'primary', 'Closed' => 'success', 'in_progress' =>  'info' } %>
+            <% color_priority = {'low' =>  'secondary', 'urgent' =>  'danger', 'high' =>  'warning', 'normal' =>  'info' } %>
+            <% @users.each do |user| %>
+                <tr>
+                    <td><a href="https://github.com/<%= user.git_username%>"><%= user.username %></a></td>
+                    <td><%= user.cid %></td>
+                    <td><%= user.gid %></td>
+                    <td><%= user.role %></td>
+                    <td><%= user.last_status %></td>
+                    <td><%= user.format_created_at %></td>
+                    <td><%= user.format_updated_at %></td>
+                </tr>
+            <% end %>
+        </tbody>
+    </table>
+</div>
