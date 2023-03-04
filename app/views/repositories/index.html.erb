@@ -28,8 +28,8 @@
                     <td><%= repo.format_created_at %></td>
                     <td><%= repo.format_updated_at %></td>
                     <td style= "text-align: center; ">
-                    <a style= "cursor: pointer;" type="button"  data-toggle="modal" data-target="#modalForm-<%=repo.id.to_s%>"><i class="fa-solid fa-pen-to-square" style="color: #4169E1;"></i></a></td>
-
+                    <a style= "cursor: pointer;" type="button"  data-toggle="modal" data-target="#modalForm-<%=repo.id.to_s%>"><i class="fa-solid fa-pen-to-square" style="color: #4169E1;"></i></a>
+                    <a href="#disablePopUp-<%=repo.id.to_s%>" data-toggle="modal"><i class="fa-solid fa-trash-can" style= "color: #B22222; padding-left: 5px;"></i></a></td>
                 </tr>
             <% end %>
         </tbody>
@@ -46,6 +46,26 @@
 <div class="modal fade" id="modalForm-<%=repo.id.to_s%>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div style="width: 50%;">
     <%= render partial:  "edit_repository",  locals: {repo: repo} %>
+    </div>
+</div>
+<div id="disablePopUp-<%=repo.id.to_s%>" class="modal fade">
+    <div class="modal-dialog modal-confirm">
+        <div class="modal-content">
+            <div class="modal-header flex-column">
+                <div class="icon-box">
+                    <i class="fa-solid fa-x"></i>
+                </div>
+                <h4 class="modal-title w-100">Are you sure?</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Do you really want to delete this repository record?</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger"><%= link_to("Delete","/repositories/delete/#{repo.id.to_s}", class: "nav-link active", style: "text-decoration: none; color: white;", :method=> :delete)%></button>
+            </div>
+        </div>
     </div>
 </div>
 <% end %>

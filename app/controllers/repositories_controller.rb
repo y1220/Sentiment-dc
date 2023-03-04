@@ -24,6 +24,17 @@ class RepositoriesController < ApplicationController
     end
   end
 
+  def delete
+    @repository = Repository.find(params[:id])
+    title = @repository.title
+    if @repository.delete
+      flash[:notice]= "Deleting repository: #{title} has done!"
+      redirect_to("/repositories/index")
+    else
+      show_error("Something went wrong..try again!","repositories/index")
+    end
+  end
+
   private
   def show_error (error_message, return_to_address)
     flash[:notice]= error_message

@@ -56,6 +56,7 @@ Rails.application.routes.draw do
   get 'repositories/index'
   post 'repositories/create'
   put 'repositories/edit/:id', to: 'repositories#edit'
+  delete 'repositories/delete/:id', to: 'repositories#delete'
 
 
 
