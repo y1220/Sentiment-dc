@@ -19,9 +19,9 @@ services:
       - db
     links:
       - db
-    entrypoint:
-    - bash
-    - /sentiment-dc/app/start.sh
+    # entrypoint:
+    # - bash
+    # - /sentiment-dc/app/start.sh
 
   db:
     image: postgres:latest
