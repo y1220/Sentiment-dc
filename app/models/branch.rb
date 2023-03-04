@@ -1,6 +1,7 @@
 class Branch < ApplicationRecord
-    has_many :tasks
+    has_many :tasks, inverse_of: 'branch'
     has_many :commits
+    belongs_to :repository
 
     include HTTParty
     base_uri "https://api.clickup.com/api/v2"

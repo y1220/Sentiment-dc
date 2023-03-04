@@ -1,6 +1,7 @@
 class Repository < ApplicationRecord
     has_many :repositories_users
     has_many :users, through: :repositories_users
+    has_many :branches
 
     include HTTParty
     base_uri "https://api.github.com/repos"
@@ -10,7 +11,6 @@ class Repository < ApplicationRecord
         repo = Repository.find(repo_id)
         username= repo.owner
         repo_name= repo.title
-
         response = get("/#{username}/#{repo_name}/contributors", query: hash[:query], headers: hash[:headers])
         JSON.parse(response.body)
     end
