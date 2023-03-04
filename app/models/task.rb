@@ -2,6 +2,7 @@ class Task < ActiveRecord::Base
   acts_as_taggable_on :tags
   belongs_to :list
   belongs_to :branch, inverse_of: 'tasks'
+  belongs_to :repository
   has_many :commits
   has_and_belongs_to_many :users
   has_and_belongs_to_many :task_types
@@ -14,6 +15,7 @@ class Task < ActiveRecord::Base
 
   scope :children_list, -> {where("parent IS NOT null")}
   scope :parent_list, -> {where("parent IS null")}
+  scope :parent_list_of_repo, ->(rid) {where("parent IS null AND repository_id=?", rid)}
   scope :active_tasks, -> {where.not("status = ?", Task.statuses[:Closed])}
 
   def self.details
@@ -161,8 +163,11 @@ class Task < ActiveRecord::Base
         if !@task.save
           return false, "Error: Task creation failed"
         end
+        if @task.repository_id.nil?
+          @task.repository_id = repo_id
+        end
         if flag_branch == 1
-          @task.branch_id = @branch.id
+          @task.repository_id = repo_id
         end
         if flag_type == 1
           @type_list.each do |type|
@@ -181,6 +186,9 @@ class Task < ActiveRecord::Base
         @task.archived = task['archived']
         @task.due_date = dd_due ? dd_due : nil
         @task.date_closed = dd_closed ? dd_closed : nil
+        if @task.repository_id.nil?
+          @task.repository_id = repo_id
+        end
         if flag_branch == 1
           @task.branch_id = @branch.id
         end

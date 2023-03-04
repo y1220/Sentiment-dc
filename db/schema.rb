@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_04_165107) do
+ActiveRecord::Schema.define(version: 2023_03_04_190010) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -214,8 +214,10 @@ ActiveRecord::Schema.define(version: 2023_03_04_165107) do
     t.datetime "updated_at", null: false
     t.integer "priority"
     t.bigint "branch_id"
+    t.bigint "repository_id"
     t.index ["branch_id"], name: "index_tasks_on_branch_id"
     t.index ["list_id"], name: "index_tasks_on_list_id"
+    t.index ["repository_id"], name: "index_tasks_on_repository_id"
   end
 
   create_table "tasks_users", id: false, force: :cascade do |t|

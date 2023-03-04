@@ -2,6 +2,8 @@ class Repository < ApplicationRecord
     has_many :repositories_users
     has_many :users, through: :repositories_users
     has_many :branches
+    has_many :tasks
+
 
     include HTTParty
     base_uri "https://api.github.com/repos"
