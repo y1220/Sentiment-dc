@@ -10,6 +10,7 @@
             <thead>
                 <tr>
                     <th>username</th>
+                    <th>git username</th>
                     <th>clickup id</th>
                     <th>github id</th>
                     <th>role</th>
@@ -24,6 +25,7 @@
                 <% repo.users.each do |user| %>
                     <tr>
                         <td><a href="https://github.com/<%= user.git_username%>" target="_blank"><%= user.username %></a></td>
+                        <td><%= user.git_username %></td>
                         <td><%= user.cid %></td>
                         <td><%= user.gid %></td>
                         <td><%= user.role %></td>
@@ -55,7 +57,7 @@
             </div>
             <div class="modal-footer justify-content-center">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-success"><%= link_to("Update","/admin/user_update/#{repo.id.to_s}", class: "nav-link active", style: "text-decoration: none; color: white;", :method=> :delete)%></button>
+                <button type="button" class="btn btn-success"><%= link_to("Update","/admin/user_update/#{repo.id.to_s}", class: "nav-link active", style: "text-decoration: none; color: white;", :method=> :get)%></button>
             </div>
         </div>
     </div>
