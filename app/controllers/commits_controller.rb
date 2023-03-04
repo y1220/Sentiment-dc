@@ -1,6 +1,7 @@
 class CommitsController < ApplicationController
 
   def index
+    @repo_name = Repository.find(1).title
     @tasks = Task.parent_list
     Task.update if @tasks.empty?
   end

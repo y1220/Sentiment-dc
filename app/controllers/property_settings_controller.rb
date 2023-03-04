@@ -9,7 +9,7 @@ class PropertySettingsController < ApplicationController
     @properties= PropertySetting.all
     if !@properties
       # create needes keys for setup
-      ['Authorization', 'team_id', 'tasks_space_id', 'gitbranch_field_id', 'availabilities_list_id'].each do |key|
+      ['Authorization', 'team_id', 'tasks_space_id', 'gitbranch_field_id', 'repository_field_id', 'availabilities_list_id', 'type_id'].each do |key|
         PropertySetting.create(company: "ClickUp", key_name: key, enabled: true)
       end
       ['repo_name', 'username'].each do |key|

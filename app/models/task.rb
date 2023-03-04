@@ -1,7 +1,7 @@
 class Task < ActiveRecord::Base
   acts_as_taggable_on :tags
   belongs_to :list
-  belongs_to :branch
+  belongs_to :branch, inverse_of: 'tasks'
   has_many :commits
   has_and_belongs_to_many :users
   has_and_belongs_to_many :task_types
@@ -12,7 +12,6 @@ class Task < ActiveRecord::Base
   enum status: { Open: 0, in_progress: 1, review: 2, Closed: 3 }
   enum priority: { urgent: 1, high: 2, normal: 3, low: 4 }
 
-
   scope :children_list, -> {where("parent IS NOT null")}
   scope :parent_list, -> {where("parent IS null")}
   scope :active_tasks, -> {where.not("status = ?", Task.statuses[:Closed])}
@@ -21,7 +20,6 @@ class Task < ActiveRecord::Base
     hash= ApplicationRecord.authenticate_clickUp
     team_id= PropertySetting.where(company: "ClickUp", key_name: "team_id").first.value_text
     space_id= PropertySetting.where(company: "ClickUp", key_name: "tasks_space_id").first.value_text
-
     response = get("/team/#{team_id}/task?subtasks=true&include_closed=true&space_ids%5B%5D=#{space_id}", query: hash[:query], headers: hash[:headers])
     JSON.parse(response.body)
   end
@@ -57,25 +55,53 @@ class Task < ActiveRecord::Base
       end
       # <!-- Select branch : dropdown version-->
       flag_branch = 0
+      branch = nil
+      branch_name = nil
+      bid = nil
+      repo = nil
+      repo_id = nil
+      type = nil
       if task['custom_fields'].count != 0 && !task['custom_fields'][0].nil?
         if !task['custom_fields'][0]['value'].nil?
-          if !Branch.where(value: task['custom_fields'][0]['value']).present?
-            @branch= Branch.new(name: task['custom_fields'][0]['type_config']['options'].select {|x|
-              x['orderindex'] == task['custom_fields'][0]['value']}[0]['name'],
-                                value: task['custom_fields'][0]['value'],
-                                bid: task['custom_fields'][0]['type_config']['options'].select {|x|
-                                  x['orderindex'] == task['custom_fields'][0]['value']}[0]['id'],
-                                field_id: task['custom_fields'][0]['id'] )
+          # read both git repository and branch
+          task['custom_fields'].each_with_index do |custom, i|
+            if custom['id'] == PropertySetting.find_by(company: "ClickUp", key_name: "gitbranch_field_id").value_text
+              branch = i
+              if !custom['value'].nil?
+                tmp = custom['type_config']['options'].select {|x|
+                  x['orderindex'] == custom['value']}[0]
+                branch_name = tmp['name']
+                bid = tmp['id']
+              end
+            elsif custom['id'] == PropertySetting.find_by(company: "ClickUp", key_name: "repository_field_id").value_text
+              repo = i
+              if !custom['value'].nil?
+                repo_name = custom['type_config']['options'].select {|x|
+                  x['orderindex'] == custom['value']}[0]['name']
+                repo_id = Repository.find_by(title: repo_name).id
+              end
+            elsif custom['id'] == PropertySetting.find_by(company: "ClickUp", key_name: "type_id").value_text
+              type = i
+            end
+          end
+          if branch_name.nil? || repo_id.nil?
+            return false, "Error: Branch creation failed, branch name and repository name must be selected"
+          end
+          if !Branch.where(value: task['custom_fields'][branch]['value'], repository_id: repo_id).present?
+            @branch= Branch.new(name: branch_name,
+                                value: task['custom_fields'][branch]['value'],
+                                bid: bid,
+                                field_id: task['custom_fields'][branch]['id'], repository_id: repo_id)
             if !@branch.save
               return false, "Error: Branch creation failed"
             else
               flag_branch = 1
             end
           else # update branch info in case there are any modifications
-            @branch = Branch.where(value: task['custom_fields'][0]['value']).first
-            @branch.name = task['custom_fields'][0]['type_config']['options'].select {|x| x['orderindex'] == task['custom_fields'][0]['value']}[0]['name']
-            @branch.bid = task['custom_fields'][0]['type_config']['options'].select {|x| x['orderindex'] == task['custom_fields'][0]['value']}[0]['id']
-            @branch.field_id = task['custom_fields'][0]['id']
+            @branch = Branch.where(value: task['custom_fields'][branch]['value'], repository_id: repo_id).first
+            @branch.name = branch_name
+            @branch.bid = bid
+            @branch.field_id = task['custom_fields'][branch]['id']
           end
           if !@branch.save
             return false, "Error: Branch update failed"
@@ -87,34 +113,39 @@ class Task < ActiveRecord::Base
       # <!-- End Select branch -->
       # <!-- Select type : label version-->
       flag_type = 0
-      if task['custom_fields'].count != 0 && !task['custom_fields'][1].nil?
-        if !task['custom_fields'][1]['value'].nil?
-          options= task['custom_fields'][1]['type_config']['options']
-          task['custom_fields'][1]['value'].each do |value|
-            if !TaskType.where(cid: value).present?
-              @type= TaskType.new(name: options.select {|x| x['id'] == value}[0]['label'],
-                                  cid: value,
-                                  color: options.select {|x| x['id'] == value}[0]['color'],
-                                  field_id: task['custom_fields'][1]['id'],
-                                  field_name:  task['custom_fields'][1]['name'])
-              if !@type.save
-                return false, "Error: Type creation failed"
-              else
-                flag_type = 1
-                @type_list << @type
-              end
-            else # update type info in case there are any modifications
-              @type = TaskType.where(cid: value).first
-              @type.name = options.select {|x| x['id'] == value}[0]['label']
-              @type.cid = value
-              @type.color = options.select {|x| x['id'] == value}[0]['color']
-              @type.field_id = task['custom_fields'][1]['id']
-              @type.field_name = task['custom_fields'][1]['name']
-              if !@type.save
-                return false, "Error: Branch update failed"
-              else
-                flag_type = 1
-                @type_list << @type
+
+      if !task['custom_fields'].nil?
+        if !type.nil?
+          if !task['custom_fields'][type].nil?
+            if !task['custom_fields'][type]['value'].nil?
+              options= task['custom_fields'][type]['type_config']['options']
+              task['custom_fields'][type]['value'].each do |value|
+                if !TaskType.where(cid: value).present?
+                  @type= TaskType.new(name: options.select {|x| x['id'] == value}[0]['label'],
+                                      cid: value,
+                                      color: options.select {|x| x['id'] == value}[0]['color'],
+                                      field_id: task['custom_fields'][type]['id'],
+                                      field_name:  task['custom_fields'][type]['name'])
+                  if !@type.save
+                    return false, "Error: Type creation failed"
+                  else
+                    flag_type = 1
+                    @type_list << @type
+                  end
+                else # update type info in case there are any modifications
+                  @type = TaskType.where(cid: value).first
+                  @type.name = options.select {|x| x['id'] == value}[0]['label']
+                  @type.cid = value
+                  @type.color = options.select {|x| x['id'] == value}[0]['color']
+                  @type.field_id = task['custom_fields'][type]['id']
+                  @type.field_name = task['custom_fields'][type]['name']
+                  if !@type.save
+                    return false, "Error: Branch update failed"
+                  else
+                    flag_type = 1
+                    @type_list << @type
+                  end
+                end
               end
             end
           end
