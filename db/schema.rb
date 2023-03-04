@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_04_085637) do
+ActiveRecord::Schema.define(version: 2023_03_04_141136) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -138,6 +138,15 @@ ActiveRecord::Schema.define(version: 2023_03_04_085637) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "repositories_users", force: :cascade do |t|
+    t.bigint "repository_id"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["repository_id"], name: "index_repositories_users_on_repository_id"
+    t.index ["user_id"], name: "index_repositories_users_on_user_id"
+  end
+
   create_table "spaces", force: :cascade do |t|
     t.string "cid"
     t.string "name"
@@ -233,6 +242,8 @@ ActiveRecord::Schema.define(version: 2023_03_04_085637) do
   add_foreign_key "items", "checklists"
   add_foreign_key "items", "users"
   add_foreign_key "lists", "spaces"
+  add_foreign_key "repositories_users", "repositories"
+  add_foreign_key "repositories_users", "users"
   add_foreign_key "taggings", "tags"
   add_foreign_key "tasks", "branches"
   add_foreign_key "tasks", "lists"
