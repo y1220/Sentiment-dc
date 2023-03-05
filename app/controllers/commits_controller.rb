@@ -18,7 +18,8 @@ class CommitsController < ApplicationController
   end
 
   def update_link
-    @branches = Branch.all
+    @repo_name = Repository.find(@@repo_id).title
+    @branches = Branch.where(repository_id: @@repo_id)
   end
 
   def show_task_commit
@@ -63,7 +64,7 @@ class CommitsController < ApplicationController
     end
     @repo_name = Repository.find(@@repo_id).title
     @rid = @@repo_id
-    @tasks = Task.Task.parent_list_of_repo(@@repo_id)
+    @tasks = Task.parent_list_of_repo(@@repo_id)
     redirect_to action: "index"
   end
 

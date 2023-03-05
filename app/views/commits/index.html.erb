@@ -70,7 +70,7 @@
                                     </thead>
                                     <tbody>
                                         <% if branch_exist == 1%>
-                                            <% Commit.where(branch_id: task.branch.id).sort_by(&:commit_date).reverse.each do |child| %>
+                                            <% Commit.where(branch_id: task.branch.id).last(7).sort_by(&:commit_date).reverse.each do |child| %>
                                                 <tr>
                                                     <td><a href="<%= child.url %>" target="_blank"><%= child.message %></a></td>
                                                     <td><%= User.find(child.user_id).username %></td>

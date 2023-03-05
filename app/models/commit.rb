@@ -59,7 +59,17 @@ class Commit < ApplicationRecord
   end
 
   def self.last_commit_by_in_branch(bid)
-    Commit.where(branch_id: bid).sort_by(&:commit_date).last.user.username
+    user = Commit.where(branch_id: bid).sort_by(&:commit_date).last.user
+    username = user.username ? user.username : 'unknown'
+    git_username = user.git_username ? user.git_username : 'unknown'
+    "#{git_username}(#{username})"
+  end
+
+  def self.commiter(uid)
+    user = User.find(uid)
+    username = user.username ? user.username : 'unknown'
+    git_username = user.git_username ? user.git_username : 'unknown'
+    "#{git_username}(#{username})"
   end
 
   def self.commit_count_in_30d(bid)

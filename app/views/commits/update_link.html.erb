@@ -5,7 +5,7 @@
     <div class="col-md-12">
     	<div class="panel panel-default">
             <div class="panel-heading">
-                All branch
+                All branch of <%= @repo_name%>
             </div>
             <div class="panel-body">
                 <table class="table table-condensed table-striped">
@@ -31,7 +31,6 @@
                                 <td><%= Commit.last_commit_by_in_branch(branch.id) %></td>
                                 <td><%= Commit.commit_count_in_30d(branch.id) %></td>
                             </tr>
-
                                     <tr>
                                         <td colspan="12" class="hiddenRow">
                                             <div class="accordian-body collapse" id="branch<%= branch.id.to_s %>">
@@ -49,7 +48,7 @@
                                                             <% Commit.where(branch_id: branch.id).first(7).each do |child| %>
                                                                 <tr>
                                                                     <td><a href="<%= child.url %>"><%= child.message %></a></td>
-                                                                    <td><%= User.find(child.user_id).username %></td>
+                                                                    <td><%= Commit.commiter(child.user_id)%></td>
                                                                     <td><%= child.commit_date %></td>
                                                                 </tr>
                                                             <% end %>
@@ -67,7 +66,20 @@
                                             </div>
                                         </td>
                                     </tr>
-                                <% end %>
+                        <% else %>
+                            <tr>
+                                <td><a style= "cursor: pointer;" data-toggle="collapse" data-target="#branch<%= branch.id.to_s %>" class="accordion-toggle"><span class="fa fa-eye"></span></a></td>
+                                <td><%= branch.name %></td>
+                                <td style= "text-align: center;"><% if branch.url.present?  %><%= branch.url  %><% else%>
+                                <i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;<%= form.url_field :"url#{branch.name}-#{branch.id}", size: "50x5"%><% end %></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                            <td colspan="12"></td>
+                            </tr>
+                        <% end %>
                         <% end %>
                     </tbody>
                 </table>
