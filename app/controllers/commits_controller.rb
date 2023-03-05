@@ -1,14 +1,18 @@
 class CommitsController < ApplicationController
-  @@repo_id = 1
+  @@repo_id = 5
 
   def index
+    @rid = @@repo_id
     @repositories = Repository.all
+    @repo_name = Repository.find(@@repo_id).title
     @tasks = Task.parent_list_of_repo(@@repo_id)
     Task.update if @tasks.empty?
   end
 
   def update_github
-    Commit.update
+    Commit.update(params['rid'])
+    @rid = @@repo_id
+    @repo_name = Repository.find(@@repo_id).title
     @tasks = Task.parent_list_of_repo(@@repo_id)
     redirect_to action: "index"
   end
@@ -57,6 +61,8 @@ class CommitsController < ApplicationController
         end
       end
     end
+    @repo_name = Repository.find(@@repo_id).title
+    @rid = @@repo_id
     @tasks = Task.Task.parent_list_of_repo(@@repo_id)
     redirect_to action: "index"
   end

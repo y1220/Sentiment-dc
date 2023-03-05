@@ -8,35 +8,48 @@ class Commit < ApplicationRecord
   include HTTParty
   base_uri "https://api.github.com/repos"
 
-  def self.details(branch_name)
+  def self.details(branch_name, rid)
     hash= ApplicationRecord.authenticate_gitHub
-    username= PropertySetting.where(company: "GitHub", key_name: "username").first.value_text
-    repo_name= PropertySetting.where(company: "GitHub", key_name: "repo_name").first.value_text
+    repo = Repository.find(rid)
+    username= repo.owner
+    repo_name= repo.title
+    # username= PropertySetting.where(company: "GitHub", key_name: "username").first.value_text
+    # repo_name= PropertySetting.where(company: "GitHub", key_name: "repo_name").first.value_text
 
     response = get("/#{username}/#{repo_name}/commits?sha=#{branch_name}", query: hash[:query], headers: hash[:headers])
     JSON.parse(response.body)
   end
 
-  def self.update
-
-    Branch.all.each do |branch|
-      response = Commit.details(branch.name)
+  def self.update(rid)
+    Branch.where(repository_id: rid).each do |branch|
+      response = Commit.details(branch.name, rid)
       response.each do |commit|
-        time = commit['commit']['author']['date'][0..18]
-        c_created= DateTime.new(time[0..3].to_i, time[5..6].to_i, time[8..9].to_i, time[11..12].to_i, time[14..15].to_i, time[17..18].to_i)
-          if Commit.where(cid: commit['sha']).count == 0
-            @commit = Commit.new(cid: commit['sha'], message: commit['commit']['message'], url: commit['html_url'],
-            user_id: User.find_by(gid: commit['author']['id'].to_s).id, branch_id: branch.id, commit_date: c_created)
-            if !@commit.save
-              return false, "Error: Commit creation failed"
+          time = commit['commit']['author']['date'][0..18]
+          c_created= DateTime.new(time[0..3].to_i, time[5..6].to_i, time[8..9].to_i, time[11..12].to_i, time[14..15].to_i, time[17..18].to_i)
+            if Commit.where(cid: commit['sha']).count == 0
+              @commit = Commit.new(cid: commit['sha'], message: commit['commit']['message'], url: commit['html_url'],
+              user_id: User.find_by(gid: commit['author']['id'].to_s).id, branch_id: branch.id, commit_date: c_created)
+              if !@commit.save
+                return false, "Error: Commit creation failed"
+              end
+            else
+              @commit = Commit.find_by(cid: commit['sha'])
+              author = User.find_by(git_username: commit['author']['login'], gid: commit['author']['id'].to_s)
+              if author.nil?
+                byebug
+                user = User.new(git_username: commit['author']['login'], gid: commit['author']['id'].to_s)
+                if !user.save
+                  return false, "Error: Commit update, user creation failed"
+                end
+                author = user.id
+              else
+                author = author.id
+              end
+              @commit.user_id = author
+              if !@commit.save
+                return false, "Error: Commit update failed"
+              end
             end
-          else
-            @commit = Commit.where(cid: commit['sha']).first
-            @commit.user_id = User.where(gid: commit['author']['id'].to_s).first.id
-            if !@commit.save
-              return false, "Error: Commit update failed"
-            end
-          end
       end
     end
   end

@@ -159,15 +159,12 @@ class Task < ActiveRecord::Base
         parent: task['parent'], url: task['url'], # parent: inserted id is cid of parent task
         status: task['status']['status'] == 'in progress' ? 'in_progress' : task['status']['status'], archived: task['archived'],
         priority: task['priority'].nil? ? nil : task['priority']['priority'], due_date: dd_due ? dd_due : nil, date_created: dd_created,
-        date_closed: dd_closed ? dd_closed : nil, list_id: List.where(cid: task['list']['id']).first.id)
+        date_closed: dd_closed ? dd_closed : nil, list_id: List.where(cid: task['list']['id']).first.id, repository_id: repo_id)
         if !@task.save
           return false, "Error: Task creation failed"
         end
-        if @task.repository_id.nil?
-          @task.repository_id = repo_id
-        end
         if flag_branch == 1
-          @task.repository_id = repo_id
+          @task.branch_id = @branch.id
         end
         if flag_type == 1
           @type_list.each do |type|

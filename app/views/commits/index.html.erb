@@ -1,12 +1,10 @@
 <div class="container" style="padding: 10px;">
     <h1>Commit info taken via API call</h1>
-    <% @repositories.each do |repo| %>
+     <button type="button" class="btn btn-custom-danger btn-sm" style= "display: block; margin-left: auto; margin-right: 0;">
+    <%= link_to("Update commit data from GitHub","/commits/update_github/#{@rid.to_s}", class: "nav-link active", style: "text-decoration: none; color: black;")%></button>
     <div class="panel-heading">
-		Commit list of <%= repo.title%>
+		Commit list of <%= @repo_name%>
 	</div>
-    <% end %>
-    <button type="button" class="btn btn-custom-danger btn-sm" style= "display: block; margin-left: auto; margin-right: 0;">
-    <%= link_to("Update commit data from GitHub","/commits/update_github", class: "nav-link active", style: "text-decoration: none; color: black;")%></button>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -72,7 +70,7 @@
                                     </thead>
                                     <tbody>
                                         <% if branch_exist == 1%>
-                                            <% Commit.where(branch_id: task.branch.id).last(7).sort_by(&:commit_date).reverse.each do |child| %>
+                                            <% Commit.where(branch_id: task.branch.id).sort_by(&:commit_date).reverse.each do |child| %>
                                                 <tr>
                                                     <td><a href="<%= child.url %>" target="_blank"><%= child.message %></a></td>
                                                     <td><%= User.find(child.user_id).username %></td>

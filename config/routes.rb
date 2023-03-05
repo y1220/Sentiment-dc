@@ -22,7 +22,7 @@ Rails.application.routes.draw do
 
   get 'commits/index'
   get 'commits/update_link'
-  get 'commits/update_github'
+  get 'commits/update_github/:rid', to: 'commits#update_github'
   get 'commits/assign_git/:cid', to: 'commits#assign_git'
   get 'commits/task_registration/:cid', to: 'commits#task_registration'
   get 'commits/show_task_commit/:cid', to: 'commits#show_task_commit'
