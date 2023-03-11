@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_04_190010) do
+ActiveRecord::Schema.define(version: 2023_03_11_065525) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -92,6 +92,16 @@ ActiveRecord::Schema.define(version: 2023_03_04_190010) do
     t.string "cuid"
     t.string "ct_id"
     t.index ["user_id", "register_date", "task_id"], name: "task_report_index", unique: true
+  end
+
+  create_table "git_issues", force: :cascade do |t|
+    t.string "title"
+    t.bigint "repository_id"
+    t.bigint "task_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["repository_id"], name: "index_git_issues_on_repository_id"
+    t.index ["task_id"], name: "index_git_issues_on_task_id"
   end
 
   create_table "items", force: :cascade do |t|
@@ -243,6 +253,8 @@ ActiveRecord::Schema.define(version: 2023_03_04_190010) do
   add_foreign_key "commits", "branches"
   add_foreign_key "commits", "tasks"
   add_foreign_key "commits", "users"
+  add_foreign_key "git_issues", "repositories"
+  add_foreign_key "git_issues", "tasks"
   add_foreign_key "items", "checklists"
   add_foreign_key "items", "users"
   add_foreign_key "lists", "spaces"

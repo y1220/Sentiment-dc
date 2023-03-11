@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  repository_id: one
+  task_id: one
+
+two:
+  title: MyString
+  repository_id: two
+  task_id: two
