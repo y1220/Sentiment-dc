@@ -31,6 +31,9 @@
               <%= link_to("Tasks","/tasks/show", class: "nav-link active", style: "text-decoration: none; color: black;")%>
             </li>
             <li class="nav-item">
+              <%= link_to("Scoring","/tasks/index", class: "nav-link active", style: "text-decoration: none; color: black;")%>
+            </li>
+            <li class="nav-item">
               <%= link_to("Task filter","/tasks/filter_search", class: "nav-link active", style: "text-decoration: none; color: black;")%>
             </li>
             <li class="nav-item">
@@ -38,6 +41,9 @@
             </li>
             <li class="nav-item">
               <%= link_to("Git link","/commits/update_link", class: "nav-link active", style: "text-decoration: none; color: black;")%>
+            </li>
+            <li class="nav-item">
+              <%= link_to("Git Issues","/git_issues/index", class: "nav-link active", style: "text-decoration: none; color: black;")%>
             </li>
             <li class="nav-item">
               <% if !PropertySetting.first # TO THINK: not sure if it causes heavy operation to execute all the time%>

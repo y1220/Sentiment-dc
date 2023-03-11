@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  get 'git_issues/index'
   root 'home#index'
   resources :products
 

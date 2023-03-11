@@ -1,0 +1,2 @@
+module GitIssuesHelper
+end
