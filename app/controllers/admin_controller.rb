@@ -11,6 +11,9 @@ class AdminController < ApplicationController
 
   def user_update
     repo = Repository.find(params['id'])
+    if !repo
+      show_error("Something went wrong..try again!","admin/user_create")
+    end
     response = Repository.contributors(params['id'])
     response.each do |contributor|
       username = contributor['login']

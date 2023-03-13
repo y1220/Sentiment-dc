@@ -1,7 +1,7 @@
 <div class="container" style="padding: 10px;">
     <h1>Git Issue info taken via API call</h1>
     <button type="button" class="btn btn-custom-danger btn-sm" style= "display: block; margin-left: auto; margin-right: 0;">
-    <%= link_to("Update task data from ClickUp","/tasks/update_clickup", class: "nav-link active", style: "text-decoration: none; color: black;")%></button>
+    <%= link_to("Update issue from GitHub","/git_issues/update", class: "nav-link active", style: "text-decoration: none; color: black;")%></button>
     <div class="panel-heading">
 		Issue list of <%= @repo_name%>
 	</div>
@@ -12,20 +12,17 @@
                 <th>status</th>
                 <th>created at</th>
                 <th>updated at</th>
-                <th>created by</th>
             </tr>
         </thead>
         <tbody>
-            <% color_status = {'Open' => 'secondary', 'review' =>  'primary', 'Closed' => 'success', 'in_progress' =>  'info' } %>
-            <% color_priority = {'low' =>  'secondary', 'urgent' =>  'danger', 'high' =>  'warning', 'normal' =>  'info' } %>
-            <% @tasks.each do |task| %>
-                <% user = task.users.first %>
+            <% color_status = {'Not registered' => 'secondary', 'Registered' => 'success' } %>
+            <% @issues.each do |issue| %>
+                <% status = issue.task_id ? 'Registered' : 'Not registered' %>
                 <tr>
-                    <td><a href="<%= task.url%>" target="_blank"><%= task.name %></a></td>
-                    <td><span class="badge bg-<%= color_status[task.status] %>"><%= task.status %></span></td>
-                    <td><%= task.format_date_created %></td>
-                    <td><%= task.format_date_closed %></td>
-                    <td><%= user.username ? user.username : 'unknown' %></td>
+                    <td><a href="<%= @url%>/<%= issue.num.to_s%>" target="_blank"><%= issue.title %></a></td>
+                    <td><span class="badge bg-<%= color_status[status] %>"><%= status %></span></td>
+                    <td><%= issue.format_date_created %></td>
+                    <td><%= issue.format_date_updated %></td>
                 </tr>
             <% end %>
         </tbody>

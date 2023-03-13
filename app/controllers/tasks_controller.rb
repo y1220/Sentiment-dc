@@ -2,6 +2,8 @@ class TasksController < ApplicationController
   @@repo_id = 5
 
   def index
+    @repository = Repository.new
+    @repositories = Repository.all
   end
 
   def show

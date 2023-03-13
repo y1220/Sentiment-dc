@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
 
-  get 'git_issues/index'
   root 'home#index'
   resources :products
 
@@ -60,6 +59,9 @@ Rails.application.routes.draw do
   post 'repositories/create'
   put 'repositories/edit/:id', to: 'repositories#edit'
   delete 'repositories/delete/:id', to: 'repositories#delete'
+
+  get 'git_issues/index'
+  get 'git_issues/update'
 
 
 

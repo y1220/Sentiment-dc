@@ -3,6 +3,7 @@ class Repository < ApplicationRecord
     has_many :users, through: :repositories_users
     has_many :branches
     has_many :tasks
+    has_many :git_issues
 
 
     include HTTParty
