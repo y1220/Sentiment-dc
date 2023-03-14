@@ -36,9 +36,4 @@ class AdminController < ApplicationController
     redirect_to("/admin/user_create")
   end
 
-  private
-  def show_error (error_message, return_to_address)
-    flash[:notice]= error_message
-    render(return_to_address)
-  end
 end
