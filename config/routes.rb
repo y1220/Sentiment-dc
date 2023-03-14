@@ -19,8 +19,8 @@ Rails.application.routes.draw do
   get 'tasks/update_clickup'
   get 'tasks/filter_search'
   put 'tasks/create/:id', to: 'tasks#create'
-
-
+  post 'tasks/scoring/:id', to: 'tasks#scoring'
+  put 'tasks/update_scoring/:id', to: 'tasks#scoring'
 
   get 'commits/index'
   get 'commits/update_link'

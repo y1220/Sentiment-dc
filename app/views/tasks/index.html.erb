@@ -1,2 +1,50 @@
-<h1>Tasks#index</h1>
-<p>Find me in app/views/tasks/index.html.erb</p>
+<div class="container" style="padding: 10px;">
+    <h1>Task scoring management</h1>
+    <button type="button" class="btn btn-custom-danger btn-sm" style= "display: block; margin-left: auto; margin-right: 0;">
+    <a style= "cursor: pointer;text-decoration: none; color: black;" type="button"  data-toggle="modal" data-target="#modalForm-task">Update scoring into Notion DB</a>
+    </button>
+    <div class="panel-heading">
+		task list
+	</div>
+        <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>title</th>
+                <th>Complexity</th>
+                <th>Priority</th>
+                <th>Duration</th>
+                <th>Front-end</th>
+                <th>Back-end</th>
+                <th>Infrastructure</th>
+                <th>Data-manipulation</th>
+                <th style= "col-1"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <% color_status = {'Open' => 'secondary', 'review' =>  'primary', 'Closed' => 'success', 'in_progress' =>  'info' } %>
+            <% color_priority = {'low' =>  'secondary', 'urgent' =>  'danger', 'high' =>  'warning', 'normal' =>  'info' } %>
+            <% @tasks.each do |task| %>
+                <tr>
+                    <td><a href="<%= task.url %>" target="_blank"><%= task.name %></a></td>
+                    <td><%= task.complexity_score %></td>
+                    <td><%= task.priority_score %></td>
+                    <td><%= task.duration_score %></td>
+                    <td><%= task.frontend_score %></td>
+                    <td><%= task.backend_score %></td>
+                    <td><%= task.infrastructure_score %></td>
+                    <td><%= task.data_manipulation_score %></td>
+                    <td style= "text-align: center; ">
+                    <a style= "cursor: pointer;" type="button"  data-toggle="modal" data-target="#modalForm-<%=task.id.to_s%>"><i class="fa-solid fa-pen-to-square" style="color: #4169E1;"></i></a></td>
+                </tr>
+            <% end %>
+        </tbody>
+    </table>
+</div>
+
+<% @tasks.each do |task| %>
+    <div class="modal fade" id="modalForm-<%=task.id.to_s%>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div style="width: 50%;">
+        <%= render partial:  "edit_scoring",  locals: {task: task} %>
+        </div>
+    </div>
+<% end %>

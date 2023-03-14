@@ -3,7 +3,7 @@ class TasksController < ApplicationController
 
   def index
     @repository = Repository.new
-    @repositories = Repository.all
+    @tasks = Task.parent_list_of_repo(@@repo_id)
   end
 
   def show
@@ -52,4 +52,20 @@ class TasksController < ApplicationController
     end
     redirect_to("/git_issues/index")
   end
+
+  def scoring
+    task = Task.find(params['id'])
+    if !task
+      show_error("Something went wrong..try again!","tasks/index")
+    end
+    if !task.update(complexity_score: params['complexity_score'], priority_score: params['priority_score'],
+      duration_score: params['duration_score'], frontend_score: params['frontend_score'], backend_score: params['backend_score'], infrastructure_score: params['infrastructure_score'], data_manipulation_score: params['data_manipulation_score'])
+      show_error("Something went wrong..try again!","tasks/index")
+    end
+    redirect_to("/tasks/index")
+  end
+
+  def update_scoring
+  end
+
 end
