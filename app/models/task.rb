@@ -26,6 +26,15 @@ class Task < ActiveRecord::Base
     JSON.parse(response.body)
   end
 
+  def self.create(list_id, title)
+    hash= ApplicationRecord.authenticate_clickUp
+    json_body= {
+          "name": title
+    }.to_json
+    response = post("/list/#{list_id}/task",  query: hash[:query], body: json_body, headers: hash[:headers])
+    JSON.parse(response.body)
+  end
+
   def self.update
     response = Task.details
     @task_info = response['tasks']

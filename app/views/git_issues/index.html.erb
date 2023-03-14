@@ -12,6 +12,7 @@
                 <th>status</th>
                 <th>created at</th>
                 <th>updated at</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -23,8 +24,20 @@
                     <td><span class="badge bg-<%= color_status[status] %>"><%= status %></span></td>
                     <td><%= issue.format_date_created %></td>
                     <td><%= issue.format_date_updated %></td>
+                    <td><% if !issue.task_id  %>
+                            <a href="#modalForm-<%=issue.id.to_s%>" data-toggle="modal"><i class="fa-solid fa-paper-plane" style= "color: #008B8B; padding-left: 5px;"></i></a>
+                        <% else task= Task.find(issue.task_id)%><a href="<%=task.url%>" target="_blank"><i class="fa-solid fa-external-link" style= "color: #D3D3D3; padding-left: 5px;"></i></a></td>
+                        <% end %>
                 </tr>
             <% end %>
         </tbody>
     </table>
 </div>
+
+<% @issues.each do |issue| %>
+    <div class="modal fade" id="modalForm-<%=issue.id.to_s%>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div style="width: 50%;">
+        <%= render partial:  "task_creation",  locals: {issue: issue} %>
+        </div>
+    </div>
+<% end %>

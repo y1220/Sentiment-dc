@@ -37,4 +37,19 @@ class TasksController < ApplicationController
     Task.update if @tasks.empty?
   end
 
+  def create
+    response = Task.create(params['list_id'], params['title'])
+    if !response['id'].nil?
+      Task.update
+      task = Task.find_by(cid: response['id'])
+      issue = GitIssue.find(params['id'])
+      issue.task_id = task.id
+      if !issue.save
+        show_error("Something went wrong..try again!","git_issues/index")
+      end
+    else
+      show_error("Inserted link_id is not acceptable..try again!","git_issues/index")
+    end
+    redirect_to("/git_issues/index")
+  end
 end

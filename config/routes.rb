@@ -18,6 +18,8 @@ Rails.application.routes.draw do
   get 'tasks/show'
   get 'tasks/update_clickup'
   get 'tasks/filter_search'
+  put 'tasks/create/:id', to: 'tasks#create'
+
 
 
   get 'commits/index'
