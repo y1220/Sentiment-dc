@@ -17,6 +17,7 @@ class Task < ActiveRecord::Base
   scope :parent_list, -> {where("parent IS null")}
   scope :parent_list_of_repo, ->(rid) {where("parent IS null AND repository_id=?", rid)}
   scope :active_tasks, -> {where.not("status = ?", Task.statuses[:Closed])}
+  scope :pendings, -> {where("pending = true")} #{where("pending IS null OR pending = false")}
 
   def self.details
     hash= ApplicationRecord.authenticate_clickUp

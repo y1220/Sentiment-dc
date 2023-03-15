@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_03_14_214032) do
+ActiveRecord::Schema.define(version: 2023_03_15_212153) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -233,6 +233,7 @@ ActiveRecord::Schema.define(version: 2023_03_14_214032) do
     t.float "backend_score"
     t.float "infrastructure_score"
     t.float "data_manipulation_score"
+    t.boolean "pending"
     t.index ["branch_id"], name: "index_tasks_on_branch_id"
     t.index ["list_id"], name: "index_tasks_on_list_id"
     t.index ["repository_id"], name: "index_tasks_on_repository_id"
