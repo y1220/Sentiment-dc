@@ -51,7 +51,7 @@ class ReportsController < ApplicationController
 
   def create_report_db
     @p= PropertySetting.find_by(key_name: "daily_reports_db_id")
-    if @p.value_text.empty?
+    if @p.value_text.nil?
       response= DailyReport.create_daily_reports
       @p.value_text= response["id"]
       if @p.save
@@ -98,7 +98,7 @@ class ReportsController < ApplicationController
 
   def create_availability_db
     @p= PropertySetting.find_by(key_name: "daily_availabilities_db_id")
-    if @p.value_text.empty?
+    if @p.value_text.nil?
       response= DailyAvailability.create_daily_availabilities
       @p.value_text= response["id"]
       if @p.save

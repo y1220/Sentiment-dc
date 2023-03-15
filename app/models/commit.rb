@@ -36,7 +36,6 @@ class Commit < ApplicationRecord
               @commit = Commit.find_by(cid: commit['sha'])
               author = User.find_by(git_username: commit['author']['login'], gid: commit['author']['id'].to_s)
               if author.nil?
-                byebug
                 user = User.new(git_username: commit['author']['login'], gid: commit['author']['id'].to_s)
                 if !user.save
                   return false, "Error: Commit update, user creation failed"
