@@ -4,6 +4,9 @@ class TasksController < ApplicationController
   def index
     @repository = Repository.new
     @tasks = Task.parent_list_of_repo(@@repo_id)
+    @p= PropertySetting.find_by(key_name: "scorings_db_id")
+    @scoring_db= @p ? (@p.value_text ? @p.value_text : nil) : nil
+    @pending_report = Task.pendings.count
   end
 
   def show
@@ -59,13 +62,54 @@ class TasksController < ApplicationController
       show_error("Something went wrong..try again!","tasks/index")
     end
     if !task.update(complexity_score: params['complexity_score'], priority_score: params['priority_score'],
-      duration_score: params['duration_score'], frontend_score: params['frontend_score'], backend_score: params['backend_score'], infrastructure_score: params['infrastructure_score'], data_manipulation_score: params['data_manipulation_score'])
+      duration_score: params['duration_score'], frontend_score: params['frontend_score'], backend_score: params['backend_score'], infrastructure_score: params['infrastructure_score'], data_manipulation_score: params['data_manipulation_score'], pending: true)
       show_error("Something went wrong..try again!","tasks/index")
     end
     redirect_to("/tasks/index")
   end
 
-  def update_scoring
+  def create_scoring_db
+    @p= PropertySetting.find_by(key_name: "scorings_db_id")
+    if @p.value_text.nil?
+      response= DailyReport.create_scorings
+      @p.value_text= response["id"]
+      if @p.save
+        @p= PropertySetting.find_by(key_name: "scorings_db_id")
+        PropertySetting.create(company: 'Notion', key_name: 'scorings_link', value_text: response["url"])
+        flash[:notice]= "create scoring db successfully done!"
+      else
+        flash[:notice]= "ERROR! :creating scoring db failed"
+      end
+    else
+      flash[:notice]= "scoring db already exist!"
+    end
+    redirect_to action: "index"
+  end
+
+  def update_scoring_db
+    @p= PropertySetting.find_by(key_name: "scorings_db_id")
+    if @p
+      scorings_db= @p.value_text
+      @cnt= 0
+        Task.pendings.each do |task|
+          update_response= DailyReport.update_scorings(scorings_db, task)
+          if !update_response
+            flash[:notice]= "ERROR! :saving db id failed"
+            break
+          else
+            @cnt+= 1
+            task.pending = false
+            if !task.save
+              flash[:notice]= "ERROR! :updating scoring failed"
+              break
+            end
+          end
+        end
+        flash[:notice]= "scoring data(#{@cnt.to_s}) has been correctly inserted into Notion!"
+      else
+        flash[:notice]= "firstly, please create scoring db in Notion!"
+    end
+    redirect_to action: "index"
   end
 
 end

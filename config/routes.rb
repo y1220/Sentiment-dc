@@ -21,6 +21,8 @@ Rails.application.routes.draw do
   put 'tasks/create/:id', to: 'tasks#create'
   post 'tasks/scoring/:id', to: 'tasks#scoring'
   put 'tasks/update_scoring/:id', to: 'tasks#scoring'
+  post 'tasks/create_scoring_db'
+  post 'tasks/update_scoring_db'
 
   get 'commits/index'
   get 'commits/update_link'

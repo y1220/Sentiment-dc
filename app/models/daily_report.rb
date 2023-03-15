@@ -5,6 +5,9 @@ class DailyReport < ApplicationRecord
     scope :register_to_notion, ->(uid) {where('registered is not true AND user_id = ?',  uid)}
     scope :pending, -> {where('registered is not true').count}
 
+    @@user_id = 1
+
+
     def self.create_daily_reports
         hash= ApplicationRecord.authenticate_notion
         page_id= PropertySetting.find_by(company: "Notion", key_name: "page_id").value_text
@@ -58,6 +61,141 @@ class DailyReport < ApplicationRecord
         get_response= JSON.parse(response.body)
         if get_response
             return get_response
+        end
+        return false
+    end
+
+    def self.create_scorings
+        hash= ApplicationRecord.authenticate_notion
+        page_id= PropertySetting.find_by(company: "Notion", key_name: "page_id").value_text
+        json_body= {
+            "parent": {
+                "type": "page_id",
+                "page_id": page_id
+            },
+            "title": [
+                {
+                    "type": "text",
+                    "text": {
+                        "content": "Task scorings",
+                        "link": nil
+                    }
+                }
+            ],
+            "properties": {
+                "Id": {
+                    "title": {}
+                },
+                "ClickUp Task id": {
+                    "rich_text": {}
+                },
+                "Adjusted by": {
+                    "rich_text": {}
+                },
+                "Complexity": {
+                    "number": {}
+                },
+                "Priority": {
+                    "number": {}
+                },
+                "Duration": {
+                    "number": {}
+                },
+                "Front-end": {
+                    "number": {}
+                },
+                "Back-end": {
+                    "number": {}
+                },
+                "Infrastructure": {
+                    "number": {}
+                },
+                "Data-manipulation": {
+                    "number": {}
+                },
+                "Created at": {
+                    "created_time": {}
+                },
+                 "Updated at": {
+                    "last_edited_time": {}
+                }
+            }
+        }.to_json
+        response= post("/databases/", query: hash[:query], body: json_body, headers: hash[:headers])
+        get_response= JSON.parse(response.body)
+        if get_response
+            return get_response
+        end
+        return false
+    end
+
+    def self.update_scorings(scorings_db, task)
+        hash= ApplicationRecord.authenticate_notion
+        scorings_db_id= PropertySetting.find_by(company: "Notion", key_name: "scorings_db_id").value_text
+        json_body= {
+            "parent": {
+                "database_id": scorings_db_id
+            },
+            "properties": {
+                "ClickUp Task id": {
+                    "rich_text": [
+                        {
+                            "text": {
+                                "content": task.cid
+                            }
+                        }
+                    ]
+                },
+                "Adjusted by": {
+                    "rich_text": [
+                        {
+                            "text": {
+                                "content": User.find(@@user_id).cid
+                            }
+                        }
+                    ]
+                },
+                "Complexity": {
+                    "number": task.complexity_score
+                },
+                "Priority": {
+                    "number": task.priority_score
+                },
+                "Duration": {
+                    "number": task.duration_score
+                },
+                "Front-end": {
+                    "number": task.frontend_score
+                },
+                "Back-end": {
+                    "number": task.backend_score
+                },
+                "Infrastructure": {
+                    "number": task.infrastructure_score
+                },
+                "Data-manipulation": {
+                    "number": task.data_manipulation_score
+                },
+                "Created at": {
+                    "date": {
+                        "start": task.created_at,
+                        "end": nil,
+                        "time_zone": nil
+                    }
+                },
+                 "Updated at": {
+                    "date": {
+                        "start": task.updated_at,
+                        "end": nil,
+                        "time_zone": nil
+                    }
+                }
+            }
+        }.to_json
+        response= post("/pages/", query: hash[:query], body: json_body, headers: hash[:headers])
+        post_response= JSON.parse(response.body)
+        if post_response
+           return post_response['id']
         end
         return false
     end
