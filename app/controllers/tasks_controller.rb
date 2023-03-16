@@ -7,6 +7,8 @@ class TasksController < ApplicationController
     @p= PropertySetting.find_by(key_name: "scorings_db_id")
     @scoring_db= @p ? (@p.value_text ? @p.value_text : nil) : nil
     @pending_report = Task.pendings.count
+    report_link= PropertySetting.find_by(key_name: "scorings_link")
+    @scoring_link= report_link ? report_link.value_text : "/tasks/index"
   end
 
   def show

@@ -1,5 +1,5 @@
 class CommitsController < ApplicationController
-  @@repo_id = 5
+  @@repo_id = 1
 
   def index
     @rid = @@repo_id
