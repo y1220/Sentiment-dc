@@ -1,13 +1,6 @@
 <div class="container" style="padding: 10px;">
     <h1>Task scoring management</h1>
-    <% if @scoring_db %>
-    <button type="button" class="btn btn-custom-danger btn-sm" style= "display: block; margin-left: auto; margin-right: 0; margin-top: 5px;">
-    <%= link_to("Update(#{@pending_report})","/tasks/update_scoring_db", class: "nav-link active", style: "text-decoration: none; color: black;", method: :post)%></button>
-    <% else %>
-    <button type="button" class="btn btn-custom-success btn-sm" style= "display: block; margin-left: auto; margin-right: 0;">
-    <%= link_to("Create db","/tasks/create_scoring_db",  class: "nav-link active", style: "text-decoration: none; color: black;", method: :post)%></button>
-    </button>
-    <% end %>
+
     <div class="panel-heading">
 		task list
 	</div>
@@ -44,6 +37,44 @@
             <% end %>
         </tbody>
     </table>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Sharing on Notion&nbsp;<i class="fa-solid fa-hand-holding-heart"></i></h5>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body" style="text-align: center;">
+                            <h6 class="card-title">Scoring upload&nbsp;<a href="<%= @scoring_link%>" target="_blank"><i class="fa-solid fa-database"></i></a></h6>
+                            <% if @scoring_db %>
+                                <button type="button" class="btn btn-custom-danger btn-sm">
+                                <%= link_to("Upload(#{@pending_report})","/tasks/update_scoring_db", class: "nav-link active", style: "text-decoration: none; color: black;", method: :post)%></button>
+                            <% else %>
+                                <button type="button" class="btn btn-custom-success btn-sm">
+                                <%= link_to("Create db","/tasks/create_scoring_db",  class: "nav-link active", style: "text-decoration: none; color: black;", method: :post)%></button>
+                            </button>
+                            <% end %>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body" style="text-align: center;">
+                            <h6 class="card-title">Scoring update&nbsp;<a href="<%= @scoring_link%>" target="_blank"><i class="fa-solid fa-smile"></i></a></h6>
+                            <% if @scoring_db %>
+                                <button type="button" class="btn btn-custom-danger btn-sm">
+                                <%= link_to("Update(#{@pending_report})","/tasks/update_scoring_db", class: "nav-link active", style: "text-decoration: none; color: black;", method: :post)%></button>
+                            <% else %>
+                                <button type="button" class="btn btn-custom-success btn-sm">
+                                <%= link_to("Create db","/tasks/create_scoring_db",  class: "nav-link active", style: "text-decoration: none; color: black;", method: :post)%></button>
+                                </button>
+                            <% end %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <% @tasks.each do |task| %>
