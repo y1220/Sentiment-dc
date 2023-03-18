@@ -7,7 +7,7 @@ class GitIssuesController < ApplicationController
     @repo_name = repo.title
     username= repo.owner
     repo_name= repo.title
-    @url = "https://api.github.com/repos/#{username}/#{repo_name}/issues"
+    @url = "https://github.com/#{username}/#{repo_name}/issues"
     @issues = GitIssue.where(repository_id: @@repo_id)
     GitIssue.update if @issues.empty?
   end
